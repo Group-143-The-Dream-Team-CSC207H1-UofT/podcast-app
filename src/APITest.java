@@ -1,3 +1,5 @@
+package src;
+
 import okhttp3.*;
 
 import java.io.File;
@@ -6,7 +8,7 @@ import java.io.IOException;
 public class APITest {
 
     public static void main(String[] args) throws IOException {
-        System.out.println(transcribeFile(new File("test_audio.m4a")));
+        System.out.println(transcribeFile(new File("resources/test_audio.m4a")));
     }
 
     static String transcribeFile(File file) throws IOException {
