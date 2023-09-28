@@ -4,7 +4,7 @@ An application made in Java using Clean Architecture for CSC207 at University of
 OpenAI Whisper model transcription api: https://platform.openai.com/docs/api-reference/audio/createTranscription
 
 Example api call using hopscotch:
-![api_example_request.png](resources/api_example_request.png)
+![api_example_request.png](src/main/resources/api_example_request.png)
 
 Example output from java code:
 ```

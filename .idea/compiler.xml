@@ -9,9 +9,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="podcast-app" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="grade-api" target="11" />
       <module name="src" target="1.7" />
     </bytecodeTargetLevel>
   </component>
