@@ -2,18 +2,24 @@
 
 An application made in Java using Clean Architecture for CSC207 at University of Toronto.
 
-## Tenative Problem Domain
-Tenatively, we are considering media management as a scope for our project. Specifically, 
+## Tentative Problem Domain
+Tentatively, we are considering media management as a scope for our project. Specifically, 
 this includes accessing media available on the web and managing various audio content.
 
 ## Project Overview
 We are hoping to develop an application that allows a users to re-experience podcasts that
-are available on sources such as Spodify, Apple Podcasts, Google Podcasts etc. We are hoping
+are available on sources such as Spotify, Apple Podcasts, Google Podcasts, etc. We are hoping
 to do this by:
 1. Trying to incorporate voice-to-text/transcription into the application so that you can also read what is being said.
 2. Implementing a feature that allows users to select sections of the podcast to listen to.
     - This essentially offers a summary of the different topics that are discussed within the podcast.
+    - Timestamps and topic names will be generated through the use of AI.
 3. Potentially adding a search menu that can look for certain phrases/sentences within the podcast as well.
+
+## Potential Technical Problems
+1. Transcripts will need to be either stored in a database or generated very quickly.
+   - Since transcripts can get quite long, we will need to determine what will be more efficient.
+2. Audio files, especially large audio files like podcasts, can be very large and will need to be either stored somewhere or retrieved quickly. 
 
 
 Note: The following list of features is tenative and subject to change.
