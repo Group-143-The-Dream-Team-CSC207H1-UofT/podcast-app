@@ -19,7 +19,7 @@ to do this by:
 ## Potential Technical Problems
 1. Transcripts will need to be either stored in a database or generated very quickly.
    - Since transcripts can get quite long, we will need to determine what will be more efficient.
-2. Audio files, especially large audio files like podcasts, can be very large and will need to be either stored somewhere or retrieved quickly. 
+2. Audio files, especially files like podcasts, can be very large and will need to be either stored somewhere or retrieved quickly. 
 
 
 Note: The following list of features is tenative and subject to change.
