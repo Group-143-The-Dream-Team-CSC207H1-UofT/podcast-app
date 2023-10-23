@@ -1,0 +1,56 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Podcast
+class Episode
+class Transcript
+class TextChunk
+class User
+
+Podcast --o Episode
+Episode --> Transcript
+Transcript --* TextChunk
+User --o Podcast
+
+class Podcast {
+String name
+Image logo
+String description
+ArrayList<String> genres
+String author
+ArrayList<Episode> episodes
+}
+
+class Episode {
+String title
+Image coverImage
+int length
+File audio
+Transcript transcript
+String summary
++Transcript generateTranscript()
++void playAudio()
++String generateSummary()
+}
+
+class Transcript {
+Episode episode
+String rawText
+ArrayList<TextChunk> textChunks
+HashMap<String, ArrayList<TextChunk>> topics
++HashMap generateTopics()
+}
+
+class TextChunk {
+int start
+int end
+String text
+}
+
+class User {
+String username
+String password
+ArrayList<Podcast> podcasts
+}
+
+@enduml
