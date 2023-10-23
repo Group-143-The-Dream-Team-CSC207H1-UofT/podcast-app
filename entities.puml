@@ -8,49 +8,57 @@ class TextChunk
 class User
 
 Podcast --o Episode
-Episode --> Transcript
+Episode --* Transcript
 Transcript --* TextChunk
 User --o Podcast
+Episode --o Section
+
 
 class Podcast {
-String name
-Image logo
-String description
-ArrayList<String> genres
-String author
-ArrayList<Episode> episodes
+ - String name
+ - Image logo
+ - String description
+ - ArrayList<String> genres
+ - String author
+ - ArrayList<Episode> episodes
+}
+
+class Section {
+    - String title
+    - ArrayList<TextChunk> textChunks
 }
 
 class Episode {
-String title
-Image coverImage
-int length
-File audio
-Transcript transcript
-String summary
-+Transcript generateTranscript()
-+void playAudio()
-+String generateSummary()
+ - String title
+ - Image coverImage
+ - int length
+ - File audio
+ - Transcript transcript
+ - ArrayList<Section> sections
+ - String summary
+ - Transcript generateTranscript()
+ - void playAudio()
+ - String generateSummary()
 }
 
+
 class Transcript {
-Episode episode
-String rawText
-ArrayList<TextChunk> textChunks
-HashMap<String, ArrayList<TextChunk>> topics
-+HashMap generateTopics()
+ - Episode episode
+ - String rawText
+ - ArrayList<TextChunk> textChunks
+ - HashMap generateTopics()
 }
 
 class TextChunk {
-int start
-int end
-String text
+ - int start
+ - int end
+ - String text
 }
 
 class User {
-String username
-String password
-ArrayList<Podcast> podcasts
+ - String username
+ - String password
+ - ArrayList<Podcast> podcasts
 }
 
 @enduml
