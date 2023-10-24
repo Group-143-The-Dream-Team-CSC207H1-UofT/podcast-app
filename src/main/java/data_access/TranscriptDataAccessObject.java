@@ -19,6 +19,7 @@ public class TranscriptDataAccessObject {
     public TranscriptDataAccessObject(String directory) {
         this.directory = directory;
         this.transcriptMap = new HashMap<>();
+        loadTranscripts();
     }
 
     private void loadTranscripts() {
