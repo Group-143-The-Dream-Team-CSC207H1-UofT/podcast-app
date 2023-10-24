@@ -1,21 +1,21 @@
 package entities;
 
 public class TextChunk {
-    private final int start;
-    private final int end;
+    private final long start;
+    private final long end;
     private final String text;
 
-    public TextChunk(int start, int end, String text) {
+    public TextChunk(long start, long end, String text) {
         this.start = start;
         this.end = end;
         this.text = text;
     }
 
-    public int getStart() {
+    public long getStart() {
         return start;
     }
 
-    public int getEnd() {
+    public long getEnd() {
         return end;
     }
 

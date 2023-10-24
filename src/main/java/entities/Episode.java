@@ -5,6 +5,7 @@ import javafx.scene.media.Media;
 public class Episode {
     private final String title;
     // What kind of thing should audioLocation be, considering that we want to keep it abstract?
+    // We just need to have a method or an interface which defines something like load() and store()
     private final String audioLocation;
     private final Transcript transcript;
     private final String summary;
