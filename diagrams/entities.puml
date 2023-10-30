@@ -12,7 +12,16 @@ Episode --* Transcript
 Transcript --* TextChunk
 User --o Podcast
 Episode --o Section
-Episode --|> Playable
+Episode --|> MediaItem
+Podcast --|> Media
+Media --o MediaItem
+
+Abstract Media {
+ - String name
+ - String description
+ - String author
+ - ArrayList<MediaItem> mediaItems
+}
 
 
 class Podcast {
@@ -21,16 +30,18 @@ class Podcast {
  - String description
  - ArrayList<String> genres
  - String author
- - ArrayList<Episode> episodes
+ - ArrayList<Episode> mediaItems
 }
 
 class Section {
     - String title
-    - ArrayList<TextChunk> textChunks
+    - int startIndex
+    - int endIndex
 }
 
-Interface Playable {
- - playAudio()
+Abstract MediaItem {
+ - String title
+ - File audio
 }
 
 class Episode {
@@ -41,9 +52,6 @@ class Episode {
  - Transcript transcript
  - ArrayList<Section> sections
  - String summary
- - Transcript generateTranscript()
- - void playAudio()
- - String generateSummary()
 }
 
 
@@ -51,7 +59,6 @@ class Transcript {
  - Episode episode
  - String rawText
  - ArrayList<TextChunk> textChunks
- - HashMap generateTopics()
 }
 
 class TextChunk {
