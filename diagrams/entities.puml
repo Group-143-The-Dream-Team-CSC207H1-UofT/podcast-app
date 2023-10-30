@@ -20,7 +20,7 @@ Abstract Media {
  - String name
  - String description
  - String author
- - ArrayList<MediaItem> mediaItems
+ - List<MediaItem> mediaItems
 }
 
 
@@ -28,9 +28,9 @@ class Podcast {
  - String name
  - Image logo
  - String description
- - ArrayList<String> genres
+ - List<String> genres
  - String author
- - ArrayList<Episode> mediaItems
+ - List<Episode> mediaItems
 }
 
 class Section {
@@ -50,15 +50,15 @@ class Episode {
  - int length
  - File audio
  - Transcript transcript
- - ArrayList<Section> sections
+ - List<Section> sections
  - String summary
+ - int id
 }
 
 
 class Transcript {
- - Episode episode
  - String rawText
- - ArrayList<TextChunk> textChunks
+ - List<TextChunk> textChunks
 }
 
 class TextChunk {
@@ -70,7 +70,7 @@ class TextChunk {
 class User {
  - String username
  - String password
- - ArrayList<Podcast> podcasts
+ - List<Podcast> podcasts
 }
 
 @enduml
