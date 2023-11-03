@@ -13,10 +13,10 @@ Transcript --* TextChunk
 User --o Podcast
 Episode --o Section
 Episode --|> MediaItem
-Podcast --|> Media
-Media --o MediaItem
+Podcast --|> MediaCollection
+MediaCollection --o MediaItem
 
-Abstract Media {
+Abstract MediaCollection {
  - String name
  - String description
  - String author
