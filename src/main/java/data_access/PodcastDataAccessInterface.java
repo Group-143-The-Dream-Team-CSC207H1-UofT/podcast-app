@@ -30,8 +30,8 @@ public interface PodcastDataAccessInterface {
     void saveTextChunk(TextChunk textChunk);
 
     // Media-related
-    Media getMediaByName(String mediaName);
-    void saveMedia(Media media);
+    MediaCollection getMediaByName(String mediaName);
+    void saveMedia(MediaCollection media);
 
     // MediaItem-related
     List<MediaItem> getMediaItemsForMedia(String mediaName);
