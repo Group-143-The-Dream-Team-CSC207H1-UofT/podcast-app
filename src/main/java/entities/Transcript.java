@@ -1,12 +1,12 @@
 package entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Transcript {
     private final String text;
-    private final ArrayList<TextChunk> textChunks;
+    private final List<TextChunk> textChunks;
 
-    public Transcript(String text, ArrayList<TextChunk> textChunks) {
+    public Transcript(String text, List<TextChunk> textChunks) {
         this.text = text;
         this.textChunks = textChunks;
     }
@@ -15,7 +15,7 @@ public class Transcript {
         return text;
     }
 
-    public ArrayList<TextChunk> getTextChunks() {
+    public List<TextChunk> getTextChunks() {
         return textChunks;
     }
 }

@@ -2,19 +2,16 @@ package entities;
 
 import java.util.List;
 
-public class Podcast {
-    private int id;
-    private String podcastName;
+public class Podcast extends MediaCollection {
     private User createdBy;
-    private List<Episode> episodes;
 
-    public Podcast(int id, String podcastName, User createdBy, List<Episode> episodes) {
-        this.id = id;
-        this.podcastName = podcastName;
+    public Podcast(int id, String podcastName, User createdBy, List<MediaItem> episodes) {
+        super(id, podcastName, episodes);
         this.createdBy = createdBy;
-        this.episodes = episodes;
     }
 
-
+    public User getCreatedBy() {
+        return createdBy;
+    }
 }
 
