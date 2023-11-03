@@ -1,7 +1,5 @@
 package entities;
 
-import javafx.scene.media.Media;
-
 public class Episode {
     private final String title;
     // What kind of thing should audioLocation be, considering that we want to keep it abstract?
