@@ -3,13 +3,13 @@ package use_case.upload;
 import data_access.MediaItemDataAccess;
 import entities.Episode;
 
-public class UploadInteractor {
+public class UploadInteractor implements UploadInputBoundary{
     private final MediaItemDataAccess mediaItemDAO;
 
     public UploadInteractor(MediaItemDataAccess mediaItemDAO) {
         this.mediaItemDAO = mediaItemDAO;
     }
-
+    //  TODO: change execute return type to void after presenter is implemented
     public UploadOutputData execute(UploadInputData inputData) {
         if (mediaItemDAO.saveFile(inputData.getAudioFilePath())) {
             // the saving of the file succeeded.

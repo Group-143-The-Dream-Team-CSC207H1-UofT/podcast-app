@@ -37,7 +37,8 @@ public class UploadView extends JPanel implements ActionListener, PropertyChange
             if (option == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile();
                 String selectedFileName = selectedFile.getName();
-                uploadController.execute(fileChooser.getSelectedFile().getAbsolutePath(), selectedFileName);
+                String description = "temp description for now";
+                uploadController.execute(fileChooser.getSelectedFile().getAbsolutePath(), selectedFileName, description);
             }
         }
     }
