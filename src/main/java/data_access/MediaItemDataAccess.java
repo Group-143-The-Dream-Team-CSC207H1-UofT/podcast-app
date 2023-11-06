@@ -1,5 +1,7 @@
 package data_access;
 
+import java.net.URI;
+
 public interface MediaItemDataAccess {
-    public boolean saveFile(String fileLocation);
+    public boolean saveFile(URI fileLocation);
 }
