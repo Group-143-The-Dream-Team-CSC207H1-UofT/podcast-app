@@ -12,9 +12,9 @@ public class UploadController {
         this.uploadUseCaseInteractor = uploadUseCaseInteractor;
     }
     // why do we need description as input data?
-    public void execute(String title, URI filePath, String description) {
+    public void execute(String title, URI fileLocation, String description) {
         UploadInputData uploadInputData = new UploadInputData(
-                title, description, filePath);
+                title, description, fileLocation);
 
         uploadUseCaseInteractor.execute(uploadInputData);
     }
