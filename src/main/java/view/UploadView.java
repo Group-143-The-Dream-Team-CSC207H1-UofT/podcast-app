@@ -1,8 +1,9 @@
 package view;
 
+import entities.Episode;
 import interface_adapter.upload.UploadController;
 import interface_adapter.upload.UploadViewModel;
-
+import interface_adapter.upload.UploadState;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.io.File;
 public class UploadView extends JPanel implements ActionListener, PropertyChangeListener {
     private final UploadViewModel uploadViewModel;
     private final UploadController uploadController;
+    private final JLabel status;
     private final JButton uploadButton;
 
     public UploadView(UploadController uploadController, UploadViewModel uploadViewModel) {
@@ -20,11 +22,12 @@ public class UploadView extends JPanel implements ActionListener, PropertyChange
         this.uploadViewModel = uploadViewModel;
         uploadViewModel.addPropertyChangeListener(this);
 
-
+        status = new JLabel("Waiting for file selection.");
         uploadButton = new JButton("Upload Podcast");
         uploadButton.addActionListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.add(status);
         this.add(uploadButton);
     }
     // temporarily handling button click in actionPerformed
@@ -46,5 +49,13 @@ public class UploadView extends JPanel implements ActionListener, PropertyChange
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         // Update the view based on the changes in the upload view model
+        UploadState uploadState = (UploadState) evt.getNewValue();
+        Episode episode = uploadState.getEpisode();
+        String errorMessage = uploadState.getErrorMessage();
+        if (episode != null) {
+            status.setText(String.format("Successfully uploaded file for %s", episode.getTitle()));
+        } else if (!errorMessage.isEmpty()) {
+            status.setText(errorMessage);
+        }
     }
 }

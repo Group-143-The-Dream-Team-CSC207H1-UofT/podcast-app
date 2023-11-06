@@ -1,39 +1,35 @@
 package interface_adapter.upload;
 
+import interface_adapter.ViewModel;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.net.URI;
 
-public class UploadViewModel {
-    private String filePath;
-    private PropertyChangeSupport propertyChangeSupport;
+public class UploadViewModel extends ViewModel {
+    private UploadState uploadState = new UploadState();;
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);;
 
     // Constructor
     public UploadViewModel() {
-        this.filePath = null; // No file selected initially
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
+        super("upload");
     }
 
-    public String getFilePath() {
-        return filePath;
+    public UploadState getState() {
+        return uploadState;
     }
 
-    public void setFilePath(String newFilePath) {
-        String oldFilePath = this.filePath;
-        this.filePath = newFilePath;
-        propertyChangeSupport.firePropertyChange("filePath", oldFilePath, newFilePath);
+    public void setState(UploadState state) {
+        this.uploadState = state;
+    }
+
+    @Override
+    public void firePropertyChanged() {
+        support.firePropertyChange("upload", null, this.uploadState);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+        support.addPropertyChangeListener(listener);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
-    }
-
-    public void fileSelected(String selectedFilePath) {
-        setFilePath(selectedFilePath);
-    }
-
 }
 
