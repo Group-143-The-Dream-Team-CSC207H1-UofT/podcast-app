@@ -24,7 +24,6 @@ public class Main {
             frame.add(uploadView);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
-        ;
     }
 }
 
