@@ -1,11 +1,9 @@
 package data_access;
 
 import entities.Episode;
+import entities.Transcript;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -71,6 +69,33 @@ public class MediaItemDataAccessObject implements MediaItemDataAccess {
         } catch (IOException e) {
             System.out.println("Could not save episode.");
             return false;
+        }
+    }
+
+    public Episode getEpisodeByUUID(UUID uuid) {
+        File episodeCSV = new File(this.getClass().getResource("/episodes.csv").toString());
+        try {
+            String episodeId = uuid.toString();
+            BufferedReader reader = new BufferedReader(new FileReader(episodeCSV));
+            reader.readLine();
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] col = row.split(",");
+                String currId = String.valueOf(col[0]);
+                if (currId.equals(episodeId)) {
+                    UUID id = UUID.fromString(col[0]);
+                    String title = col[1];
+                    String itemDescription = col[2];
+                    URI itemLocation = URI.create(col[3]);
+                    TranscriptDataAccessObject transcriptDAO = new TranscriptDataAccessObject("directory");
+                    Transcript transcript = transcriptDAO.getTranscriptById(col[4]);
+                    String summary = col[5];
+                    Episode episode = new Episode(id, title, itemDescription, itemLocation, transcript, summary);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Could not access file.");
+            return null;
         }
     }
 }
