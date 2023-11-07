@@ -7,8 +7,8 @@ import java.beans.PropertyChangeSupport;
 import java.net.URI;
 
 public class UploadViewModel extends ViewModel {
-    private UploadState uploadState = new UploadState();;
-    private final PropertyChangeSupport support = new PropertyChangeSupport(this);;
+    private UploadState uploadState = new UploadState();
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     // Constructor
     public UploadViewModel() {
