@@ -1,57 +1,61 @@
 package data_access;
 
+import entities.Episode;
 import entities.TextChunk;
 import entities.Transcript;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
-public class TranscriptDataAccessObject {
-    private HashMap<String, Transcript> transcriptMap;
-    private final String directory;
+public class TranscriptDataAccessObject implements TranscriptDataAccess {
+    private final Map<UUID, Transcript> transcriptMap;
 
-    public TranscriptDataAccessObject(String directory) {
-        this.directory = directory;
+    public TranscriptDataAccessObject() {
         this.transcriptMap = new HashMap<>();
         loadTranscripts();
     }
 
     private void loadTranscripts() {
-        File dir = new File(directory);
-        File[] directoryListing = dir.listFiles();
-        if (directoryListing != null) {
-            for (File file : directoryListing) {
-                try {
-                    transcriptMap.put(file.getName(), createTranscript(file));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        File transcriptsCSV;
+        try {
+            transcriptsCSV = new File(this.getClass().getResource("/transcripts.csv").toURI());
+        } catch (URISyntaxException e) {
+            System.out.println("Error reading transcripts.csv.");
+            e.printStackTrace();
+            return;
+        }
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(transcriptsCSV));
+            reader.readLine();  // read the header row
+            String row;
+            while ((row = reader.readLine()) != null) {
+                String[] col = row.split(",");
+                UUID id = UUID.fromString(col[0]);
+                String content = col[1];
+                Transcript transcript = new Transcript(id, content, stringToChunks(content));
+                transcriptMap.put(id, transcript);
             }
+        } catch (IOException e) {
+            System.out.println("Could not load transcripts from transcripts.csv.");
         }
     }
 
-    private Transcript createTranscript(File file) throws IOException {
+    private List<TextChunk> stringToChunks(String content) {
         ArrayList<TextChunk> textChunks = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        String line;
+        String[] parts;
         String timestamp;
         String text;
-        while ((line = br.readLine()) != null) {
-            if (line.equals("\n")) {
-                continue;
-            }
-            timestamp = br.readLine();
-            text = br.readLine();
-
+        for (String chunkString : content.split("\n\n")) {
+            parts = chunkString.split("\n");
+            timestamp = parts[1];
+            text = parts[2];
             textChunks.add(createTextChunk(timestamp, text));
         }
-        return new Transcript("", textChunks);
+        return textChunks;
     }
 
     private TextChunk createTextChunk(String timestamp, String text) {
@@ -64,9 +68,46 @@ public class TranscriptDataAccessObject {
         } catch (ParseException e) {
             System.out.println("Error in timestamp format in transcript file.");
             e.printStackTrace();
-
-            // TODO: do something if there is a formatting error. Shouldn't happen.
             return null;
+        }
+    }
+
+    @Override
+    public boolean saveTranscript(Transcript transcript) {
+        transcriptMap.put(transcript.getId(), transcript);
+        return save();
+    }
+
+    @Override
+    public Transcript getTranscriptById(UUID id) {
+        return transcriptMap.get(id);
+    }
+
+    private boolean save() {
+        File transcriptsCSV;
+        try {
+            transcriptsCSV = new File(this.getClass().getResource("/transcripts.csv").toURI());
+        } catch (URISyntaxException e) {
+            System.out.println("Error reading transcripts.csv.");
+            e.printStackTrace();
+            return false;
+        }
+        BufferedWriter writer;
+        String transcriptString;
+        try {
+            writer = new BufferedWriter(new FileWriter(transcriptsCSV));
+            writer.write("id,text\n");
+            for (Transcript transcript : transcriptMap.values()) {
+                transcriptString = String.format("%s,%s",
+                        transcript.getId().toString(), transcript.getText());
+                writer.write(transcriptString);
+                writer.newLine();
+            }
+            writer.close();
+            return true;
+        } catch (IOException e) {
+            System.out.println("Could not save transcripts to transcripts.csv.");
+            return false;
         }
     }
 }

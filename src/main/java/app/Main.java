@@ -2,7 +2,9 @@ package app;
 
 import javax.swing.JFrame;
 
-import data_access.MediaItemDataAccessObject;
+import data_access.EpisodeDataAccessObject;
+import data_access.TranscriptDataAccess;
+import data_access.TranscriptDataAccessObject;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.upload.*;
 import view.*;
@@ -10,7 +12,8 @@ import view.*;
 public class Main {
 
     public static void main(String[] args) {
-            MediaItemDataAccessObject mediaItemDataAccessObject= new MediaItemDataAccessObject();
+            TranscriptDataAccessObject transcriptDataAccessObject = new TranscriptDataAccessObject();
+            EpisodeDataAccessObject mediaItemDataAccessObject= new EpisodeDataAccessObject(transcriptDataAccessObject);
             UploadViewModel uploadViewModel = new UploadViewModel();
             ViewManagerModel viewManagerModel = new ViewManagerModel();
             UploadView uploadView = UploadFactory.create(viewManagerModel, uploadViewModel, mediaItemDataAccessObject);

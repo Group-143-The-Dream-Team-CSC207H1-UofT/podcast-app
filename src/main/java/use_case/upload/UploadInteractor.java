@@ -1,25 +1,25 @@
 package use_case.upload;
 
-import data_access.MediaItemDataAccess;
+import data_access.EpisodeDataAccess;
 import entities.Episode;
 
 import java.util.UUID;
 
 public class UploadInteractor implements UploadInputBoundary {
     private final UploadOutputBoundary outputBoundary;
-    private final MediaItemDataAccess mediaItemDAO;
+    private final EpisodeDataAccess episodeDAO;
 
-    public UploadInteractor(UploadOutputBoundary outputBoundary, MediaItemDataAccess mediaItemDAO) {
+    public UploadInteractor(UploadOutputBoundary outputBoundary, EpisodeDataAccess episodeDAO) {
         this.outputBoundary = outputBoundary;
-        this.mediaItemDAO = mediaItemDAO;
+        this.episodeDAO = episodeDAO;
     }
 
     public void execute(UploadInputData inputData) {
         UUID uniqueID = UUID.randomUUID();
-        if (mediaItemDAO.saveFile(inputData.getAudioFileURI(), uniqueID)) {
+        if (episodeDAO.saveFile(inputData.getAudioFileURI(), uniqueID)) {
             // the saving of the file succeeded.
-            Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(),
-                    inputData.getAudioFileURI(), null, null);
+            Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(), null, null);
+            episodeDAO.saveEpisode(episode);
             outputBoundary.prepareSuccessView(new UploadOutputData(episode, false));
         } else {
             outputBoundary.prepareFailView("Failed to upload file.");

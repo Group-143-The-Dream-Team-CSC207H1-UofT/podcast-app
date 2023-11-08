@@ -1,6 +1,7 @@
 package use_case.upload;
 
-import data_access.MediaItemDataAccessObject;
+import data_access.EpisodeDataAccessObject;
+import data_access.TranscriptDataAccessObject;
 import entities.Episode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class UploadInteractorTest {
             }
         };
 
-        UploadInteractor interactor = new UploadInteractor(outputBoundary, new MediaItemDataAccessObject());
+        UploadInteractor interactor = new UploadInteractor(outputBoundary, new EpisodeDataAccessObject(new TranscriptDataAccessObject()));
         interactor.execute(inputData);
     }
 

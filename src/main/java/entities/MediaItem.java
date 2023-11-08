@@ -7,14 +7,12 @@ public abstract class MediaItem {
     private final UUID id;
     private final String title;
     private final String itemDescription;
-    private final URI itemLocation;
 
     // constructor and getters etc...
-    public MediaItem(UUID id, String title, String itemDescription, URI itemLocation){
+    public MediaItem(UUID id, String title, String itemDescription){
         this.id = id;
         this.title = title;
         this.itemDescription = itemDescription;
-        this.itemLocation = itemLocation;
     }
 
 
@@ -28,10 +26,6 @@ public abstract class MediaItem {
 
     public String getItemDescription() {
         return itemDescription;
-    }
-
-    public URI getItemLocation() {
-        return itemLocation;
     }
 }
 
