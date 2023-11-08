@@ -14,11 +14,10 @@ import java.util.List;
 
 public class WhisperTranscription implements TranscriptionInterface {
 
-    final private String OPENAI_API_KEY;
+    final private String OPENAI_API_KEY="";
     final private int MAX_CHUNK_SIZE_BYTES = 20 * 1024 * 1024;
 
-    public WhisperTranscription(String apiKey) {
-        OPENAI_API_KEY = apiKey;
+    public WhisperTranscription() {
     }
 
     @Override
