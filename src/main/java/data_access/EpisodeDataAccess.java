@@ -10,7 +10,7 @@ public interface EpisodeDataAccess {
 
     public File getFileById(UUID id);
 
-    public boolean saveEpisode(Episode episode);
+    public boolean saveEpisode(Episode episode, String filePath);
 
     public Episode getEpisodeById(UUID id);
 }
