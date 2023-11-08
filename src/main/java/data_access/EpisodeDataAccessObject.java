@@ -135,7 +135,7 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
                 if (!transcriptId.isEmpty()) {
                     transcript = transcriptDAO.getTranscriptById(UUID.fromString(transcriptId));
                 }
-                String summary = col[5];
+                String summary = col[4];
                 Episode episode = new Episode(id, title, description, transcript, summary);
                 episodeMap.put(id, episode);
             }
