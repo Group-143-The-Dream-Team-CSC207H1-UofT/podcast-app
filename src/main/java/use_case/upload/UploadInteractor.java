@@ -2,7 +2,6 @@ package use_case.upload;
 
 import data_access.EpisodeDataAccess;
 import entities.Episode;
-
 import java.util.UUID;
 
 public class UploadInteractor implements UploadInputBoundary {
@@ -20,7 +19,7 @@ public class UploadInteractor implements UploadInputBoundary {
             // the saving of the file succeeded.
             Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(), null, null);
             episodeDAO.saveEpisode(episode);
-            outputBoundary.prepareSuccessView(new UploadOutputData(episode, false));
+            outputBoundary.prepareSuccessView(new UploadOutputData(episode));
         } else {
             outputBoundary.prepareFailView("Failed to upload file.");
         }

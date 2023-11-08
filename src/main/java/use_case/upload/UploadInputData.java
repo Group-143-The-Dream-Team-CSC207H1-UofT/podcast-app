@@ -3,7 +3,6 @@ package use_case.upload;
 import java.net.URI;
 
 public class UploadInputData {
-
     final private String title;
     final private String description;
     final private URI audioFileURI;
