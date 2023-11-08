@@ -92,7 +92,7 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(episodesCSV));
-            writer.write("id,title,description,transcriptID,summary\n");
+            writer.write("id,title,description,transcriptId,summary\n");
             String transcriptId = "";
             Transcript transcript;
             for (Episode episode : episodeMap.values()) {
