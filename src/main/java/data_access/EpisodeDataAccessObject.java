@@ -1,8 +1,6 @@
 package data_access;
 
 import entities.Episode;
-import entities.MediaItem;
-import entities.Podcast;
 import entities.Transcript;
 import java.io.*;
 import java.net.URI;
@@ -11,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,10 +18,10 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
 
     private final TranscriptDataAccess transcriptDAO;
 
-    public EpisodeDataAccessObject(TranscriptDataAccess transcriptDAO, String filePath) {
+    public EpisodeDataAccessObject(TranscriptDataAccess transcriptDAO) {
         episodeMap = new HashMap<>();
         this.transcriptDAO = transcriptDAO;
-        loadEpisodes(filePath);
+        loadEpisodes();
     }
 
     @Override
@@ -73,9 +70,9 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
     }
 
     @Override
-    public boolean saveEpisode(Episode episode, String filePath) {
+    public boolean saveEpisode(Episode episode) {
         episodeMap.put(episode.getId(), episode);
-        return save(filePath);
+        return save();
     }
 
     @Override
@@ -83,10 +80,10 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         return episodeMap.get(id);
     }
 
-    private boolean save(String filePath) {
+    private boolean save() {
         File episodesCSV;
         try {
-            episodesCSV = new File(this.getClass().getResource(filePath).toURI());
+            episodesCSV = new File(this.getClass().getResource("/episodes.csv").toURI());
         } catch (URISyntaxException e) {
             System.out.println("Error reading episodes.csv.");
             e.printStackTrace();
@@ -115,10 +112,10 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         }
     }
 
-    private void loadEpisodes(String filePath) {
+    private void loadEpisodes() {
         File episodesCSV;
         try {
-            episodesCSV = new File(this.getClass().getResource(filePath).toURI());
+            episodesCSV = new File(this.getClass().getResource("/episodes.csv").toURI());
         } catch (URISyntaxException e) {
             System.out.println("Error reading episodes.csv.");
             e.printStackTrace();
@@ -146,5 +143,4 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
             System.out.println("Could not load episodes from episodes.csv.");
         }
     }
-
 }
