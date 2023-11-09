@@ -1,26 +1,16 @@
 package entities;
 
-public class Episode {
-    private final String title;
-    // What kind of thing should audioLocation be, considering that we want to keep it abstract?
-    // We just need to have a method or an interface which defines something like load() and store()
-    private final String audioLocation;
+import java.net.URI;
+import java.util.UUID;
+
+public class Episode extends MediaItem {
     private final Transcript transcript;
     private final String summary;
 
-    public Episode(String title, String audioLocation, Transcript transcript, String summary) {
-        this.title = title;
-        this.audioLocation = audioLocation;
+    public Episode(UUID id, String title, String description, Transcript transcript, String summary) {
+        super(id, title, description);
         this.transcript = transcript;
         this.summary = summary;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getAudioLocation() {
-        return audioLocation;
     }
 
     public Transcript getTranscript() {

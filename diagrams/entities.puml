@@ -12,25 +12,36 @@ Episode --* Transcript
 Transcript --* TextChunk
 User --o Podcast
 Episode --o Section
-Episode --|> Playable
+Episode --|> MediaItem
+Podcast --|> MediaCollection
+MediaCollection --o MediaItem
+
+Abstract MediaCollection {
+ - String name
+ - String description
+ - String author
+ - List<MediaItem> mediaItems
+}
 
 
 class Podcast {
  - String name
  - Image logo
  - String description
- - ArrayList<String> genres
+ - List<String> genres
  - String author
- - ArrayList<Episode> episodes
+ - List<Episode> mediaItems
 }
 
 class Section {
     - String title
-    - ArrayList<TextChunk> textChunks
+    - int startIndex
+    - int endIndex
 }
 
-Interface Playable {
- - playAudio()
+Abstract MediaItem {
+ - String title
+ - File audio
 }
 
 class Episode {
@@ -39,19 +50,15 @@ class Episode {
  - int length
  - File audio
  - Transcript transcript
- - ArrayList<Section> sections
+ - List<Section> sections
  - String summary
- - Transcript generateTranscript()
- - void playAudio()
- - String generateSummary()
+ - int id
 }
 
 
 class Transcript {
- - Episode episode
  - String rawText
- - ArrayList<TextChunk> textChunks
- - HashMap generateTopics()
+ - List<TextChunk> textChunks
 }
 
 class TextChunk {
@@ -63,7 +70,7 @@ class TextChunk {
 class User {
  - String username
  - String password
- - ArrayList<Podcast> podcasts
+ - List<Podcast> podcasts
 }
 
 @enduml
