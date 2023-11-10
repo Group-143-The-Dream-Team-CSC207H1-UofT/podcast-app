@@ -1,23 +1,27 @@
 package use_case.upload;
 
-import java.io.File;
+import java.net.URI;
 
 public class UploadInputData {
-
     final private String title;
-    final private String audioFilePath;
+    final private String description;
+    final private URI audioFileURI;
 
-    public UploadInputData(String title, String audioFilePath) {
+    public UploadInputData(String title, String description, URI audioFileURI) {
         this.title = title;
-        this.audioFilePath = audioFilePath;
+        this.description = description;
+        this.audioFileURI = audioFileURI;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getAudioFilePath() {
-        return audioFilePath;
+    public String getDescription(){
+        return description;
     }
 
+    public URI getAudioFileURI() {
+        return audioFileURI;
+    }
 }

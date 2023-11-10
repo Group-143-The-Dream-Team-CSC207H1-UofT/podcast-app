@@ -9,6 +9,7 @@ public class Episode extends MediaItem {
 
     public Episode(UUID id, String title, String description, URI audioLocation, Transcript transcript, String summary) {
         super(id, title, description, audioLocation);
+
         this.transcript = transcript;
         this.summary = summary;
     }

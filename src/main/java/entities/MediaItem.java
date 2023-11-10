@@ -1,19 +1,22 @@
 package entities;
 
+import java.net.URI;
+import java.util.UUID;
+
 public abstract class MediaItem {
-    private final int id;
+    private final UUID id;
     private final String title;
     private final String itemDescription;
 
     // constructor and getters etc...
-    public MediaItem(int id, String title, String itemDescription){
-    this.id = id;
-    this.title = title;
-    this.itemDescription = itemDescription;
+    public MediaItem(UUID id, String title, String itemDescription){
+        this.id = id;
+        this.title = title;
+        this.itemDescription = itemDescription;
     }
 
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

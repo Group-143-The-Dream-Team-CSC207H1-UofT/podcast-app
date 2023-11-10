@@ -5,9 +5,8 @@ import use_case.upload.UploadOutputBoundary;
 import use_case.upload.UploadOutputData;
 
 public class UploadPresenter implements UploadOutputBoundary {
-
+  
     private final UploadViewModel uploadViewModel;
-
     private final ViewManagerModel viewManagerModel;
 
     public UploadPresenter(UploadViewModel clearViewModel, ViewManagerModel viewManagerModel) {
