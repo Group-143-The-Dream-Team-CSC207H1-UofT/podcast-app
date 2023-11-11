@@ -1,15 +1,18 @@
 package use_case.podcast;
-import entities.Episode;
-import java.util.ArrayList;
+
+import entities.MediaItem;
+import java.util.List;
 
 
 public class PodcastInputData {
     final private String title;
     final private String description;
     final private String author;
-    final private ArrayList<Episode> episodes;
+    final private List<MediaItem> episodes;
 
-    public PodcastInputData(String title, String description, String author, ArrayList<Episode> episodes) {
+    // Todo: Determine whether we need a genre instance attribute
+
+    public PodcastInputData(String title, String description, String author, List<MediaItem> episodes) {
         this.title = title;
         this.description = description;
         this.author = author;
@@ -27,8 +30,10 @@ public class PodcastInputData {
     public String getAuthor() {
         return author;
     }
-    public ArrayList<Episode> getEpisodes(){
+
+    public List<MediaItem> getEpisodes(){
         return episodes;
     }
+
 
 }
