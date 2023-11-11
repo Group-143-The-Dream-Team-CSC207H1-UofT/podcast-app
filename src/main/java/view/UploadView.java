@@ -18,7 +18,9 @@ import java.net.URI;
 
 public class UploadView extends JPanel implements PropertyChangeListener {
     private final UploadViewModel uploadViewModel;
+    private final TranscribeViewModel transcribeViewModel;
     private final UploadController uploadController;
+    private  final  TranscribeController transcribeController;
     private final JLabel status;
     final JTextField titleInputField = new JTextField(15);
     final JTextField descriptionInputField = new JTextField(15);
@@ -26,9 +28,11 @@ public class UploadView extends JPanel implements PropertyChangeListener {
     private URI selectedFileURI;
     private final JButton submitButton;
 
-    public UploadView(UploadController uploadController, UploadViewModel uploadViewModel) {
+    public UploadView(UploadController uploadController, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController) {
         this.uploadController = uploadController;
         this.uploadViewModel = uploadViewModel;
+        this.transcribeController = transcribeController;
+        this.transcribeViewModel = transcribeViewModel;
         uploadViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -80,6 +84,7 @@ public class UploadView extends JPanel implements PropertyChangeListener {
         String errorMessage = uploadState.getErrorMessage();
         if (episode != null) {
             status.setText(String.format("Successfully uploaded file for %s", episode.getTitle()));
+            transcribeController.execute(episode);
 
         } else if (!errorMessage.isEmpty()) {
             status.setText(errorMessage);

@@ -44,7 +44,8 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
         }
     }
 
-    private List<TextChunk> stringToChunks(String content) {
+
+    public List<TextChunk> stringToChunks(String content) {
         ArrayList<TextChunk> textChunks = new ArrayList<>();
         String[] parts;
         String timestamp;
@@ -111,3 +112,4 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
         }
     }
 }
+

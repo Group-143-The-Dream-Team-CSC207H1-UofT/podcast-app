@@ -1,36 +1,40 @@
 package use_case.transcribe;
 
 import api.WhisperTranscription;
-import data_access.MediaItemDataAccess;
+import data_access.EpisodeDataAccess;
+import data_access.TranscriptDataAccess;
 import entities.Episode;
+import entities.TextChunk;
 import entities.Transcript;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.annotation.Target;
+import java.util.List;
 import java.util.UUID;
 
 public class TranscribeInteractor implements TranscribeInputBoundary {
     private final TranscribeOutputBoundary outputBoundary;
-    private final MediaItemDataAccess mediaItemDAO;
+    private final TranscriptDataAccess transcriptDAO;
+    private final EpisodeDataAccess episodeDAO;
 
-    public TranscribeInteractor(TranscribeOutputBoundary outputBoundary, MediaItemDataAccess mediaItemDAO) {
+    public TranscribeInteractor(TranscribeOutputBoundary outputBoundary, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO) {
         this.outputBoundary = outputBoundary;
-        this.mediaItemDAO = mediaItemDAO;
+        this.episodeDAO = episodeDAO;
+        this.transcriptDAO = transcriptDAO;
     }
 
     public void execute(TranscribeInputData inputData) {
         Episode episode = inputData.getEpisode();
         UUID epsUUID = episode.getId();
-        File audioFile = mediaItemDAO.getFileByUUID(epsUUID); // TODO: do we need to handle exception here?
+        File audioFile = episodeDAO.getFileById(epsUUID);// TODO: do we need to handle exception here?
         WhisperTranscription apiWrapper = new WhisperTranscription();
-        // TODO: make apiWrapper return textChunks so we can set them in episode transcript
-        // for now this only generates raw text
         try {
             String transcriptString = apiWrapper.transcribeFile(audioFile);
-            Transcript transcript = new Transcript(transcriptString, null);
+            List<TextChunk> textChunks = transcriptDAO.stringToChunks(transcriptString);
+            Transcript transcript = new Transcript(epsUUID, transcriptString, textChunks);
             episode.setTranscript(transcript);
-
+            transcriptDAO.saveTranscript(transcript);
+            episodeDAO.saveEpisode(episode);
             outputBoundary.prepareSuccessView(new TranscribeOutputData(episode, false));
         }
         catch (IOException e) {outputBoundary.prepareFailView("Failed to transcribe file.");}
