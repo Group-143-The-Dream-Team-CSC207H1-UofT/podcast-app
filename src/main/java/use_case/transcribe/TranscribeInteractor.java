@@ -6,7 +6,6 @@ import data_access.TranscriptDataAccess;
 import entities.Episode;
 import entities.TextChunk;
 import entities.Transcript;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +21,7 @@ public class TranscribeInteractor implements TranscribeInputBoundary {
         this.episodeDAO = episodeDAO;
         this.transcriptDAO = transcriptDAO;
     }
-
+    
     public void execute(TranscribeInputData inputData) {
         Episode episode = inputData.getEpisode();
         UUID epsUUID = episode.getId();
@@ -38,10 +37,5 @@ public class TranscribeInteractor implements TranscribeInputBoundary {
             outputBoundary.prepareSuccessView(new TranscribeOutputData(episode, false));
         }
         catch (IOException e) {outputBoundary.prepareFailView("Failed to transcribe file.");}
-
-
-
-
-
     }
 }
