@@ -11,7 +11,7 @@ public interface PodcastDataAccessInterface {
 
     // Podcast-related
     List<Podcast> getAllPodcastsForUser(String username);
-    void savePodcast(Podcast podcast);
+    boolean savePodcast(Podcast podcast);
 
     // Episode-related
     List<Episode> getEpisodesForPodcast(String podcastName);
