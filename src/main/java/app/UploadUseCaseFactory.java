@@ -1,5 +1,6 @@
 package app;
 
+import api.TranscriptionInterface;
 import data_access.EpisodeDataAccess;
 import data_access.TranscriptDataAccess;
 import interface_adapter.ViewManagerModel;
@@ -16,9 +17,9 @@ import view.UploadView;
 
 public class UploadUseCaseFactory {
         
-    public static UploadView create(ViewManagerModel viewManagerModel, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess) {
+    public static UploadView create(ViewManagerModel viewManagerModel, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject) {
         UploadController uploadController = createUploadUseCase(viewManagerModel, uploadViewModel, episodeDataAccess);
-        TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess);
+        TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess, transcriptionObject);
         return new UploadView(uploadController, uploadViewModel, transcribeViewModel, transcribeController);
     }
 
@@ -28,9 +29,9 @@ public class UploadUseCaseFactory {
         return new UploadController(uploadInteractor);
     }
         
-    private static TranscribeController createTranscribeUseCase(ViewManagerModel viewManagerModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO) {
+    private static TranscribeController createTranscribeUseCase(ViewManagerModel viewManagerModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO, TranscriptionInterface transcriptionObject) {
         TranscribeOutputBoundary transcribeOutputBoundary = new TranscribePresenter(transcribeViewModel, viewManagerModel);
-        TranscribeInputBoundary transcribeInteractor = new TranscribeInteractor(transcribeOutputBoundary, episodeDAO, transcriptDAO);
+        TranscribeInputBoundary transcribeInteractor = new TranscribeInteractor(transcribeOutputBoundary, episodeDAO, transcriptDAO, transcriptionObject);
         return new TranscribeController(transcribeInteractor);
     }
 }

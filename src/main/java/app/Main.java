@@ -1,6 +1,8 @@
 package app;
 
 import javax.swing.JFrame;
+
+import api.WhisperTranscription;
 import data_access.EpisodeDataAccess;
 import data_access.EpisodeDataAccessObject;
 import data_access.TranscriptDataAccess;
@@ -13,12 +15,15 @@ import view.*;
 public class Main {
 
     public static void main(String[] args) {
+        String OPENAI_API_KEY = System.getenv("OPENAI_API_KEY");
+        WhisperTranscription transcriptionObject = new WhisperTranscription(OPENAI_API_KEY);
+
         TranscriptDataAccess transcriptDataAccessObject = new TranscriptDataAccessObject();
         EpisodeDataAccess episodeDataAccessObject = new EpisodeDataAccessObject(transcriptDataAccessObject);
         UploadViewModel uploadViewModel = new UploadViewModel();
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
-        UploadView uploadView = UploadUseCaseFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, episodeDataAccessObject, transcriptDataAccessObject);
+        UploadView uploadView = UploadUseCaseFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject);
 
         // Set up the main window (a JFrame)
         JFrame frame = new JFrame("Upload Podcast");

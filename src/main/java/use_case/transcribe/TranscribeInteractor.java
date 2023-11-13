@@ -1,5 +1,6 @@
 package use_case.transcribe;
 
+import api.TranscriptionInterface;
 import api.WhisperTranscription;
 import data_access.EpisodeDataAccess;
 import data_access.TranscriptDataAccess;
@@ -16,19 +17,21 @@ public class TranscribeInteractor implements TranscribeInputBoundary {
     private final TranscriptDataAccess transcriptDAO;
     private final EpisodeDataAccess episodeDAO;
 
-    public TranscribeInteractor(TranscribeOutputBoundary outputBoundary, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO) {
+    private final TranscriptionInterface transcriptionObject;
+
+    public TranscribeInteractor(TranscribeOutputBoundary outputBoundary, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO, TranscriptionInterface transcriptionObject) {
         this.outputBoundary = outputBoundary;
         this.episodeDAO = episodeDAO;
         this.transcriptDAO = transcriptDAO;
+        this.transcriptionObject = transcriptionObject;
     }
     
     public void execute(TranscribeInputData inputData) {
         Episode episode = inputData.getEpisode();
         UUID epsUUID = episode.getId();
-        File audioFile = episodeDAO.getFileById(epsUUID);// TODO: do we need to handle exception here?
-        WhisperTranscription apiWrapper = new WhisperTranscription();
+        File audioFile = episodeDAO.getFileById(epsUUID);  // TODO: do we need to handle exception here?
         try {
-            String transcriptString = apiWrapper.transcribeFile(audioFile);
+            String transcriptString = transcriptionObject.transcribeFile(audioFile);
             List<TextChunk> textChunks = transcriptDAO.stringToChunks(transcriptString);
             Transcript transcript = new Transcript(epsUUID, transcriptString, textChunks);
             episode.setTranscript(transcript);

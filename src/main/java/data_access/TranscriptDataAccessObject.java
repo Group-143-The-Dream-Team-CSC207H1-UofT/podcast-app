@@ -32,10 +32,11 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
             BufferedReader reader = new BufferedReader(new FileReader(transcriptsCSV));
             reader.readLine();  // read the header row
             String row;
+            int splitIndex;
             while ((row = reader.readLine()) != null) {
-                String[] col = row.split(",");
-                UUID id = UUID.fromString(col[0]);
-                String content = col[1];
+                splitIndex = row.indexOf(',');
+                UUID id = UUID.fromString(row.substring(0, splitIndex));
+                String content = row.substring(splitIndex + 1).replace("\\n", "\n");
                 Transcript transcript = new Transcript(id, content, stringToChunks(content));
                 transcriptMap.put(id, transcript);
             }
@@ -63,8 +64,8 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
         String[] timestamps = timestamp.split(" --> ");
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss,SSS");
         try {
-            long start = dateFormat.parse(timestamps[0]).getTime();
-            long end = dateFormat.parse(timestamps[0]).getTime();
+            long start = dateFormat.parse(timestamps[0]).getTime() - 18000000;
+            long end = dateFormat.parse(timestamps[1]).getTime() - 18000000;
             return new TextChunk(start, end, text);
         } catch (ParseException e) {
             System.out.println("Error in timestamp format in transcript file.");
@@ -100,7 +101,7 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
             writer.write("id,text\n");
             for (Transcript transcript : transcriptMap.values()) {
                 transcriptString = String.format("%s,%s",
-                        transcript.getId().toString(), transcript.getText());
+                        transcript.getId().toString(), transcript.getText().replace("\n", "\\n"));
                 writer.write(transcriptString);
                 writer.newLine();
             }
