@@ -26,7 +26,6 @@ public class WhisperTranscription implements TranscriptionInterface {
         ArrayList<String> transcripts = new ArrayList<>();
         for (File chunk : getAudioFileChunks(file)) {
             String s = transcribeChunk(chunk);
-            System.out.println(s);
             transcripts.add(s);
         }
         return joinTranscripts(transcripts);
@@ -99,9 +98,6 @@ public class WhisperTranscription implements TranscriptionInterface {
         int chunkOffset = 1;
         long timeOffset = 0;
         for (String transcript : transcripts) {
-            // for testing!!!
-            System.out.println(transcript);
-
             data = shiftTranscript(transcript, chunkOffset, timeOffset);
             joinedTranscript.append((String) data[0]);
             chunkOffset = (int) data[1];

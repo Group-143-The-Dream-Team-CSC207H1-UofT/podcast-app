@@ -5,6 +5,7 @@ import use_case.upload.UploadOutputBoundary;
 import use_case.upload.UploadOutputData;
 
 public class UploadPresenter implements UploadOutputBoundary {
+  
     private final UploadViewModel uploadViewModel;
     private final ViewManagerModel viewManagerModel;
 
@@ -18,6 +19,7 @@ public class UploadPresenter implements UploadOutputBoundary {
         UploadState currentState = uploadViewModel.getState();
         currentState.setEpisode(outputData.getEpisode());
         currentState.setErrorMessage("");
+        this.uploadViewModel.setState(currentState);
         uploadViewModel.firePropertyChanged();
     }
 
@@ -26,6 +28,7 @@ public class UploadPresenter implements UploadOutputBoundary {
         UploadState currentState = uploadViewModel.getState();
         currentState.setEpisode(null);
         currentState.setErrorMessage(error);
+        this.uploadViewModel.setState(currentState);
         uploadViewModel.firePropertyChanged();
     }
 }
