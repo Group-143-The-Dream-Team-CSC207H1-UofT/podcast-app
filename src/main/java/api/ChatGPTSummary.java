@@ -1,5 +1,6 @@
 package api;
 
+import entities.TextChunk;
 import entities.Transcript;
 import okhttp3.*;
 import org.json.JSONArray;
@@ -17,7 +18,11 @@ public class ChatGPTSummary implements SummaryAPIInterface {
     @Override
     public String generateSummary(Transcript transcript) throws IOException {
         // create the prompt using the podcast transcript
-        String prompt = "Generate a short summary of the following podcast transcription: " + transcript.getText();
+        StringBuilder rawText = new StringBuilder();
+        for (TextChunk chunk: transcript.getTextChunks()) {
+            rawText.append(chunk.getText());
+        }
+        String prompt = "Generate a short summary of the following podcast transcription: " + rawText;
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         // This json is the body of the request
@@ -42,7 +47,7 @@ public class ChatGPTSummary implements SummaryAPIInterface {
         } else {
             System.err.println("Request failed with code: " + response.code());
             System.err.println(response.body().string());
-            throw new IOException();
+            return null;
         }
     }
 }
