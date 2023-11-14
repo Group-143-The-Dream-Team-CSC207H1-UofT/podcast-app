@@ -9,8 +9,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 public class EpisodeDataAccessObject implements EpisodeDataAccess {
 
@@ -100,7 +103,11 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
                     transcriptId = transcript.getId().toString();
                 }
                 String episodeString = String.format("%s,%s,%s,%s,%s",
-                        episode.getId().toString(), episode.getTitle(), episode.getItemDescription(), transcriptId, episode.getSummary());
+                        episode.getId().toString(),
+                        formatStringForCSV(episode.getTitle()),
+                        formatStringForCSV(episode.getItemDescription()),
+                        transcriptId,
+                        formatStringForCSV(episode.getSummary()));
                 writer.write(episodeString);
                 writer.newLine();
             }
@@ -122,25 +129,33 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
             return;
         }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(episodesCSV));
-            reader.readLine();  // read the header row
-            String row;
-            while ((row = reader.readLine()) != null) {
-                String[] col = row.split(",");
-                UUID id = UUID.fromString(col[0]);
-                String title = col[1];
-                String description = col[2];
-                String transcriptId = col[3];
+            CSVReader reader = new CSVReader(new FileReader(episodesCSV));
+            List<String[]> lines = reader.readAll();
+            lines.remove(0);  // remove the header row
+            for (String[] row : lines) {
+                UUID id = UUID.fromString(row[0]);
+                String title = row[1];
+                String description = row[2];
+                String transcriptId = row[3];
                 Transcript transcript = null;
                 if (!transcriptId.isEmpty()) {
                     transcript = transcriptDAO.getTranscriptById(UUID.fromString(transcriptId));
                 }
-                String summary = col[4];
+                String summary = row[4];
                 Episode episode = new Episode(id, title, description, transcript, summary);
                 episodeMap.put(id, episode);
             }
         } catch (IOException e) {
             System.out.println("Could not load episodes from episodes.csv.");
+        } catch (CsvException e) {
+            System.out.println("Error in parsing episodes.csv");
         }
+    }
+
+    private String formatStringForCSV(String content) {
+        if (content == null) {
+            return null;
+        }
+        return String.format("\"%s\"", content.replace("\"", "\"\""));
     }
 }
