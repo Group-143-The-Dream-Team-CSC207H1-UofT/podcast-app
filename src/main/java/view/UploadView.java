@@ -2,6 +2,7 @@ package view;
 
 import entities.Episode;
 
+import interface_adapter.search_index.SearchIndexController;
 import interface_adapter.transcribe.TranscribeController;
 import interface_adapter.transcribe.TranscribeState;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -21,6 +22,7 @@ public class UploadView extends JPanel implements PropertyChangeListener {
     private final TranscribeViewModel transcribeViewModel;
     private final UploadController uploadController;
     private  final  TranscribeController transcribeController;
+    private final SearchIndexController searchIndexController;
     private final JLabel status;
     final JTextField titleInputField = new JTextField(15);
     final JTextField descriptionInputField = new JTextField(15);
@@ -28,12 +30,14 @@ public class UploadView extends JPanel implements PropertyChangeListener {
     private URI selectedFileURI;
     private final JButton submitButton;
 
-    public UploadView(UploadController uploadController, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController) {
+    public UploadView(UploadController uploadController, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController, SearchIndexController searchIndexController) {
         this.uploadController = uploadController;
         this.uploadViewModel = uploadViewModel;
+        this.uploadViewModel.addPropertyChangeListener(this);
         this.transcribeController = transcribeController;
         this.transcribeViewModel = transcribeViewModel;
-        uploadViewModel.addPropertyChangeListener(this);
+        this.transcribeViewModel.addPropertyChangeListener(this);
+        this.searchIndexController = searchIndexController;
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -78,16 +82,29 @@ public class UploadView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Update the view based on the changes in the upload view model
-        UploadState uploadState = (UploadState) evt.getNewValue();
-        Episode episode = uploadState.getEpisode();
-        String errorMessage = uploadState.getErrorMessage();
-        if (episode != null) {
-            status.setText(String.format("Successfully uploaded file for %s", episode.getTitle()));
-            transcribeController.execute(episode);
+        if (evt.getPropertyName().equals("upload")) {
+            // Update the view based on the changes in the upload view model
+            UploadState uploadState = (UploadState) evt.getNewValue();
+            Episode episode = uploadState.getEpisode();
+            String errorMessage = uploadState.getErrorMessage();
+            if (episode != null) {
+                status.setText(String.format("Successfully uploaded file for %s", episode.getTitle()));
+                transcribeController.execute(episode);
 
-        } else if (!errorMessage.isEmpty()) {
-            status.setText(errorMessage);
+            } else if (!errorMessage.isEmpty()) {
+                status.setText(errorMessage);
+            }
+        } else if (evt.getPropertyName().equals("transcribe")) {
+            // we need to index the transcription using the searchIndex use case
+            TranscribeState transcribeState = (TranscribeState) evt.getNewValue();
+            Episode episode = transcribeState.getEpisode();
+            String errorMessage = transcribeState.getErrorMessage();
+            if (episode != null) {
+                status.setText(String.format("Successfully uploaded & transcribed file for %s", episode.getTitle()));
+                searchIndexController.execute(episode);
+            } else if (!errorMessage.isEmpty()) {
+                status.setText(errorMessage);
+            }
         }
     }
 }
