@@ -59,7 +59,7 @@ public class UploadView extends JPanel implements PropertyChangeListener {
         });
         submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
-            uploadController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText());
+            this.uploadController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText());
             titleInputField.setText("");
             descriptionInputField.setText("");
             selectedFileURI = null;
