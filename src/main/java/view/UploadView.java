@@ -18,6 +18,7 @@ import java.io.File;
 import java.net.URI;
 
 public class UploadView extends JPanel implements PropertyChangeListener {
+    public final String viewName = "upload";
     private final UploadViewModel uploadViewModel;
     private final TranscribeViewModel transcribeViewModel;
     private final UploadController uploadController;
