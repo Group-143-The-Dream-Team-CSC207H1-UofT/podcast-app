@@ -8,7 +8,7 @@ public class TranscribePresenter implements TranscribeOutputBoundary {
 
     private final TranscribeViewModel transcribeViewModel;
 
-    private final ViewManagerModel viewManagerModel;
+    private final ViewManagerModel viewManagerModel;  // TODO: remove if not needed
 
     public TranscribePresenter(TranscribeViewModel transcribeViewModel, ViewManagerModel viewManagerModel) {
         this.transcribeViewModel = transcribeViewModel;

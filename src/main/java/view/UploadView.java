@@ -3,6 +3,7 @@ package view;
 import entities.Episode;
 
 import interface_adapter.search_index.SearchIndexController;
+import interface_adapter.search_index.SearchIndexState;
 import interface_adapter.transcribe.TranscribeController;
 import interface_adapter.transcribe.TranscribeState;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -103,6 +104,16 @@ public class UploadView extends JPanel implements PropertyChangeListener {
             if (episode != null) {
                 status.setText(String.format("Successfully uploaded & transcribed file for %s", episode.getTitle()));
                 searchIndexController.execute(episode);
+            } else if (!errorMessage.isEmpty()) {
+                status.setText(errorMessage);
+            }
+        } else if (evt.getPropertyName().equals("search index")) {
+            // we need to index the transcription using the searchIndex use case
+            SearchIndexState searchIndexState = (SearchIndexState) evt.getNewValue();
+            Episode episode = searchIndexState.getEpisode();
+            String errorMessage = searchIndexState.getErrorMessage();
+            if (episode != null) {
+                status.setText(String.format("Successfully indexed transcript for %s", episode.getTitle()));
             } else if (!errorMessage.isEmpty()) {
                 status.setText(errorMessage);
             }

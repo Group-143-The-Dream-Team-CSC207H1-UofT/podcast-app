@@ -7,6 +7,7 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
 import interface_adapter.upload.*;
 import view.*;
@@ -42,7 +43,8 @@ public class Main {
         EpisodeDataAccess episodeDataAccessObject = new EpisodeDataAccessObject(transcriptDataAccessObject);
         UploadViewModel uploadViewModel = new UploadViewModel();
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
-        UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
+        SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
+        UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
 
         views.add(uploadView, uploadView.viewName);
 
