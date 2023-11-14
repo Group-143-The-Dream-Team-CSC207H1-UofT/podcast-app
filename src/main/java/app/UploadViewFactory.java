@@ -22,7 +22,7 @@ import use_case.upload.*;
 import view.UploadView;
 
 
-public class UploadUseCaseFactory {
+public class UploadViewFactory {
         
     public static UploadView create(ViewManagerModel viewManagerModel, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
         UploadController uploadController = createUploadUseCase(viewManagerModel, uploadViewModel, episodeDataAccess);

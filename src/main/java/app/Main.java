@@ -42,7 +42,7 @@ public class Main {
         EpisodeDataAccess episodeDataAccessObject = new EpisodeDataAccessObject(transcriptDataAccessObject);
         UploadViewModel uploadViewModel = new UploadViewModel();
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
-        UploadView uploadView = UploadUseCaseFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
+        UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
 
         views.add(uploadView, uploadView.viewName);
 
