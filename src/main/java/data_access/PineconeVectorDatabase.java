@@ -95,7 +95,7 @@ public class PineconeVectorDatabase implements VectorDatabase {
             return null;
         }
 
-        String regex = "\\\"id\\\":\\\"([a-zA-Z0-9-]*)\\\"";
+        String regex = "\\\"id\\\":\\\"([a-zA-Z0-9-+]*)\\\"";
         Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(responseBody);
 
