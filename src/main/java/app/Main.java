@@ -1,19 +1,17 @@
 package app;
 
 import javax.swing.*;
-
 import api.EmbeddingsInterface;
 import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
 import interface_adapter.upload.*;
 import view.*;
-
 import java.awt.*;
-import java.util.Vector;
 
 public class Main {
 
@@ -45,9 +43,13 @@ public class Main {
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
         SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
         UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
-
         views.add(uploadView, uploadView.viewName);
 
+        SearchViewModel searchViewModel = new SearchViewModel();
+        SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
+        views.add(searchView.panel, searchView.viewName);
+
+//        viewManagerModel.setActiveView(searchView.viewName);
         viewManagerModel.setActiveView(uploadView.viewName);
         viewManagerModel.firePropertyChanged();
 
