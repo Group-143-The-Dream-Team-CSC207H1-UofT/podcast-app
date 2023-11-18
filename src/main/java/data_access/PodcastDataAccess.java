@@ -12,4 +12,6 @@ public interface PodcastDataAccess {
     public Podcast getPodcastById(UUID id);
 
     public List<MediaItem> getEpisodesForPodcast(UUID podcastId);
+
+    public List<Podcast> getAllPodcasts();
 }
