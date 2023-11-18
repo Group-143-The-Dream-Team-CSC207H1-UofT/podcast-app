@@ -17,7 +17,12 @@ public class Episode extends MediaItem {
         return transcript;
     }
 
-    public String getSummary() {return summary;}
-    public void setSummary(String summary) {this.summary = summary;}
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
 }
