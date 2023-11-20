@@ -115,6 +115,6 @@ public class UserDataAccessObject implements UserDataAccess{
     @Override
     public User getUserByPodcastID(UUID podcastID){
         Podcast podcast = podcastDAO.getPodcastById(podcastID);
-        return podcast.getCreatedBy();
+        return podcast.getAssignedTo();
     }
 }
