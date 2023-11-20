@@ -10,10 +10,12 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
 
     private final Map<UUID, Podcast> podcastMap;
     private final EpisodeDataAccess episodeDAO;
+    private final UserDataAccess userDAO;
 
-    public PodcastDataAccessObject(EpisodeDataAccess episodeDAO) {
+    public PodcastDataAccessObject(EpisodeDataAccess episodeDAO, UserDataAccess userDAO) {
         podcastMap = new HashMap<>();
         this.episodeDAO = episodeDAO;
+        this.userDAO = userDAO;
         loadPodcasts();
     }
 
@@ -51,12 +53,9 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 String[] col = row.split(",");
                 UUID id = UUID.fromString(col[0]);
                 String title = col[1];
-//                User createdBy = new User(col[2]);
-
-                // Todo: User
-
+                User assignedTo = userDAO.getUserByPodcastID(id);
                 List<MediaItem> podcastEpisodes = parseEpisodeIds(col[3]);
-                Podcast podcast = new Podcast(id, title, null, podcastEpisodes);
+                Podcast podcast = new Podcast(id, title, assignedTo, podcastEpisodes);
                 podcastMap.put(id, podcast);
             }
         } catch (IOException e) {
@@ -71,7 +70,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 .replace(")", "")
                 .split(",");
         List<String> episodeIdList = Arrays.asList(episodeIdsArray);
-        List<MediaItem> podcastEpisodes = null;
+        List<MediaItem> podcastEpisodes = new ArrayList<>();
         for (String id : episodeIdList) {
             Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
             podcastEpisodes.add(episode);
@@ -92,9 +91,6 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
         try {
             writer = new BufferedWriter(new FileWriter(podcastCSV));
             writer.write("id,title,author,(episodeId)\n");
-
-            // Todo: Check if it already exists?
-
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
                 List<String> episodeIdsList = null;
@@ -105,7 +101,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 // Line 86 formats the list of IDs as a String similar to the ones saved into podcasts.csv
                 String episodeIds = episodeIdsList.stream().collect(Collectors.joining(",", "(", ")"));
                 String podcastString = String.format("%s,%s,%s,%s",
-                        podcast.getId().toString(), podcast.getName(), podcast.getCreatedBy(), episodeIds);
+                        podcast.getId().toString(), podcast.getName(), podcast.getAssignedTo(), episodeIds);
                 writer.write(podcastString);
                 writer.newLine();
             }
