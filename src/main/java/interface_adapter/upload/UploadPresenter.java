@@ -7,7 +7,7 @@ import use_case.upload.UploadOutputData;
 public class UploadPresenter implements UploadOutputBoundary {
   
     private final UploadViewModel uploadViewModel;
-    private final ViewManagerModel viewManagerModel;
+    private final ViewManagerModel viewManagerModel;  // TODO: remove if not needed
 
     public UploadPresenter(UploadViewModel clearViewModel, ViewManagerModel viewManagerModel) {
         this.uploadViewModel = clearViewModel;

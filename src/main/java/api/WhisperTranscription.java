@@ -24,9 +24,18 @@ public class WhisperTranscription implements TranscriptionInterface {
     @Override
     public String transcribeFile(File file) throws IOException {
         ArrayList<String> transcripts = new ArrayList<>();
-        for (File chunk : getAudioFileChunks(file)) {
-            String s = transcribeChunk(chunk);
-            transcripts.add(s);
+        List<File> audioFileChunks = getAudioFileChunks(file);
+        try {
+            for (File chunk : audioFileChunks) {
+                String s = transcribeChunk(chunk);
+                transcripts.add(s);
+            }
+        } finally {
+            for (File chunk : audioFileChunks) {
+                if (!chunk.delete()) {
+                    System.err.println(String.format("Failed to delete chunk file %s", chunk.getName()));
+                }
+            }
         }
         return joinTranscripts(transcripts);
     }

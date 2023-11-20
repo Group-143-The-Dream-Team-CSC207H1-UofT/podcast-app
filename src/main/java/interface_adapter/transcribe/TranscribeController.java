@@ -1,10 +1,8 @@
 package interface_adapter.transcribe;
 
-
 import entities.Episode;
 import use_case.transcribe.TranscribeInputBoundary;
 import use_case.transcribe.TranscribeInputData;
-
 
 public class TranscribeController {
     final TranscribeInputBoundary transcribeUseCaseInteractor;
