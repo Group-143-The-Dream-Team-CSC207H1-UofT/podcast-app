@@ -9,12 +9,10 @@ import java.util.stream.Collectors;
 public class PodcastDataAccessObject implements PodcastDataAccess {
 
     private final Map<UUID, Podcast> podcastMap;
-    private final List<Podcast> allPodcasts;
     private final EpisodeDataAccess episodeDAO;
 
     public PodcastDataAccessObject(EpisodeDataAccess episodeDAO) {
         podcastMap = new HashMap<>();
-        allPodcasts = new ArrayList<Podcast>();
         this.episodeDAO = episodeDAO;
         loadPodcasts();
     }
@@ -26,8 +24,8 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
     }
 
     @Override
-    public List<Podcast> getAllPodcasts() {
-        return allPodcasts;
+    public Collection<Podcast> getAllPodcasts() {
+        return podcastMap.values();
     }
 
     @Override
@@ -65,7 +63,6 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 List<MediaItem> podcastEpisodes = parseEpisodeIds(col[3]);
                 Podcast podcast = new Podcast(id, title, null, podcastEpisodes);
                 podcastMap.put(id, podcast);
-                allPodcasts.add(podcast);
             }
         } catch (IOException e) {
             System.out.println("Could not load podcasts from podcasts.csv.");
