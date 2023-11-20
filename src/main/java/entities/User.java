@@ -5,15 +5,18 @@ import java.util.UUID;
 public class User {
     private final UUID id;
     private final String username;
-    private final String password;
-    private final String email;
-    private List<Podcast> userPodcasts;
 
-    public User(UUID id, String username, String password, String email, List<Podcast> userPodcasts) {
+    // the commented portions of this file are upgrades that can be implemented at a later time.
+
+//    private final String password;
+//    private final String email;
+    private List<MediaCollection> userPodcasts;
+
+    public User(UUID id, String username, List<MediaCollection> userPodcasts) {
         this.id = id;
         this.username = username;
-        this.password = password;
-        this.email = email;
+//        this.password = password;
+//        this.email = email;
         this.userPodcasts = userPodcasts;
     }
 
@@ -25,15 +28,15 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public String getEmail() {
+//        return email;
+//    }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public List<Podcast> getUserPodcasts() {
+    public List<MediaCollection> getUserPodcasts() {
         return userPodcasts;
     }
 
