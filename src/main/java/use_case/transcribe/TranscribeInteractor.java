@@ -35,8 +35,9 @@ public class TranscribeInteractor implements TranscribeInputBoundary {
             List<TextChunk> textChunks = transcriptDAO.stringToChunks(transcriptString);
             Transcript transcript = new Transcript(epsUUID, transcriptString, textChunks);
             episode.setTranscript(transcript);
-            transcriptDAO.saveTranscript(transcript);
-            episodeDAO.saveEpisode(episode);
+            if (!transcriptDAO.saveTranscript(transcript) || !episodeDAO.saveEpisode(episode)) {
+                outputBoundary.prepareFailView("Failed to save after transcription");
+            };
             outputBoundary.prepareSuccessView(new TranscribeOutputData(episode, false));
         }
         catch (IOException e) {outputBoundary.prepareFailView("Failed to transcribe file.");}

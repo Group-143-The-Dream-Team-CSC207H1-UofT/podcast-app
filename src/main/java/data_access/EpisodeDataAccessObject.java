@@ -15,18 +15,29 @@ import java.util.UUID;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
+/**
+ * Concrete implementation of EpisodeDataAccess for handling episode data.
+ */
 public class EpisodeDataAccessObject implements EpisodeDataAccess {
 
     private final Map<UUID, Episode> episodeMap;
 
     private final TranscriptDataAccess transcriptDAO;
 
+    /**
+     * Constructor for EpisodeDataAccessObject.
+     *
+     * @param transcriptDAO The data access object for transcript operations.
+     */
     public EpisodeDataAccessObject(TranscriptDataAccess transcriptDAO) {
         episodeMap = new HashMap<>();
         this.transcriptDAO = transcriptDAO;
         loadEpisodes();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean saveFile(URI fileLocation, UUID uniqueID) {
         // get the path of the source file
@@ -58,6 +69,9 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public File getFileById(UUID id) {
         try {
@@ -72,12 +86,18 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean saveEpisode(Episode episode) {
         episodeMap.put(episode.getId(), episode);
         return save();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Episode getEpisodeById(UUID id) {
         return episodeMap.get(id);

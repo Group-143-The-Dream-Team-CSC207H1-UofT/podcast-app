@@ -1,19 +1,22 @@
 package data_access;
 
-import entities.Episode;
 import entities.TextChunk;
 import entities.Transcript;
-
 import java.io.*;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Concrete implementation of TranscriptDataAccess for handling transcript storage and retrieval.
+ */
 public class TranscriptDataAccessObject implements TranscriptDataAccess {
     private final Map<UUID, Transcript> transcriptMap;
 
+    /**
+     * Constructs a new TranscriptDataAccessObject and loads existing transcripts.
+     */
     public TranscriptDataAccessObject() {
         this.transcriptMap = new HashMap<>();
         loadTranscripts();
@@ -45,7 +48,9 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
         }
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public List<TextChunk> stringToChunks(String content) {
         ArrayList<TextChunk> textChunks = new ArrayList<>();
         String[] parts;
@@ -74,12 +79,18 @@ public class TranscriptDataAccessObject implements TranscriptDataAccess {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean saveTranscript(Transcript transcript) {
         transcriptMap.put(transcript.getId(), transcript);
         return save();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Transcript getTranscriptById(UUID id) {
         return transcriptMap.get(id);
