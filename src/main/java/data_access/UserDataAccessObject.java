@@ -51,7 +51,7 @@ public class UserDataAccessObject implements UserDataAccess{
                 .replace(")", "")
                 .split(",");
         List<String> podcastIdList = Arrays.asList(podcastIdsArray);
-        List<MediaCollection> podcastEpisodes = null;
+        List<MediaCollection> podcastEpisodes = new ArrayList<>();
         for (String id : podcastIdList) {
             Podcast podcast = podcastDAO.getPodcastById(UUID.fromString(id));
             podcastEpisodes.add(podcast);
@@ -105,9 +105,15 @@ public class UserDataAccessObject implements UserDataAccess{
         return userMap.get(id);
     }
 
+
     @Override
     public List<MediaCollection> getPodcastsForUser(UUID userID) {
         User user = userMap.get(userID);
         return user.getUserPodcasts();
+    }
+
+    public User getUserByPodcastID(UUID podcastID){
+        Podcast podcast = podcastDAO.getPodcastById(podcastID);
+        return podcast.getCreatedBy();
     }
 }
