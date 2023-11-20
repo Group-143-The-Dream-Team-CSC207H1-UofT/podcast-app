@@ -4,8 +4,9 @@ import java.net.URI;
 import java.util.UUID;
 
 public class Episode extends MediaItem {
+  
     private Transcript transcript;
-    private final String summary;
+    private String summary;
 
     public Episode(UUID id, String title, String description, Transcript transcript, String summary) {
         super(id, title, description);
@@ -21,8 +22,14 @@ public class Episode extends MediaItem {
     public String getSummary() {
         return summary;
     }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     
     public void setTranscript(Transcript transcript) {
         this.transcript = transcript;
     }
+
 }
