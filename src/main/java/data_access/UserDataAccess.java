@@ -13,6 +13,8 @@ public interface UserDataAccess {
 
 //    public User getUserByName(String username);
 
+    public User getUserByPodcastID(UUID podcastID);
+
     public List<MediaCollection> getPodcastsForUser(UUID userID);
 
 }
