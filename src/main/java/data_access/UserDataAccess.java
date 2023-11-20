@@ -11,6 +11,8 @@ public interface UserDataAccess {
 
     public User getUserById(UUID id);
 
+    public User getUserByName(String username);
+
     public List<MediaCollection> getPodcastsForUser(UUID userID);
 
 }
