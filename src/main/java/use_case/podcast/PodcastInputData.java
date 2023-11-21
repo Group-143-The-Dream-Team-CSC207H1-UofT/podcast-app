@@ -1,21 +1,21 @@
 package use_case.podcast;
 
 import entities.MediaItem;
+import entities.User;
+
 import java.util.List;
 
 
 public class PodcastInputData {
     final private String title;
     final private String description;
-    final private String author;
+    final private User assignedTo;
     final private List<MediaItem> episodes;
 
-    // Todo: Determine whether we need a genre instance attribute
-
-    public PodcastInputData(String title, String description, String author, List<MediaItem> episodes) {
+    public PodcastInputData(String title, String description, User assignedTo, List<MediaItem> episodes) {
         this.title = title;
         this.description = description;
-        this.author = author;
+        this.assignedTo = assignedTo;
         this.episodes = episodes;
     }
 
@@ -27,8 +27,8 @@ public class PodcastInputData {
         return description;
     }
 
-    public String getAuthor() {
-        return author;
+    public User getAssignedTo() {
+        return assignedTo;
     }
 
     public List<MediaItem> getEpisodes(){
