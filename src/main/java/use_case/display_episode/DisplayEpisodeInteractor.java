@@ -20,7 +20,11 @@ public class DisplayEpisodeInteractor implements DisplayEpisodeInputBoundary{
         UUID episodeUUID = displayEpisodeInputData.getEpisodeId();
         // TODO: if we want to add abstarction we need to use MediaItem instead of Episode here
         Episode episode = episodeDataAccessObject.getEpisodeById(episodeUUID);
-        DisplayEpisodeOutputData displayEpisodeOutputData = new DisplayEpisodeOutputData(episode, false);
+        if (episode == null) {
+            displayEpisodePresenter.prepareFailView("Episode with ID " + episodeUUID + " does not exist");
+        } else {
+        DisplayEpisodeOutputData displayEpisodeOutputData = new DisplayEpisodeOutputData(episode, displayEpisodeInputData.getCurrentTextChunkIndex(), false);
         displayEpisodePresenter.prepareSuccessView(displayEpisodeOutputData);
+        }
     }
 }
