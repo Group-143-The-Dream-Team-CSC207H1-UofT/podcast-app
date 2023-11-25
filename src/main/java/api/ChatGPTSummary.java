@@ -30,7 +30,7 @@ public class ChatGPTSummary implements SummaryAPIInterface {
         RequestBody requestBody = RequestBody.create(json, mediaType);
 
         Request request = new Request.Builder()
-                .url(OPENAI_API_KEY)
+                .url("https://api.openai.com/v1/chat/completions")
                 .addHeader("Authorization", "Bearer " + OPENAI_API_KEY)
                 .post(requestBody)
                 .build();

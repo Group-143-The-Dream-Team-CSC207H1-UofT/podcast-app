@@ -49,11 +49,11 @@ public class Main {
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
-//        viewManagerModel.setActiveView(searchView.viewName);
-        viewManagerModel.setActiveView(uploadView.viewName);
+        viewManagerModel.setActiveView(searchView.viewName);
+//        viewManagerModel.setActiveView(uploadView.viewName);
         viewManagerModel.firePropertyChanged();
 
-        application.pack();
+        application.setSize(960, 540);
         application.setLocationRelativeTo(null);
         application.setVisible(true);
     }

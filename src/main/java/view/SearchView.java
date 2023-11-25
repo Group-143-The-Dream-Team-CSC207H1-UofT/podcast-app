@@ -5,6 +5,7 @@ import entities.TextChunk;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
+import org.jetbrains.annotations.NotNull;
 import use_case.search.EpisodeSearchResult;
 import use_case.search.SearchResult;
 import use_case.search.TextChunkSearchResult;
@@ -16,8 +17,9 @@ public class SearchView implements PropertyChangeListener {
     public final String viewName = "search";
     private JTextField searchQuery;
     private JButton searchButton;
-    private JTextArea resultsTextArea;
     public JPanel panel;
+    private JPanel resultsPanel;
+    private JButton homeButton;
     private final SearchViewModel searchViewModel;
     private final SearchController searchController;
 
@@ -28,6 +30,10 @@ public class SearchView implements PropertyChangeListener {
         searchButton.addActionListener(e -> {
             this.searchController.execute(searchQuery.getText());
         });
+        homeButton.addActionListener(e -> {
+            System.out.println("Go to podcasts view");
+        });
+        this.resultsPanel.setLayout(new BoxLayout(this.resultsPanel, BoxLayout.Y_AXIS));
     }
 
     @Override
@@ -35,23 +41,43 @@ public class SearchView implements PropertyChangeListener {
         if (evt.getPropertyName().equals("search")) {
             SearchState searchState = (SearchState) evt.getNewValue();
 
+            // remove components from the panel
+            this.resultsPanel.removeAll();
+
             // get the search results
-            StringBuilder stringResults = new StringBuilder();
             for (SearchResult result : searchState.getSearchResults()) {
-                Episode episode = result.getEpisode();
-                if (result instanceof EpisodeSearchResult){
-                    stringResults.append(String.format("%s: %s\n\n", episode.getTitle(), episode.getItemDescription()));
-                } else if (result instanceof TextChunkSearchResult) {
-                    TextChunk textChunk = ((TextChunkSearchResult) result).getTextChunk();
-                    stringResults.append(String.format("%s: %d - %d\n%s\n\n",
-                            episode.getTitle(), textChunk.getStart(), textChunk.getEnd(), textChunk.getText()));
-                }
+                JButton button = getResultButton(result);
+                this.resultsPanel.add(button);
             }
-            if (stringResults.length() == 0) {
-                this.resultsTextArea.setText("No results found...");
-            } else {
-                this.resultsTextArea.setText(stringResults.toString());
+
+            if (this.resultsPanel.getComponentCount() == 0) {
+                this.resultsPanel.add(new JLabel("No results found..."));
             }
+
+            this.resultsPanel.revalidate();
+            this.resultsPanel.repaint();
         }
+    }
+
+    @NotNull
+    private static JButton getResultButton(SearchResult result) {
+        JButton button = new JButton();
+        Episode episode = result.getEpisode();
+
+        if (result instanceof EpisodeSearchResult){
+            button.setText(String.format("%s: %s\n\n", episode.getTitle(), episode.getItemDescription()));
+            button.addActionListener(e -> {
+                System.out.println(String.format("Go to episode %s", episode.getId()));
+            });
+        } else if (result instanceof TextChunkSearchResult) {
+            TextChunk textChunk = ((TextChunkSearchResult) result).getTextChunk();
+            button.setText(String.format("%s at %d - %d: %s",
+                    episode.getTitle(), textChunk.getStart(), textChunk.getEnd(), textChunk.getText()));
+            button.addActionListener(e -> {
+                System.out.println(String.format("Go to episode %s, text chunk %d - %d", episode.getId(), textChunk.getStart(), textChunk.getEnd()));
+            });
+        }
+
+        return button;
     }
 }

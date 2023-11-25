@@ -10,6 +10,12 @@ import java.io.IOException;
 public class SummaryInteractor implements SummaryInputBoundary {
     SummaryOutputBoundary outputBoundary;
     EpisodeDataAccess episodeDataAccessObject;
+
+    public SummaryInteractor(SummaryOutputBoundary outputBoundary, EpisodeDataAccess episodeDAO) {
+        this.outputBoundary = outputBoundary;
+        episodeDataAccessObject = episodeDAO;
+    }
+
     @Override
     public void execute(SummaryInputData inputData, SummaryAPIInterface APIWrapper) {
         Episode episode = inputData.getEpisode();
