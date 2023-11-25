@@ -4,18 +4,21 @@ import data_access.PodcastDataAccess;
 import entities.Podcast;
 import use_case.podcast.PodcastOutputData;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayPodcastsInteractor {
+public class DisplayPodcastsInteractor implements DisplayPodcastsInputBoundary{
     private final DisplayPodcastsOutputBoundary outputBoundary;
     private final PodcastDataAccess podcastDAO;
     public DisplayPodcastsInteractor(DisplayPodcastsOutputBoundary outputBoundary, PodcastDataAccess podcastDAO) {
         this.outputBoundary = outputBoundary;
         this.podcastDAO = podcastDAO;
     }
-    public void execute() {
-        List<Podcast> allPodcasts = podcastDAO.getAllPodcasts();
-        DisplayPodcastsOutputData outputData = new DisplayPodcastsOutputData(allPodcasts, false);
+
+    @Override
+    public void execute(DisplayPodcastsInputData inputData) {
+        List<Podcast> allPodcasts = new ArrayList<>(podcastDAO.getAllPodcasts());
+        DisplayPodcastsOutputData outputData = new DisplayPodcastsOutputData(allPodcasts, null, false);
         outputBoundary.prepareSuccessView(outputData);
     }
 }
