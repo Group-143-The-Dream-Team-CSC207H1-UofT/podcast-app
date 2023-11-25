@@ -1,20 +1,21 @@
 package entities;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class MediaCollection {
-    private final int id;
+    private final UUID id;
     private final String name;
     private List<MediaItem> items;
 
     // Constructors, getters ...
-    public MediaCollection(int id, String mediaName, List<MediaItem> mediaItems) {
+    public MediaCollection(UUID id, String mediaName, List<MediaItem> mediaItems) {
         this.id = id;
         this.name = mediaName;
         this.items = List.copyOf(mediaItems);
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

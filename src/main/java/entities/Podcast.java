@@ -1,17 +1,18 @@
 package entities;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Podcast extends MediaCollection {
-    private User createdBy;
+    private User assignedTo;
 
-    public Podcast(int id, String podcastName, User createdBy, List<MediaItem> episodes) {
+    public Podcast(UUID id, String podcastName, User assignedTo, List<MediaItem> episodes) {
         super(id, podcastName, episodes);
-        this.createdBy = createdBy;
+        this.assignedTo = assignedTo;
     }
 
-    public User getCreatedBy() {
-        return createdBy;
+    public User getAssignedTo() {
+        return assignedTo;
     }
 }
 
