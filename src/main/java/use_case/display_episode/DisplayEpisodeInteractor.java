@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class DisplayEpisodeInteractor implements DisplayEpisodeInputBoundary{
 
-    final EpisodeDataAccess episodeDataAccessObject;
-    final DisplayEpisodeOutputBoundary displayEpisodePresenter;
+    private final EpisodeDataAccess episodeDataAccessObject;
+    private final DisplayEpisodeOutputBoundary displayEpisodePresenter;
 
     public DisplayEpisodeInteractor(EpisodeDataAccess episodeDataAccessObject, DisplayEpisodeOutputBoundary displayEpisodePresenter){
         this.displayEpisodePresenter = displayEpisodePresenter;
