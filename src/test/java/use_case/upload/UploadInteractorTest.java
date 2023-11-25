@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 class UploadInteractorTest {
     @Test
-    public void TestMain() throws URISyntaxException {
+    public void TestUploadUseCase() throws URISyntaxException {
         UploadInputData inputData = new UploadInputData("David's Episode", "A dummy item for testing.",
                 this.getClass().getResource( "/test.wav" ).toURI());
         UploadOutputBoundary outputBoundary = new UploadOutputBoundary() {
