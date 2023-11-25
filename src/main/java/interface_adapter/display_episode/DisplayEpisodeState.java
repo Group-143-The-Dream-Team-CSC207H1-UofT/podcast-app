@@ -15,6 +15,11 @@ public class DisplayEpisodeState {
         this.textChunks = textChunks;
         this.currentTextChunkIndex = currentTextChunkIndex;
     }
+    public DisplayEpisodeState(DisplayEpisodeState copy){
+        this.currentEpisode = copy.currentEpisode;
+        this.textChunks = copy.textChunks;
+        this.currentTextChunkIndex = copy.currentTextChunkIndex;
+    }
     public DisplayEpisodeState(){}
 
     public Episode getCurrentEpisode() {
