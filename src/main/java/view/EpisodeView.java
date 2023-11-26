@@ -14,7 +14,7 @@ import java.beans.PropertyChangeListener;
 
 public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    public final String viewName = "logged in";
+    public final String viewName = "episode";
     private final DisplayEpisodeViewModel displayEpisodeViewModel;
     private JLabel titleLabel;
     private JTextArea descriptionTextArea;
