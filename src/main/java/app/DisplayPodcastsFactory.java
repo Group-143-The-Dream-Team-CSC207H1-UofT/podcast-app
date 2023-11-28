@@ -11,6 +11,13 @@ import use_case.display_podcasts.DisplayPodcastsOutputBoundary;
 import view.DisplayPodcastsView;
 
 public class DisplayPodcastsFactory {
+    /**
+     * Creates a new instance of DisplayPodcastsView
+     * @param viewManagerModel the viewManagerModel that controls the views
+     * @param viewModel an instance of DisplayPodcastsViewModel that has the state of the view
+     * @param podcastDAO a data access object for accessing podcasts
+     * @return a new instance of DisplayPodcastsView that is connected to the parameters
+     */
     public static DisplayPodcastsView create(ViewManagerModel viewManagerModel, DisplayPodcastsViewModel viewModel, PodcastDataAccess podcastDAO) {
         DisplayPodcastsController controller = DisplayPodcastsFactory.createDisplayPodcastsUseCase(viewManagerModel, viewModel, podcastDAO);
         return new DisplayPodcastsView(controller, viewModel);

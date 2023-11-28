@@ -62,20 +62,20 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        DisplayPodcastsState state = (DisplayPodcastsState) evt.getNewValue();
-//        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
-//        // are new podcasts uploaded only
-//        secondaryPanel.removeAll();
-//        List<Podcast> allPodcasts = state.getAllPodcasts();
-//        for (Podcast podcast: allPodcasts) {
-//            JButton podcastButton = new JButton(podcast.getName());
-//            podcastButton.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Go to podcast view...");
-//                }
-//            });
-//            secondaryPanel.add(podcastButton);
-//        }
+        DisplayPodcastsState state = (DisplayPodcastsState) evt.getNewValue();
+        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
+        // are new podcasts uploaded only
+        secondaryPanel.removeAll();
+        List<Podcast> allPodcasts = state.getAllPodcasts();
+        for (Podcast podcast: allPodcasts) {
+            JButton podcastButton = new JButton(podcast.getName());
+            podcastButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Go to podcast view...");
+                }
+            });
+            secondaryPanel.add(podcastButton);
+        }
     }
 }

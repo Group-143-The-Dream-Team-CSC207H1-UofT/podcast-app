@@ -20,6 +20,9 @@ public class DisplayPodcastsViewModel extends ViewModel {
         this.displayPodcastsState = displayPodcastsState;
     }
 
+    /**
+     * Tells all PropertyChangeListener classes that the allPodcasts property has been changed
+     */
     @Override
     public void firePropertyChanged() {
         support.firePropertyChange("allPodcasts",null,this.displayPodcastsState);

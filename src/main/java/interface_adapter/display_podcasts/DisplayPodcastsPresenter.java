@@ -11,6 +11,11 @@ public class DisplayPodcastsPresenter implements DisplayPodcastsOutputBoundary {
         this.displayPodcastsViewModel = displayPodcastsViewModel;
         this.viewManagerModel = viewManagerModel;
     }
+
+    /**
+     * Displays the displayPodcastView after podcasts were successfully loaded
+     * @param outputData the data passed in by the interactor which contains all podcasts
+     */
     @Override
     public void prepareSuccessView(DisplayPodcastsOutputData outputData) {
         DisplayPodcastsState currentState = displayPodcastsViewModel.getState();
@@ -18,6 +23,10 @@ public class DisplayPodcastsPresenter implements DisplayPodcastsOutputBoundary {
         displayPodcastsViewModel.firePropertyChanged();
     }
 
+    /**
+     * Displays the error after interactor was not successful in loading podcasts
+     * @param outputData the data passed in by the interactor
+     */
     @Override
     public void prepareFailView(DisplayPodcastsOutputData outputData) {
         DisplayPodcastsState currentState = new DisplayPodcastsState();
