@@ -13,7 +13,7 @@ import view.DisplayPodcastsView;
 public class DisplayPodcastsFactory {
     public static DisplayPodcastsView create(ViewManagerModel viewManagerModel, DisplayPodcastsViewModel viewModel, PodcastDataAccess podcastDAO) {
         DisplayPodcastsController controller = DisplayPodcastsFactory.createDisplayPodcastsUseCase(viewManagerModel, viewModel, podcastDAO);
-        return new DisplayPodcastsView(controller, viewModel);
+        return new DisplayPodcastsView(controller, viewModel, viewManagerModel);
     }
     private static DisplayPodcastsController createDisplayPodcastsUseCase(ViewManagerModel viewManagerModel, DisplayPodcastsViewModel viewModel, PodcastDataAccess podcastDAO) {
         DisplayPodcastsOutputBoundary displayPodcastsPresenter = new DisplayPodcastsPresenter(viewModel, viewManagerModel);

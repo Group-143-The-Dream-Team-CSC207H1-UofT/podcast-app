@@ -6,6 +6,7 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -49,8 +50,14 @@ public class Main {
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
-        viewManagerModel.setActiveView(searchView.viewName);
+        PodcastDataAccess podcastDataAccessObject = new PodcastDataAccessObject(episodeDataAccessObject, null);
+        DisplayPodcastsViewModel displayPodcastsViewModel = new DisplayPodcastsViewModel();
+        DisplayPodcastsView displayPodcastsView = DisplayPodcastsFactory.create(viewManagerModel, displayPodcastsViewModel, podcastDataAccessObject);
+        views.add(displayPodcastsView.mainPanel, displayPodcastsView.viewName);
+
+//        viewManagerModel.setActiveView(searchView.viewName);
 //        viewManagerModel.setActiveView(uploadView.viewName);
+        viewManagerModel.setActiveView(displayPodcastsView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);

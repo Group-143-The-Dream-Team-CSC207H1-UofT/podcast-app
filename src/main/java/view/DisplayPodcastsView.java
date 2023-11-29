@@ -1,6 +1,7 @@
 package view;
 
 import entities.Podcast;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.display_podcasts.DisplayPodcastsController;
 import interface_adapter.display_podcasts.DisplayPodcastsState;
 import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
@@ -14,32 +15,34 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
-    private JPanel mainPanel;
+    public JPanel mainPanel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
     private final DisplayPodcastsController controller;
     private final DisplayPodcastsViewModel viewModel;
+    public final String viewName = "home";
 
-    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastsViewModel viewModel) {
+    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastsViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.controller = controller;
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
         controller.execute();
-        setTitle("Home");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 600);
-        setLocationRelativeTo(null);
+//        setTitle("Home");
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setSize(600, 600);
+//        setLocationRelativeTo(null);
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Going to search view...");
+                viewManagerModel.setActiveView("search");
+                viewManagerModel.firePropertyChanged();
             }
         });
         createButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Going to podcast view...");
+                System.out.println("Going to upload podcast view...");
             }
         });
         DisplayPodcastsState state = this.viewModel.getState();
@@ -51,13 +54,13 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
             podcastButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println("Go to podcast view...");
+                    System.out.println("Going to podcast view...");
                 }
             });
             secondaryPanel.add(podcastButton);
         }
-        setContentPane(mainPanel);
-        setVisible(true);
+//        setContentPane(mainPanel);
+//        setVisible(true);
     }
 
     @Override

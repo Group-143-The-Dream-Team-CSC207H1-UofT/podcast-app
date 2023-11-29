@@ -17,7 +17,7 @@ public class SearchViewFactory {
 
     public static SearchView create(ViewManagerModel viewManagerModel, SearchViewModel searchViewModel, EpisodeDataAccess episodeDAO, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
         SearchController searchController = createSearchUseCase(viewManagerModel, searchViewModel, episodeDAO, vectorDatabase, embeddings);
-        return new SearchView(searchViewModel, searchController);
+        return new SearchView(searchViewModel, searchController, viewManagerModel);
     }
 
     private static SearchController createSearchUseCase(ViewManagerModel viewManagerModel, SearchViewModel searchViewModel, EpisodeDataAccess episodeDAO, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings){

@@ -2,6 +2,7 @@ package view;
 
 import entities.Episode;
 import entities.TextChunk;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
@@ -23,7 +24,7 @@ public class SearchView implements PropertyChangeListener {
     private final SearchViewModel searchViewModel;
     private final SearchController searchController;
 
-    public SearchView(SearchViewModel searchViewModel, SearchController searchController) {
+    public SearchView(SearchViewModel searchViewModel, SearchController searchController, ViewManagerModel viewManagerModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
         this.searchController = searchController;
@@ -31,7 +32,8 @@ public class SearchView implements PropertyChangeListener {
             this.searchController.execute(searchQuery.getText());
         });
         homeButton.addActionListener(e -> {
-            System.out.println("Go to podcasts view");
+            viewManagerModel.setActiveView("home");
+            viewManagerModel.firePropertyChanged();
         });
         this.resultsPanel.setLayout(new BoxLayout(this.resultsPanel, BoxLayout.Y_AXIS));
     }
