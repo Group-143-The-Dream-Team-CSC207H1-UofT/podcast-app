@@ -55,4 +55,28 @@ public class DisplayPodcastsInteractorTest {
         DisplayPodcastsInteractor interactor = new DisplayPodcastsInteractor(presenter, podcastDAO);
         interactor.execute(new DisplayPodcastsInputData());
     }
+
+    public void TestGetPodcastsFails() {
+        PodcastDataAccess podcastDAO = new PodcastDataAccess() {
+            @Override
+            public boolean savePodcast(Podcast podcast) {
+                return false;
+            }
+
+            @Override
+            public Podcast getPodcastById(UUID id) {
+                return null;
+            }
+
+            @Override
+            public List<MediaItem> getEpisodesForPodcast(UUID podcastId) {
+                return null;
+            }
+
+            @Override
+            public Collection<Podcast> getAllPodcasts() {
+                return null;
+            }
+        };
+    }
 }

@@ -20,8 +20,6 @@ public class DisplayPodcastsPresenter implements DisplayPodcastsOutputBoundary {
 
     @Override
     public void prepareFailView(DisplayPodcastsOutputData outputData) {
-        DisplayPodcastsState currentState = new DisplayPodcastsState();
-        currentState.setErrorMessage(outputData.getError());
-        displayPodcastsViewModel.firePropertyChanged();
+        return; // This method is never actually used
     }
 }
