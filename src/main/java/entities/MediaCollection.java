@@ -12,11 +12,7 @@ public abstract class MediaCollection {
     public MediaCollection(UUID id, String mediaName, List<MediaItem> mediaItems) {
         this.id = id;
         this.name = mediaName;
-        if (mediaItems != null) {
-            this.items = List.copyOf(mediaItems);
-        } else {
-            items = null;
-        }
+        this.items = List.copyOf(mediaItems);
     }
 
     public UUID getId() {
