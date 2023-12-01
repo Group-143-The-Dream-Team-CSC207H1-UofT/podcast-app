@@ -5,66 +5,42 @@ import interface_adapter.display_podcast.DisplayPodcastController;
 import interface_adapter.display_podcasts.DisplayPodcastsController;
 import interface_adapter.display_podcasts.DisplayPodcastsState;
 import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
+public class DisplayPodcastsView implements PropertyChangeListener {
 
     public final String viewName = "podcasts";
-    private JPanel mainPanel;
+    public JPanel panel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
-    private final DisplayPodcastsController displayPodcastsController;
-    private final DisplayPodcastsViewModel viewModel;
-    private final DisplayPodcastController displayPodcastController;
 
-    public DisplayPodcastsView(DisplayPodcastsController displayPodcastsController, DisplayPodcastController displayPodcastController, DisplayPodcastsViewModel viewModel) {
-        this.displayPodcastsController = displayPodcastsController;
-        this.displayPodcastController = displayPodcastController;
-        this.viewModel = viewModel;
-        this.viewModel.addPropertyChangeListener(this);
+    public DisplayPodcastsView(
+        DisplayPodcastsController displayPodcastsController,
+        DisplayPodcastController displayPodcastController,
+        DisplayPodcastsViewModel viewModel
+    ) {
+        viewModel.addPropertyChangeListener(this);
 
         displayPodcastsController.execute();
-        setTitle("Home");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600, 600);
-        setLocationRelativeTo(null);
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Going to search view...");
-            }
-        });
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Going to podcast view...");
-            }
-        });
-        DisplayPodcastsState state = this.viewModel.getState();
+        searchButton.addActionListener(e -> System.out.println("Going to search view..."));
+        createButton.addActionListener(e -> System.out.println("Going to podcast view..."));
+        DisplayPodcastsState state = viewModel.getState();
         secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
         List<Podcast> allPodcasts = state.getAllPodcasts();
         for (Podcast podcast: allPodcasts) {
             JButton podcastButton = new JButton(podcast.getName());
             System.out.println(podcast.getName());
-            podcastButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Go to podcast view...");
-                    displayPodcastController.execute(podcast.getId());
-                }
+            podcastButton.addActionListener(e -> {
+                System.out.println("Go to podcast view...");
+                displayPodcastController.execute(podcast.getId());
             });
             secondaryPanel.add(podcastButton);
         }
-        setContentPane(mainPanel);
-        setVisible(true);
     }
 
     @Override
@@ -76,12 +52,7 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
         List<Podcast> allPodcasts = state.getAllPodcasts();
         for (Podcast podcast: allPodcasts) {
             JButton podcastButton = new JButton(podcast.getName());
-            podcastButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Go to podcast view...");
-                }
-            });
+            podcastButton.addActionListener(e -> System.out.println("Go to podcast view..."));
             secondaryPanel.add(podcastButton);
         }
     }
