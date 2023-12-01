@@ -1,24 +1,24 @@
 package view;
 
 import entities.Podcast;
-import interface_adapter.display_podcast.DisplayPodcastController;
-import interface_adapter.display_podcast.DisplayPodcastState;
-import interface_adapter.display_podcast.DisplayPodcastViewModel;
+import interface_adapter.podcast.PodcastController;
+import interface_adapter.podcast.PodcastState;
+import interface_adapter.podcast.PodcastViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class UploadPodcastView extends JPanel implements PropertyChangeListener {
+public class CreatePodcastView extends JPanel implements PropertyChangeListener {
     public final String viewName = "upload_podcast";
-    private final DisplayPodcastViewModel viewModel;
-    private final DisplayPodcastController controller;
+    private final PodcastViewModel viewModel;
+    private final PodcastController controller;
     private final JTextField titleInputField = new JTextField(15);
     private final JTextField descriptionInputField = new JTextField(15);
     private final JLabel status;
     private final JButton submitButton;
-    public UploadPodcastView(DisplayPodcastController controller, DisplayPodcastViewModel viewModel) {
+    public CreatePodcastView(PodcastController controller, PodcastViewModel viewModel) {
         this.controller = controller;
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
@@ -48,9 +48,9 @@ public class UploadPodcastView extends JPanel implements PropertyChangeListener 
     }
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayPodcastState displayPodcastState = (DisplayPodcastState) evt.getNewValue();
-        Podcast podcast = displayPodcastState.getCurrentPodcast();
-        String errorMessage = displayPodcastState.getErrorMessage();
+        PodcastState podcastState = (PodcastState) evt.getNewValue();
+        Podcast podcast = podcastState.getCurrentPodcast();
+        String errorMessage = podcastState.getErrorMessage();
         if (podcast != null) {
             status.setText("Successfully uploaded podcast!");
             System.out.println("Switch to either home page or display podcast view.");

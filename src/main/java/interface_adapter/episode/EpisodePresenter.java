@@ -1,8 +1,8 @@
 package interface_adapter.episode;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.display_podcast.DisplayPodcastState;
-import interface_adapter.display_podcast.DisplayPodcastViewModel;
+import interface_adapter.podcast.PodcastState;
+import interface_adapter.podcast.PodcastViewModel;
 import use_case.episode.EpisodeOutputBoundary;
 import use_case.episode.EpisodeOutputData;
 
@@ -10,9 +10,9 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
 
     private final EpisodeViewModel episodeViewModel;
     private final ViewManagerModel viewManagerModel;
-    private final DisplayPodcastViewModel podcastViewModel;
+    private final PodcastViewModel podcastViewModel;
 
-    public EpisodePresenter(ViewManagerModel viewManagerModel, EpisodeViewModel episodeViewModel, DisplayPodcastViewModel podcastViewModel){
+    public EpisodePresenter(ViewManagerModel viewManagerModel, EpisodeViewModel episodeViewModel, PodcastViewModel podcastViewModel){
         this.episodeViewModel = episodeViewModel;
         this.viewManagerModel = viewManagerModel;
         this.podcastViewModel = podcastViewModel;
@@ -32,7 +32,7 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
 
     @Override
     public void prepareFailView(String error) {
-        DisplayPodcastState podcastState = podcastViewModel.getState();
+        PodcastState podcastState = podcastViewModel.getState();
         podcastState.setErrorMessage(error);
         podcastViewModel.firePropertyChanged();
     }

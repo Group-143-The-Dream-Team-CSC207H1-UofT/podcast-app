@@ -1,12 +1,12 @@
-package use_case.display_podcast;
+package use_case.podcast;
 
 import entities.Podcast;
 
-public class DisplayPodcastOutputData {
+public class PodcastOutputData {
     private final Podcast podcast;
     private final boolean useCaseFailed;
 
-    public DisplayPodcastOutputData(Podcast podcast, boolean useCaseFailed) {
+    public PodcastOutputData(Podcast podcast, boolean useCaseFailed) {
         this.podcast = podcast;
         this.useCaseFailed = useCaseFailed;
     }

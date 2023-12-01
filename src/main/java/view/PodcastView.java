@@ -4,8 +4,8 @@ import entities.Episode;
 import entities.MediaItem;
 import entities.Podcast;
 import interface_adapter.episode.EpisodeController;
-import interface_adapter.display_podcast.DisplayPodcastState;
-import interface_adapter.display_podcast.DisplayPodcastViewModel;
+import interface_adapter.podcast.PodcastState;
+import interface_adapter.podcast.PodcastViewModel;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class PodcastView extends JPanel implements PropertyChangeListener {
 
-    private final DisplayPodcastViewModel displayPodcastViewModel;
+    private final PodcastViewModel podcastViewModel;
     private final EpisodeController episodeController;
     public final String viewName="podcast";
     private JLabel podcastTitleLabel;
@@ -22,9 +22,9 @@ public class PodcastView extends JPanel implements PropertyChangeListener {
     private JPanel episodePanel;
     private JButton backButton;
 
-    public PodcastView(DisplayPodcastViewModel displayPodcastViewModel, EpisodeController episodeController) {
-        this.displayPodcastViewModel = displayPodcastViewModel;
-        this.displayPodcastViewModel.addPropertyChangeListener(this);
+    public PodcastView(PodcastViewModel podcastViewModel, EpisodeController episodeController) {
+        this.podcastViewModel = podcastViewModel;
+        this.podcastViewModel.addPropertyChangeListener(this);
         this.episodeController = episodeController;
 
         initializeComponents();
@@ -71,7 +71,7 @@ public class PodcastView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayPodcastState state = (DisplayPodcastState) evt.getNewValue();
+        PodcastState state = (PodcastState) evt.getNewValue();
         displayPodcast(state.getCurrentPodcast());
     }
 

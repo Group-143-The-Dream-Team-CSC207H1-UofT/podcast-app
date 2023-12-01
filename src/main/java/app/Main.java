@@ -7,7 +7,7 @@ import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeViewModel;
-import interface_adapter.display_podcast.DisplayPodcastViewModel;
+import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
@@ -53,7 +53,7 @@ public class Main {
         SearchViewModel searchViewModel = new SearchViewModel();
         EpisodeViewModel episodeViewModel = new EpisodeViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
-        DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
+        PodcastViewModel podcastViewModel = new PodcastViewModel();
 
         CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
         views.add(createEpisodeView, createEpisodeView.viewName);
@@ -65,10 +65,10 @@ public class Main {
         EpisodeView episodeView = new EpisodeView(episodeViewModel);
         views.add(episodeView, episodeView.viewName);
 
-        HomeView homeView = DisplayPodcastsFactory.create(viewManagerModel, homeViewModel, displayPodcastViewModel, podcastDataAccessObject);
+        HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, podcastDataAccessObject);
         views.add(homeView.panel, homeView.viewName);
 
-        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, episodeViewModel, episodeDataAccessObject);
+        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
         views.add(podcastView, podcastView.viewName);
 
         // set home page

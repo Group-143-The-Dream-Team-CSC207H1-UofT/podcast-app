@@ -1,11 +1,11 @@
-package use_case.display_podcast;
+package use_case.podcast;
 
 import java.util.UUID;
 
-public class DisplayPodcastInputData {
+public class PodcastInputData {
     final private UUID podcastID;
 
-    public DisplayPodcastInputData(UUID podcastID) {
+    public PodcastInputData(UUID podcastID) {
         this.podcastID = podcastID;
     }
 

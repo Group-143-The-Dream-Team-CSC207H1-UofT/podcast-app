@@ -2,7 +2,7 @@ package view;
 
 import entities.Podcast;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.display_podcast.DisplayPodcastController;
+import interface_adapter.podcast.PodcastController;
 import interface_adapter.home.HomeController;
 import interface_adapter.home.HomeState;
 import interface_adapter.home.HomeViewModel;
@@ -19,7 +19,7 @@ public class HomeView extends JFrame implements PropertyChangeListener {
     private JPanel secondaryPanel;
     public final String viewName = "home";
 
-    public HomeView(HomeController controller, DisplayPodcastController displayPodcastController, HomeViewModel viewModel, ViewManagerModel viewManagerModel) {
+    public HomeView(HomeController controller, PodcastController podcastController, HomeViewModel viewModel, ViewManagerModel viewManagerModel) {
         viewModel.addPropertyChangeListener(this);
         controller.execute();
         searchButton.addActionListener(e -> {
@@ -38,7 +38,7 @@ public class HomeView extends JFrame implements PropertyChangeListener {
             System.out.println(podcast.getName());
             podcastButton.addActionListener(e -> {
                 System.out.println("Go to podcast view...");
-                displayPodcastController.execute(podcast.getId());
+                podcastController.execute(podcast.getId());
             });
             secondaryPanel.add(podcastButton);
         }
