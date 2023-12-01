@@ -3,6 +3,7 @@ package app;
 import data_access.EpisodeDataAccess;
 import data_access.PodcastDataAccess;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_episode.CreateEpisodeViewModel;
 import interface_adapter.episode.EpisodeController;
 import interface_adapter.episode.EpisodePresenter;
 import interface_adapter.episode.EpisodeViewModel;
@@ -24,13 +25,14 @@ public class PodcastViewFactory {
             ViewManagerModel viewManagerModel,
             PodcastViewModel podcastViewModel,
             EpisodeViewModel episodeViewModel,
+            CreateEpisodeViewModel createEpisodeViewModel,
             HomeViewModel homeViewModel,
             EpisodeDataAccess episodeDataAccessObject,
             PodcastDataAccess podcastDAO
     ){
             EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
             HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, podcastDAO);
-            return new PodcastView(viewManagerModel, podcastViewModel, episodeController, homeController);
+            return new PodcastView(viewManagerModel, podcastViewModel, createEpisodeViewModel, episodeController, homeController);
     }
 
     private static EpisodeController createDisplayEpisodeUseCase(

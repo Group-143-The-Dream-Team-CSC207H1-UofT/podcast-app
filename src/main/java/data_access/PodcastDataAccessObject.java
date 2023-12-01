@@ -42,33 +42,6 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
     }
 
     private void loadPodcasts() {
-//        File podcastsCSV;
-//        try {
-//            podcastsCSV = new File(this.getClass().getResource("/podcasts.csv").toURI());
-//        } catch (URISyntaxException e) {
-//            System.out.println("Error reading podcasts.csv.");
-//            e.printStackTrace();
-//            return;
-//        }
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(podcastsCSV));
-//            reader.readLine();  // read the header row
-//            String row;
-//            while ((row = reader.readLine()) != null) {
-//                String[] col = row.split(",");
-//                UUID id = UUID.fromString(col[0]);
-//                String title = col[1];
-////                User createdBy = new User(col[2]);
-//
-//                // Todo: User
-//                List<MediaItem> podcastEpisodes = parseEpisodeIds(col[3]);
-//
-//                Podcast podcast = new Podcast(id, title, null, podcastEpisodes);
-//                podcastMap.put(id, podcast);
-//            }
-//        } catch (IOException e) {
-//            System.out.println("Could not load podcasts from podcasts.csv.");
-//        }
         File podcastsCSV;
         try {
             podcastsCSV = new File(this.getClass().getResource("/podcasts.csv").toURI());
@@ -104,7 +77,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                     .replace(")", "")
                     .split(",");
             List<String> episodeIdList = Arrays.asList(episodeIdsArray);
-            List<MediaItem> podcastEpisodes = null;
+            List<MediaItem> podcastEpisodes = new ArrayList<>();
             for (String id : episodeIdList) {
                 Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
                 podcastEpisodes.add(episode);
@@ -130,7 +103,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             writer.write("id,title,description,author,(episodeId)\n");
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
-                List<String> episodeIdsList = null;
+                List<String> episodeIdsList = new ArrayList<>();
                 if (podcast.getItems() != null) {
                     for (MediaItem episode : podcast.getItems()) {
                         UUID id = episode.getId();

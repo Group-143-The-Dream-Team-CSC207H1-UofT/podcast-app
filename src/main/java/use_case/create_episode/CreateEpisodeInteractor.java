@@ -3,6 +3,8 @@ package use_case.create_episode;
 import data_access.EpisodeDataAccess;
 import data_access.PodcastDataAccess;
 import entities.Episode;
+import entities.Podcast;
+
 import java.util.UUID;
 
 public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
@@ -22,7 +24,9 @@ public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
             // the saving of the file succeeded.
             Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(), null, null);
             episodeDAO.saveEpisode(episode);
-            podcastDAO.getPodcastById(inputData.getPodcastUUID()).addMediaItem(episode);
+            Podcast podcast = podcastDAO.getPodcastById(inputData.getPodcastUUID());
+            podcast.addMediaItem(episode);
+            podcastDAO.savePodcast(podcast);
             outputBoundary.prepareSuccessView(new CreateEpisodeOutputData(episode));
         } else {
             outputBoundary.prepareFailView("Failed to create episode.");

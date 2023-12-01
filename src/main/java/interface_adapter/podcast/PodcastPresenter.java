@@ -27,7 +27,7 @@ public class PodcastPresenter implements PodcastOutputBoundary {
     public void prepareSuccessView(PodcastOutputData podcastData) {
         PodcastState currentState = this.podcastViewModel.getState();
         CreateEpisodeState createEpisodeState = this.createEpisodeViewModel.getState();
-        createEpisodeState.setCurrentPodcast(podcastData.getPodcast());
+        createEpisodeState.setCurrentPodcastId(podcastData.getPodcast().getId());
         currentState.setCurrentPodcast(podcastData.getPodcast());
         currentState.setErrorMessage("");
         this.podcastViewModel.setState(currentState);
