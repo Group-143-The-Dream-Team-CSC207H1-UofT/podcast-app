@@ -10,12 +10,10 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
 
     private final Map<UUID, Podcast> podcastMap;
     private final EpisodeDataAccess episodeDAO;
-    private final UserDataAccess userDAO;
 
-    public PodcastDataAccessObject(EpisodeDataAccess episodeDAO, UserDataAccess userDAO) {
+    public PodcastDataAccessObject(EpisodeDataAccess episodeDAO) {
         podcastMap = new HashMap<>();
         this.episodeDAO = episodeDAO;
-        this.userDAO = userDAO;
         loadPodcasts();
     }
 

@@ -4,26 +4,26 @@ import entities.Podcast;
 
 public class DisplayPodcastState {
 
-    private Podcast podcast;
-    private String errorMessage;
+    private Podcast currentPodcast;
+    private String errorMessage = "";
+
+
+    public DisplayPodcastState(Podcast currentPodcast) {
+        this.currentPodcast = currentPodcast;
+    }
     public DisplayPodcastState() {}
+    public Podcast getCurrentPodcast() {
+        return currentPodcast;
+    }
+    public void setCurrentPodcast(Podcast podcast) {
+        this.currentPodcast = podcast;
+    }
 
-    public DisplayPodcastState(Podcast podcast, String errorMessage){
-        this.podcast = podcast;
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
-    public Podcast getPodcast(){
-        return this.podcast;
-    }
-    public void setPodcast(Podcast podcast){
-        this.podcast = podcast;
-    }
-    public String getErrorMessage(){
-        return this.errorMessage;
-    }
-    public void setErrorMessage(String errorMessage){
-        this.errorMessage = errorMessage;
-    }
-
-
 }

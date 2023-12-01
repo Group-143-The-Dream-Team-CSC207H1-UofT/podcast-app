@@ -5,7 +5,7 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.display_episode.DisplayEpisodeController;
 import interface_adapter.display_episode.DisplayEpisodePresenter;
 import interface_adapter.display_episode.DisplayEpisodeViewModel;
-import interface_adapter.podcast.PodcastViewModel;
+import interface_adapter.display_podcast.DisplayPodcastViewModel;
 import use_case.display_episode.DisplayEpisodeInputBoundary;
 import use_case.display_episode.DisplayEpisodeInteractor;
 import use_case.display_episode.DisplayEpisodeOutputBoundary;
@@ -15,7 +15,7 @@ public class PodcastViewFactory {
 
     public static PodcastView create(
             ViewManagerModel viewManagerModel,
-            PodcastViewModel podcastViewModel,
+            DisplayPodcastViewModel podcastViewModel,
             DisplayEpisodeViewModel episodeViewModel,
             EpisodeDataAccess episodeDataAccessObject
     ){
@@ -25,7 +25,7 @@ public class PodcastViewFactory {
 
     private static DisplayEpisodeController createDisplayEpisodeUseCase(
             ViewManagerModel viewManagerModel,
-            PodcastViewModel podcastViewModel,
+            DisplayPodcastViewModel podcastViewModel,
             DisplayEpisodeViewModel episodeViewModel,
             EpisodeDataAccess episodeDataAccessObject
     ) {
