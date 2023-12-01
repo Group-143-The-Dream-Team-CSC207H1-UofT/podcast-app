@@ -1,15 +1,14 @@
-package use_case.display_podcasts;
+package use_case.home;
 
-import data_access.PodcastDataAccess;
 import entities.Podcast;
 
 import java.util.List;
 
-public class DisplayPodcastsOutputData {
+public class HomeOutputData {
     private final List<Podcast> allPodcasts;
     private String error;
     private final boolean useCaseFailed;
-    public DisplayPodcastsOutputData(List<Podcast> allPodcasts, String error, boolean useCaseFailed) {
+    public HomeOutputData(List<Podcast> allPodcasts, String error, boolean useCaseFailed) {
         this.allPodcasts = allPodcasts;
         this.error = error;
         this.useCaseFailed = useCaseFailed;

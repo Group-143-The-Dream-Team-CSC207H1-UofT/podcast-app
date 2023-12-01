@@ -3,7 +3,6 @@ package use_case.display_podcast;
 
 import data_access.PodcastDataAccess;
 import entities.Podcast;
-import use_case.display_podcasts.DisplayPodcastsOutputData;
 
 import java.util.UUID;
 

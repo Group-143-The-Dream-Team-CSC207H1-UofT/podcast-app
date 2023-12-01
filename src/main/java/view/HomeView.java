@@ -3,23 +3,23 @@ package view;
 import entities.Podcast;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_podcast.DisplayPodcastController;
-import interface_adapter.display_podcasts.DisplayPodcastsController;
-import interface_adapter.display_podcasts.DisplayPodcastsState;
-import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
+import interface_adapter.home.HomeController;
+import interface_adapter.home.HomeState;
+import interface_adapter.home.HomeViewModel;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
+public class HomeView extends JFrame implements PropertyChangeListener {
     public JPanel panel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
     public final String viewName = "home";
 
-    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastController displayPodcastController, DisplayPodcastsViewModel viewModel, ViewManagerModel viewManagerModel) {
+    public HomeView(HomeController controller, DisplayPodcastController displayPodcastController, HomeViewModel viewModel, ViewManagerModel viewManagerModel) {
         viewModel.addPropertyChangeListener(this);
         controller.execute();
         searchButton.addActionListener(e -> {
@@ -30,7 +30,7 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
             viewManagerModel.setActiveView("upload_podcast");
             viewManagerModel.firePropertyChanged();
         });
-        DisplayPodcastsState state = viewModel.getState();
+        HomeState state = viewModel.getState();
         secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
         List<Podcast> allPodcasts = state.getAllPodcasts();
         for (Podcast podcast: allPodcasts) {
@@ -46,7 +46,7 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayPodcastsState state = (DisplayPodcastsState) evt.getNewValue();
+        HomeState state = (HomeState) evt.getNewValue();
         // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
         // are new podcasts uploaded only
         secondaryPanel.removeAll();

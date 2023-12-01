@@ -1,10 +1,10 @@
-package interface_adapter.display_podcasts;
+package interface_adapter.home;
 
 import entities.Podcast;
 
 import java.util.List;
 
-public class DisplayPodcastsState {
+public class HomeState {
     private List<Podcast> allPodcasts;
     private String errorMessage = "";
 
@@ -16,10 +16,10 @@ public class DisplayPodcastsState {
         this.errorMessage = errorMessage;
     }
 
-    public DisplayPodcastsState(List<Podcast> allPodcasts) {
+    public HomeState(List<Podcast> allPodcasts) {
         this.allPodcasts = allPodcasts;
     }
-    public DisplayPodcastsState() {
+    public HomeState() {
         allPodcasts = null;
     }
 

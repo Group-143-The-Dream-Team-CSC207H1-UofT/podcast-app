@@ -8,7 +8,7 @@ import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_episode.DisplayEpisodeViewModel;
 import interface_adapter.display_podcast.DisplayPodcastViewModel;
-import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
+import interface_adapter.home.HomeViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -52,7 +52,7 @@ public class Main {
         SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
         SearchViewModel searchViewModel = new SearchViewModel();
         DisplayEpisodeViewModel displayEpisodeViewModel = new DisplayEpisodeViewModel();
-        DisplayPodcastsViewModel displayPodcastsViewModel = new DisplayPodcastsViewModel();
+        HomeViewModel homeViewModel = new HomeViewModel();
         DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
 
         UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
@@ -65,14 +65,14 @@ public class Main {
         EpisodeView episodeView = new EpisodeView(displayEpisodeViewModel);
         views.add(episodeView, episodeView.viewName);
 
-        DisplayPodcastsView displayPodcastsView = DisplayPodcastsFactory.create(viewManagerModel, displayPodcastsViewModel, displayPodcastViewModel, podcastDataAccessObject);
-        views.add(displayPodcastsView.panel, displayPodcastsView.viewName);
+        HomeView homeView = DisplayPodcastsFactory.create(viewManagerModel, homeViewModel, displayPodcastViewModel, podcastDataAccessObject);
+        views.add(homeView.panel, homeView.viewName);
 
         PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, displayEpisodeViewModel, episodeDataAccessObject);
         views.add(podcastView, podcastView.viewName);
 
         // set home page
-        viewManagerModel.setActiveView(displayPodcastsView.viewName);
+        viewManagerModel.setActiveView(homeView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);
