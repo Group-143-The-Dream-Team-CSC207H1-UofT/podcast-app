@@ -1,6 +1,7 @@
 package view;
 
 import entities.Podcast;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.display_podcast.DisplayPodcastController;
 import interface_adapter.display_podcasts.DisplayPodcastsController;
 import interface_adapter.display_podcasts.DisplayPodcastsState;
@@ -11,24 +12,24 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-public class DisplayPodcastsView implements PropertyChangeListener {
-
-    public final String viewName = "podcasts";
+public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
     public JPanel panel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
+    public final String viewName = "home";
 
-    public DisplayPodcastsView(
-        DisplayPodcastsController displayPodcastsController,
-        DisplayPodcastController displayPodcastController,
-        DisplayPodcastsViewModel viewModel
-    ) {
+    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastController displayPodcastController, DisplayPodcastsViewModel viewModel, ViewManagerModel viewManagerModel) {
         viewModel.addPropertyChangeListener(this);
-
-        displayPodcastsController.execute();
-        searchButton.addActionListener(e -> System.out.println("Going to search view..."));
-        createButton.addActionListener(e -> System.out.println("Going to podcast view..."));
+        controller.execute();
+        searchButton.addActionListener(e -> {
+            viewManagerModel.setActiveView("search");
+            viewManagerModel.firePropertyChanged();
+        });
+        createButton.addActionListener(e -> {
+            viewManagerModel.setActiveView("upload_podcast");
+            viewManagerModel.firePropertyChanged();
+        });
         DisplayPodcastsState state = viewModel.getState();
         secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
         List<Podcast> allPodcasts = state.getAllPodcasts();
