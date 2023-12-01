@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 class UploadInteractorTest {
     @Test
     public void TestUploadUseCase() throws URISyntaxException {
-        UploadInputData inputData = new UploadInputData("David's Episode", "A dummy item for testing.",
+        CreateEpisodeInputData inputData = new CreateEpisodeInputData("David's Episode", "A dummy item for testing.",
                 this.getClass().getResource( "/test.wav" ).toURI());
-        UploadOutputBoundary outputBoundary = new UploadOutputBoundary() {
+        CreateEpisodeOutputBoundary outputBoundary = new CreateEpisodeOutputBoundary() {
             @Override
-            public void prepareSuccessView(UploadOutputData outputData) {
+            public void prepareSuccessView(CreateEpisodeOutputData outputData) {
                 Episode episode = outputData.getEpisode();
                 assert(episode.getTitle().equals("David's Episode"));
                 assert(episode.getItemDescription().equals("A dummy item for testing."));
@@ -38,7 +38,7 @@ class UploadInteractorTest {
             }
         };
 
-        UploadInteractor interactor = new UploadInteractor(outputBoundary, new EpisodeDataAccessObject(new TranscriptDataAccessObject()));
+        CreateEpisodeInteractor interactor = new CreateEpisodeInteractor(outputBoundary, new EpisodeDataAccessObject(new TranscriptDataAccessObject()));
         interactor.execute(inputData);
     }
 

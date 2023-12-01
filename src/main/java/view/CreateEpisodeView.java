@@ -1,16 +1,14 @@
 package view;
 
 import entities.Episode;
-
 import interface_adapter.search_index.SearchIndexController;
 import interface_adapter.search_index.SearchIndexState;
 import interface_adapter.transcribe.TranscribeController;
 import interface_adapter.transcribe.TranscribeState;
 import interface_adapter.transcribe.TranscribeViewModel;
-
-import interface_adapter.upload.UploadController;
-import interface_adapter.upload.UploadViewModel;
-import interface_adapter.upload.UploadState;
+import interface_adapter.create_episode.CreateEpisodeController;
+import interface_adapter.create_episode.CreateEpisodeViewModel;
+import interface_adapter.create_episode.CreateEpisodeState;
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -18,11 +16,11 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.net.URI;
 
-public class UploadView extends JPanel implements PropertyChangeListener {
+public class CreateEpisodeView extends JPanel implements PropertyChangeListener {
     public final String viewName = "upload";
-    private final UploadViewModel uploadViewModel;
+    private final CreateEpisodeViewModel createEpisodeViewModel;
     private final TranscribeViewModel transcribeViewModel;
-    private final UploadController uploadController;
+    private final CreateEpisodeController createEpisodeController;
     private  final  TranscribeController transcribeController;
     private final SearchIndexController searchIndexController;
     private final JLabel status;
@@ -32,10 +30,10 @@ public class UploadView extends JPanel implements PropertyChangeListener {
     private URI selectedFileURI;
     private final JButton submitButton;
 
-    public UploadView(UploadController uploadController, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController, SearchIndexController searchIndexController) {
-        this.uploadController = uploadController;
-        this.uploadViewModel = uploadViewModel;
-        this.uploadViewModel.addPropertyChangeListener(this);
+    public CreateEpisodeView(CreateEpisodeController createEpisodeController, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController, SearchIndexController searchIndexController) {
+        this.createEpisodeController = createEpisodeController;
+        this.createEpisodeViewModel = createEpisodeViewModel;
+        this.createEpisodeViewModel.addPropertyChangeListener(this);
         this.transcribeController = transcribeController;
         this.transcribeViewModel = transcribeViewModel;
         this.transcribeViewModel.addPropertyChangeListener(this);
@@ -60,7 +58,7 @@ public class UploadView extends JPanel implements PropertyChangeListener {
         });
         submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
-            this.uploadController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText());
+            this.createEpisodeController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText());
             titleInputField.setText("");
             descriptionInputField.setText("");
             selectedFileURI = null;
@@ -86,9 +84,9 @@ public class UploadView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("upload")) {
             // Update the view based on the changes in the upload view model
-            UploadState uploadState = (UploadState) evt.getNewValue();
-            Episode episode = uploadState.getEpisode();
-            String errorMessage = uploadState.getErrorMessage();
+            CreateEpisodeState createEpisodeState = (CreateEpisodeState) evt.getNewValue();
+            Episode episode = createEpisodeState.getEpisode();
+            String errorMessage = createEpisodeState.getErrorMessage();
             if (episode != null) {
                 status.setText(String.format("Successfully uploaded file for %s", episode.getTitle()));
                 transcribeController.execute(episode);
