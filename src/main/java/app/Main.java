@@ -6,6 +6,8 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_episode.DisplayEpisodeViewModel;
+import interface_adapter.display_podcast.DisplayPodcastViewModel;
 import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
@@ -34,30 +36,43 @@ public class Main {
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         new ViewManager(views, cardLayout, viewManagerModel);
 
+        // api objects
         WhisperTranscription transcriptionObject = new WhisperTranscription(OPENAI_API_KEY);
         EmbeddingsInterface embeddings = new OpenAIEmbeddings(OPENAI_API_KEY);
         VectorDatabase vectorDatabase = new PineconeVectorDatabase(PINECONE_API_KEY, PINECONE_BASE_URL);
 
+        // DAOs
         TranscriptDataAccess transcriptDataAccessObject = new TranscriptDataAccessObject();
         EpisodeDataAccess episodeDataAccessObject = new EpisodeDataAccessObject(transcriptDataAccessObject);
+        PodcastDataAccess podcastDataAccessObject = new PodcastDataAccessObject(episodeDataAccessObject);
+
+        // view models
         UploadViewModel uploadViewModel = new UploadViewModel();
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
         SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
+        SearchViewModel searchViewModel = new SearchViewModel();
+        DisplayEpisodeViewModel displayEpisodeViewModel = new DisplayEpisodeViewModel();
+        DisplayPodcastsViewModel displayPodcastsViewModel = new DisplayPodcastsViewModel();
+        DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
+
         UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
         views.add(uploadView, uploadView.viewName);
 
-        SearchViewModel searchViewModel = new SearchViewModel();
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
-        PodcastDataAccess podcastDataAccessObject = new PodcastDataAccessObject(episodeDataAccessObject, null);
-        DisplayPodcastsViewModel displayPodcastsViewModel = new DisplayPodcastsViewModel();
-        DisplayPodcastsView displayPodcastsView = DisplayPodcastsFactory.create(viewManagerModel, displayPodcastsViewModel, podcastDataAccessObject);
-        views.add(displayPodcastsView.mainPanel, displayPodcastsView.viewName);
+        // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
+        EpisodeView episodeView = new EpisodeView(displayEpisodeViewModel);
+        views.add(episodeView, episodeView.viewName);
 
-//        viewManagerModel.setActiveView(searchView.viewName);
-//        viewManagerModel.setActiveView(uploadView.viewName);
-        viewManagerModel.setActiveView(displayPodcastsView.viewName);
+        DisplayPodcastsView displayPodcastsView = DisplayPodcastsFactory.create(viewManagerModel, displayPodcastsViewModel, displayPodcastViewModel, podcastDataAccessObject);
+        views.add(displayPodcastsView.panel, displayPodcastsView.viewName);
+
+        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, displayEpisodeViewModel, episodeDataAccessObject);
+        views.add(podcastView, podcastView.viewName);
+
+        // set home page
+        viewManagerModel.setActiveView(searchView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);
