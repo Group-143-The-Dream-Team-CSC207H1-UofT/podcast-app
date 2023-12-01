@@ -1,4 +1,4 @@
-package use_case.upload;
+package use_case.create_episode;
 
 import java.net.URI;
 

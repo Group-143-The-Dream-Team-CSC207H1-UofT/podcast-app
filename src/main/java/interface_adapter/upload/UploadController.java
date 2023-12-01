@@ -1,6 +1,6 @@
 package interface_adapter.upload;
 
-import use_case.upload.*;
+import use_case.create_episode.*;
 import java.net.URI;
 
 public class UploadController {

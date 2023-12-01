@@ -19,7 +19,7 @@ import use_case.search_index.SearchIndexOutputBoundary;
 import use_case.transcribe.TranscribeInputBoundary;
 import use_case.transcribe.TranscribeInteractor;
 import use_case.transcribe.TranscribeOutputBoundary;
-import use_case.upload.*;
+import use_case.create_episode.*;
 import view.UploadView;
 
 

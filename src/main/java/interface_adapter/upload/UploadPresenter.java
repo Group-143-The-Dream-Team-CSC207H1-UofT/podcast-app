@@ -1,8 +1,8 @@
 package interface_adapter.upload;
 
 import interface_adapter.ViewManagerModel;
-import use_case.upload.UploadOutputBoundary;
-import use_case.upload.UploadOutputData;
+import use_case.create_episode.UploadOutputBoundary;
+import use_case.create_episode.UploadOutputData;
 
 public class UploadPresenter implements UploadOutputBoundary {
   

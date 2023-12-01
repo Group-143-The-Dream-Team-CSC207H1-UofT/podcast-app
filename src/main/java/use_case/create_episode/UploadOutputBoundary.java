@@ -1,4 +1,4 @@
-package use_case.upload;
+package use_case.create_episode;
 
 public interface UploadOutputBoundary {
     void prepareSuccessView(UploadOutputData episode);
