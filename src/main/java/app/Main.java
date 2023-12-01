@@ -8,6 +8,7 @@ import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.display_episode.DisplayEpisodeViewModel;
 import interface_adapter.podcast.PodcastViewModel;
+import interface_adapter.display_podcast.DisplayPodcastViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -60,8 +61,12 @@ public class Main {
         PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, displayEpisodeViewModel, episodeDataAccessObject);
         views.add(podcastView, podcastView.viewName);
 
-        viewManagerModel.setActiveView(searchView.viewName);
-//        viewManagerModel.setActiveView(uploadView.viewName);
+        PodcastDataAccess podcastDAO = new PodcastDataAccessObject(episodeDataAccessObject, null);
+        DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
+        UploadPodcastView uploadPodcastView = UploadPodcastFactory.create(viewManagerModel, displayPodcastViewModel, podcastDAO);
+        views.add(uploadPodcastView, uploadPodcastView.viewName);
+
+        viewManagerModel.setActiveView(uploadPodcastView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);

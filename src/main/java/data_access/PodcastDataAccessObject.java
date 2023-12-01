@@ -26,6 +26,11 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
     }
 
     @Override
+    public Collection<Podcast> getAllPodcasts() {
+        return podcastMap.values();
+    }
+
+    @Override
     public Podcast getPodcastById(UUID id) {
         return podcastMap.get(id);
     }
@@ -53,9 +58,12 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 String[] col = row.split(",");
                 UUID id = UUID.fromString(col[0]);
                 String title = col[1];
-                User assignedTo = userDAO.getUserByPodcastID(id);
+//                User createdBy = new User(col[2]);
+
+                // Todo: User
                 List<MediaItem> podcastEpisodes = parseEpisodeIds(col[3]);
-                Podcast podcast = new Podcast(id, title, assignedTo, podcastEpisodes);
+
+                Podcast podcast = new Podcast(id, title, null, podcastEpisodes);
                 podcastMap.put(id, podcast);
             }
         } catch (IOException e) {
@@ -65,17 +73,21 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
 
     private List<MediaItem> parseEpisodeIds(String episodeIdsString) {
         // Assuming episodeIdsString is "(1,2,3)"
-        String[] episodeIdsArray = episodeIdsString
-                .replace("(", "")
-                .replace(")", "")
-                .split(",");
-        List<String> episodeIdList = Arrays.asList(episodeIdsArray);
-        List<MediaItem> podcastEpisodes = new ArrayList<>();
-        for (String id : episodeIdList) {
-            Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
-            podcastEpisodes.add(episode);
+        if (!Objects.equals(episodeIdsString, "()")) {
+            String[] episodeIdsArray = episodeIdsString
+                    .replace("(", "")
+                    .replace(")", "")
+                    .split(",");
+            List<String> episodeIdList = Arrays.asList(episodeIdsArray);
+            List<MediaItem> podcastEpisodes = null;
+            for (String id : episodeIdList) {
+                Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
+                podcastEpisodes.add(episode);
+            }
+            return podcastEpisodes;
+        } else {
+            return null;
         }
-        return podcastEpisodes;
     }
 
     private boolean save() {
@@ -94,12 +106,23 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
                 List<String> episodeIdsList = null;
-                for (MediaItem episode : podcast.getItems()) {
-                    UUID id = episode.getId();
-                    episodeIdsList.add(id.toString());
+                if (podcast.getItems() != null) {
+                    for (MediaItem episode : podcast.getItems()) {
+                        UUID id = episode.getId();
+                        episodeIdsList.add(id.toString());
+                    }
                 }
-                // Line 86 formats the list of IDs as a String similar to the ones saved into podcasts.csv
-                String episodeIds = episodeIdsList.stream().collect(Collectors.joining(",", "(", ")"));
+                String episodeIds;
+                if (podcast.getItems() != null) {
+                    for (MediaItem episode : podcast.getItems()) {
+                        UUID id = episode.getId();
+                        episodeIdsList.add(id.toString());
+                    }
+                    // Line 86 formats the list of IDs as a String similar to the ones saved into podcasts.csv
+                    episodeIds = episodeIdsList.stream().collect(Collectors.joining(",", "(", ")"));
+                } else {
+                    episodeIds = "()";
+                }
                 String podcastString = String.format("%s,%s,%s,%s",
                         podcast.getId().toString(), podcast.getName(), podcast.getAssignedTo(), episodeIds);
                 writer.write(podcastString);
