@@ -15,6 +15,7 @@ public class HomePresenter implements HomeOutputBoundary {
     public void prepareSuccessView(HomeOutputData outputData) {
         HomeState currentState = homeViewModel.getState();
         currentState.setAllPodcasts(outputData.getAllPodcasts());
+        homeViewModel.setState(currentState);
         homeViewModel.firePropertyChanged();
     }
 
@@ -22,6 +23,7 @@ public class HomePresenter implements HomeOutputBoundary {
     public void prepareFailView(HomeOutputData outputData) {
         HomeState currentState = new HomeState();
         currentState.setErrorMessage(outputData.getError());
+        homeViewModel.setState(currentState);
         homeViewModel.firePropertyChanged();
     }
 }

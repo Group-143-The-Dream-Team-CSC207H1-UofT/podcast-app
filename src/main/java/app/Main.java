@@ -70,7 +70,7 @@ public class Main {
         HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, podcastDataAccessObject);
         views.add(homeView.panel, homeView.viewName);
 
-        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
+        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, homeViewModel, episodeDataAccessObject, podcastDataAccessObject);
         views.add(podcastView.panel, podcastView.viewName);
 
         CreatePodcastView createPodcastView = CreatePodcastViewFactory.create(viewManagerModel, createPodcastViewModel, podcastViewModel, podcastDataAccessObject);

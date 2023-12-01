@@ -18,10 +18,11 @@ public class HomeView extends JFrame implements PropertyChangeListener {
     private JButton createButton;
     private JPanel secondaryPanel;
     public final String viewName = "home";
+    private final PodcastController podcastController;
 
     public HomeView(HomeController controller, PodcastController podcastController, HomeViewModel viewModel, ViewManagerModel viewManagerModel) {
+        this.podcastController = podcastController;
         viewModel.addPropertyChangeListener(this);
-        controller.execute();
         searchButton.addActionListener(e -> {
             viewManagerModel.setActiveView("search");
             viewManagerModel.firePropertyChanged();
@@ -30,31 +31,21 @@ public class HomeView extends JFrame implements PropertyChangeListener {
             viewManagerModel.setActiveView("create podcast");
             viewManagerModel.firePropertyChanged();
         });
-        HomeState state = viewModel.getState();
-        secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
-        List<Podcast> allPodcasts = state.getAllPodcasts();
-        for (Podcast podcast: allPodcasts) {
-            JButton podcastButton = new JButton(podcast.getName());
-            System.out.println(podcast.getName());
-            podcastButton.addActionListener(e -> {
-                System.out.println("Go to podcast view...");
-                podcastController.execute(podcast.getId());
-            });
-            secondaryPanel.add(podcastButton);
-        }
+        controller.execute();
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        HomeState state = (HomeState) evt.getNewValue();
-//        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
-//        // are new podcasts uploaded only
-//        secondaryPanel.removeAll();
-//        List<Podcast> allPodcasts = state.getAllPodcasts();
-//        for (Podcast podcast: allPodcasts) {
-//            JButton podcastButton = new JButton(podcast.getName());
-//            podcastButton.addActionListener(e -> System.out.println("Go to podcast view..."));
-//            secondaryPanel.add(podcastButton);
-//        }
+        HomeState state = (HomeState) evt.getNewValue();
+        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
+        // are new podcasts uploaded only
+        secondaryPanel.removeAll();
+        secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
+        List<Podcast> allPodcasts = state.getAllPodcasts();
+        for (Podcast podcast: allPodcasts) {
+            JButton podcastButton = new JButton(podcast.getName());
+            podcastButton.addActionListener(e -> this.podcastController.execute(podcast.getId()));
+            secondaryPanel.add(podcastButton);
+        }
     }
 }

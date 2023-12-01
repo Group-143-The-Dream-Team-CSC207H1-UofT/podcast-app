@@ -29,7 +29,7 @@ public class CreateEpisodeViewFactory {
         CreateEpisodeController createEpisodeController = createEpisodeUseCase(viewManagerModel, createEpisodeViewModel, episodeDataAccess);
         TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess, transcriptionObject);
         SearchIndexController searchIndexController = createSearchIndexUseCase(viewManagerModel, searchIndexViewModel, vectorDatabase, embeddings);
-        return new CreateEpisodeView(createEpisodeController, createEpisodeViewModel, transcribeViewModel, transcribeController, searchIndexController);
+        return new CreateEpisodeView(viewManagerModel, createEpisodeController, createEpisodeViewModel, transcribeViewModel, transcribeController, searchIndexViewModel, searchIndexController);
     }
 
     private static CreateEpisodeController createEpisodeUseCase(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, EpisodeDataAccess episodeDataAccess){
