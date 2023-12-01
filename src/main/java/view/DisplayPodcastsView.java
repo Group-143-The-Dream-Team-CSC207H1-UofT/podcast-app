@@ -1,6 +1,7 @@
 package view;
 
 import entities.Podcast;
+import interface_adapter.display_podcast.DisplayPodcastController;
 import interface_adapter.display_podcasts.DisplayPodcastsController;
 import interface_adapter.display_podcasts.DisplayPodcastsState;
 import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
@@ -14,18 +15,23 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
+
+    public final String viewName = "podcasts";
     private JPanel mainPanel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
-    private final DisplayPodcastsController controller;
+    private final DisplayPodcastsController displayPodcastsController;
     private final DisplayPodcastsViewModel viewModel;
+    private final DisplayPodcastController displayPodcastController;
 
-    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastsViewModel viewModel) {
-        this.controller = controller;
+    public DisplayPodcastsView(DisplayPodcastsController displayPodcastsController, DisplayPodcastController displayPodcastController, DisplayPodcastsViewModel viewModel) {
+        this.displayPodcastsController = displayPodcastsController;
+        this.displayPodcastController = displayPodcastController;
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
-        controller.execute();
+
+        displayPodcastsController.execute();
         setTitle("Home");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
@@ -52,6 +58,7 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     System.out.println("Go to podcast view...");
+                    displayPodcastController.execute(podcast.getId());
                 }
             });
             secondaryPanel.add(podcastButton);
@@ -62,20 +69,20 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-//        DisplayPodcastsState state = (DisplayPodcastsState) evt.getNewValue();
-//        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
-//        // are new podcasts uploaded only
-//        secondaryPanel.removeAll();
-//        List<Podcast> allPodcasts = state.getAllPodcasts();
-//        for (Podcast podcast: allPodcasts) {
-//            JButton podcastButton = new JButton(podcast.getName());
-//            podcastButton.addActionListener(new ActionListener() {
-//                @Override
-//                public void actionPerformed(ActionEvent e) {
-//                    System.out.println("Go to podcast view...");
-//                }
-//            });
-//            secondaryPanel.add(podcastButton);
-//        }
+        DisplayPodcastsState state = (DisplayPodcastsState) evt.getNewValue();
+        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
+        // are new podcasts uploaded only
+        secondaryPanel.removeAll();
+        List<Podcast> allPodcasts = state.getAllPodcasts();
+        for (Podcast podcast: allPodcasts) {
+            JButton podcastButton = new JButton(podcast.getName());
+            podcastButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Go to podcast view...");
+                }
+            });
+            secondaryPanel.add(podcastButton);
+        }
     }
 }
