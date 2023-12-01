@@ -2,13 +2,13 @@ package app;
 
 import data_access.EpisodeDataAccess;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.display_episode.DisplayEpisodeController;
-import interface_adapter.display_episode.DisplayEpisodePresenter;
-import interface_adapter.display_episode.DisplayEpisodeViewModel;
+import interface_adapter.episode.EpisodeController;
+import interface_adapter.episode.EpisodePresenter;
+import interface_adapter.episode.EpisodeViewModel;
 import interface_adapter.display_podcast.DisplayPodcastViewModel;
-import use_case.display_episode.DisplayEpisodeInputBoundary;
-import use_case.display_episode.DisplayEpisodeInteractor;
-import use_case.display_episode.DisplayEpisodeOutputBoundary;
+import use_case.episode.EpisodeInputBoundary;
+import use_case.episode.EpisodeInteractor;
+import use_case.episode.EpisodeOutputBoundary;
 import view.PodcastView;
 
 public class PodcastViewFactory {
@@ -16,21 +16,21 @@ public class PodcastViewFactory {
     public static PodcastView create(
             ViewManagerModel viewManagerModel,
             DisplayPodcastViewModel podcastViewModel,
-            DisplayEpisodeViewModel episodeViewModel,
+            EpisodeViewModel episodeViewModel,
             EpisodeDataAccess episodeDataAccessObject
     ){
-            DisplayEpisodeController displayEpisodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
-            return new PodcastView(podcastViewModel, displayEpisodeController);
+            EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
+            return new PodcastView(podcastViewModel, episodeController);
     }
 
-    private static DisplayEpisodeController createDisplayEpisodeUseCase(
+    private static EpisodeController createDisplayEpisodeUseCase(
             ViewManagerModel viewManagerModel,
             DisplayPodcastViewModel podcastViewModel,
-            DisplayEpisodeViewModel episodeViewModel,
+            EpisodeViewModel episodeViewModel,
             EpisodeDataAccess episodeDataAccessObject
     ) {
-        DisplayEpisodeOutputBoundary displayEpisodeOutputBoundary = new DisplayEpisodePresenter(viewManagerModel, episodeViewModel, podcastViewModel);
-        DisplayEpisodeInputBoundary displayEpisodeInteractor = new DisplayEpisodeInteractor(episodeDataAccessObject, displayEpisodeOutputBoundary);
-        return new DisplayEpisodeController(displayEpisodeInteractor);
+        EpisodeOutputBoundary episodeOutputBoundary = new EpisodePresenter(viewManagerModel, episodeViewModel, podcastViewModel);
+        EpisodeInputBoundary displayEpisodeInteractor = new EpisodeInteractor(episodeDataAccessObject, episodeOutputBoundary);
+        return new EpisodeController(displayEpisodeInteractor);
     }
 }
