@@ -6,7 +6,7 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.display_episode.DisplayEpisodeViewModel;
+import interface_adapter.episode.EpisodeViewModel;
 import interface_adapter.display_podcast.DisplayPodcastViewModel;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.search.SearchViewModel;
@@ -51,7 +51,7 @@ public class Main {
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
         SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
         SearchViewModel searchViewModel = new SearchViewModel();
-        DisplayEpisodeViewModel displayEpisodeViewModel = new DisplayEpisodeViewModel();
+        EpisodeViewModel episodeViewModel = new EpisodeViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
         DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
 
@@ -62,13 +62,13 @@ public class Main {
         views.add(searchView.panel, searchView.viewName);
 
         // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
-        EpisodeView episodeView = new EpisodeView(displayEpisodeViewModel);
+        EpisodeView episodeView = new EpisodeView(episodeViewModel);
         views.add(episodeView, episodeView.viewName);
 
         HomeView homeView = DisplayPodcastsFactory.create(viewManagerModel, homeViewModel, displayPodcastViewModel, podcastDataAccessObject);
         views.add(homeView.panel, homeView.viewName);
 
-        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, displayEpisodeViewModel, episodeDataAccessObject);
+        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, episodeViewModel, episodeDataAccessObject);
         views.add(podcastView, podcastView.viewName);
 
         // set home page
