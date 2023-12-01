@@ -9,14 +9,10 @@ import java.util.List;
 public class CreatePodcastInputData {
     final private String title;
     final private String description;
-    final private User assignedTo;
-    final private List<MediaItem> episodes;
 
-    public CreatePodcastInputData(String title, String description, User assignedTo, List<MediaItem> episodes) {
+    public CreatePodcastInputData(String title, String description) {
         this.title = title;
         this.description = description;
-        this.assignedTo = assignedTo;
-        this.episodes = episodes;
     }
 
     public String getTitle() {
@@ -27,13 +23,6 @@ public class CreatePodcastInputData {
         return description;
     }
 
-    public User getAssignedTo() {
-        return assignedTo;
-    }
-
-    public List<MediaItem> getEpisodes(){
-        return episodes;
-    }
 
 
 }
