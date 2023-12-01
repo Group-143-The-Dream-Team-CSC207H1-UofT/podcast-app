@@ -81,7 +81,6 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
             e.printStackTrace();
         } catch (NullPointerException e) {
             System.out.println("File doesn't exist");
-            e.printStackTrace();
         }
         return null;
     }

@@ -54,7 +54,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             BufferedReader reader = new BufferedReader(new FileReader(podcastsCSV));
             reader.readLine();  // read the header row
             String row;
-            while ((row = reader.readLine()) != null) {
+            while ((row = reader.readLine()) != null && (!row.equals(""))) {
                 String[] col = row.split(",");
                 UUID id = UUID.fromString(col[0]);
                 String title = col[1];
@@ -79,7 +79,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                     .replace(")", "")
                     .split(",");
             List<String> episodeIdList = Arrays.asList(episodeIdsArray);
-            List<MediaItem> podcastEpisodes = null;
+            List<MediaItem> podcastEpisodes = new ArrayList<>();
             for (String id : episodeIdList) {
                 Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
                 podcastEpisodes.add(episode);
@@ -105,7 +105,7 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             writer.write("id,title,author,(episodeId)\n");
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
-                List<String> episodeIdsList = null;
+                List<String> episodeIdsList = new ArrayList<>();
                 for (MediaItem episode : podcast.getItems()) {
                     UUID id = episode.getId();
                     episodeIdsList.add(id.toString());
