@@ -1,11 +1,11 @@
-package use_case.display_episode;
+package use_case.episode;
 
 import java.util.UUID;
 
-public class DisplayEpisodeInputData {
+public class EpisodeInputData {
     final private UUID episodeId;
     final private int currentTextChunkIndex;
-    public DisplayEpisodeInputData(UUID episodeId, int currentTextChunkIndex) {
+    public EpisodeInputData(UUID episodeId, int currentTextChunkIndex) {
         this.episodeId = episodeId;
         this.currentTextChunkIndex = currentTextChunkIndex;
     }

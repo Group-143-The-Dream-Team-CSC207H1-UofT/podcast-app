@@ -1,26 +1,26 @@
-package interface_adapter.display_episode;
+package interface_adapter.episode;
 
 import entities.Episode;
 import entities.TextChunk;
 
 import java.util.List;
 
-public class DisplayEpisodeState {
+public class EpisodeState {
 
     private Episode currentEpisode;
     private List<TextChunk> textChunks;
     private int currentTextChunkIndex;
-    public DisplayEpisodeState(Episode currentEpisode, List<TextChunk> textChunks, int currentTextChunkIndex){
+    public EpisodeState(Episode currentEpisode, List<TextChunk> textChunks, int currentTextChunkIndex){
         this.currentEpisode = currentEpisode;
         this.textChunks = textChunks;
         this.currentTextChunkIndex = currentTextChunkIndex;
     }
-    public DisplayEpisodeState(DisplayEpisodeState copy){
+    public EpisodeState(EpisodeState copy){
         this.currentEpisode = copy.currentEpisode;
         this.textChunks = copy.textChunks;
         this.currentTextChunkIndex = copy.currentTextChunkIndex;
     }
-    public DisplayEpisodeState(){}
+    public EpisodeState(){}
 
     public Episode getCurrentEpisode() {
         return currentEpisode;

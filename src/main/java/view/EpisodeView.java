@@ -2,8 +2,8 @@ package view;
 
 import entities.Episode;
 import entities.TextChunk;
-import interface_adapter.display_episode.DisplayEpisodeState;
-import interface_adapter.display_episode.DisplayEpisodeViewModel;
+import interface_adapter.episode.EpisodeState;
+import interface_adapter.episode.EpisodeViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ import java.beans.PropertyChangeListener;
 public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
 
     public final String viewName = "episode";
-    private final DisplayEpisodeViewModel displayEpisodeViewModel;
+    private final EpisodeViewModel viewModel;
     private JLabel titleLabel;
     private JTextArea descriptionTextArea;
     private JList<TextChunk> textChunksList;
@@ -23,9 +23,9 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
     private final JTextArea summaryTextArea;
     private final JButton playButton;
 
-    public EpisodeView(DisplayEpisodeViewModel displayEpisodeViewModel) {
-        this.displayEpisodeViewModel = displayEpisodeViewModel;
-        this.displayEpisodeViewModel.addPropertyChangeListener(this);
+    public EpisodeView(EpisodeViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.addPropertyChangeListener(this);
 
         titleLabel = new JLabel();
         descriptionTextArea = new JTextArea();
@@ -60,11 +60,11 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
         // Populate list with TextChunks
         DefaultListModel<TextChunk> listModel = (DefaultListModel<TextChunk>) textChunksList.getModel();
         listModel.clear();
-        for (TextChunk chunk : displayEpisodeViewModel.getState().getTextChunks()) {
+        for (TextChunk chunk : viewModel.getState().getTextChunks()) {
             listModel.addElement(chunk);
         }
 
-        setListCellRendererWithHighlighting(textChunksList, displayEpisodeViewModel.getState().getCurrentTextChunkIndex());
+        setListCellRendererWithHighlighting(textChunksList, viewModel.getState().getCurrentTextChunkIndex());
         summaryTextArea.setText(episode.getSummary());
     }
 
@@ -110,7 +110,7 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayEpisodeState state = (DisplayEpisodeState) evt.getNewValue();
+        EpisodeState state = (EpisodeState) evt.getNewValue();
         displayEpisode(state.getCurrentEpisode());
     }
 }

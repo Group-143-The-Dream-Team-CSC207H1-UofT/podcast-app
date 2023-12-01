@@ -1,11 +1,11 @@
-package interface_adapter.display_episode;
+package interface_adapter.episode;
 
 import interface_adapter.ViewModel;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class DisplayEpisodeViewModel extends ViewModel {
-    private DisplayEpisodeState state = new DisplayEpisodeState();
+public class EpisodeViewModel extends ViewModel {
+    private EpisodeState state = new EpisodeState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public void firePropertyChanged() {
@@ -14,14 +14,14 @@ public class DisplayEpisodeViewModel extends ViewModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
-    public DisplayEpisodeViewModel() {
+    public EpisodeViewModel() {
         super("episode");
     }
 
-    public DisplayEpisodeState getState() {
+    public EpisodeState getState() {
         return state;
     }
-    public void setState(DisplayEpisodeState state) {
+    public void setState(EpisodeState state) {
         this.state = state;
     }
 
