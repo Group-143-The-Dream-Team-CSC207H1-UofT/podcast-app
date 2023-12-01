@@ -2,10 +2,10 @@ package use_case.create_episode;
 
 import entities.Episode;
 
-public class UploadOutputData {
+public class CreateEpisodeOutputData {
     private final Episode episode;
 
-    public UploadOutputData(Episode episode) {
+    public CreateEpisodeOutputData(Episode episode) {
         this.episode = episode;
     }
 

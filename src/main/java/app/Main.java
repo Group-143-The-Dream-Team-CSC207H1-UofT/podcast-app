@@ -12,7 +12,7 @@ import interface_adapter.home.HomeViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
-import interface_adapter.upload.*;
+import interface_adapter.create_episode.*;
 import view.*;
 import java.awt.*;
 
@@ -47,7 +47,7 @@ public class Main {
         PodcastDataAccess podcastDataAccessObject = new PodcastDataAccessObject(episodeDataAccessObject);
 
         // view models
-        UploadViewModel uploadViewModel = new UploadViewModel();
+        CreateEpisodeViewModel createEpisodeViewModel = new CreateEpisodeViewModel();
         TranscribeViewModel transcribeViewModel = new TranscribeViewModel();
         SearchIndexViewModel searchIndexViewModel = new SearchIndexViewModel();
         SearchViewModel searchViewModel = new SearchViewModel();
@@ -55,8 +55,8 @@ public class Main {
         HomeViewModel homeViewModel = new HomeViewModel();
         DisplayPodcastViewModel displayPodcastViewModel = new DisplayPodcastViewModel();
 
-        UploadView uploadView = UploadViewFactory.create(viewManagerModel, uploadViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
-        views.add(uploadView, uploadView.viewName);
+        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
+        views.add(createEpisodeView, createEpisodeView.viewName);
 
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);

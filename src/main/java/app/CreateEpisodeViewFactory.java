@@ -12,7 +12,7 @@ import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeController;
 import interface_adapter.transcribe.TranscribePresenter;
 import interface_adapter.transcribe.TranscribeViewModel;
-import interface_adapter.upload.*;
+import interface_adapter.create_episode.*;
 import use_case.search_index.SearchIndexInputBoundary;
 import use_case.search_index.SearchIndexInteractor;
 import use_case.search_index.SearchIndexOutputBoundary;
@@ -20,22 +20,22 @@ import use_case.transcribe.TranscribeInputBoundary;
 import use_case.transcribe.TranscribeInteractor;
 import use_case.transcribe.TranscribeOutputBoundary;
 import use_case.create_episode.*;
-import view.UploadView;
+import view.CreateEpisodeView;
 
 
-public class UploadViewFactory {
+public class CreateEpisodeViewFactory {
         
-    public static UploadView create(ViewManagerModel viewManagerModel, UploadViewModel uploadViewModel, TranscribeViewModel transcribeViewModel, SearchIndexViewModel searchIndexViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
-        UploadController uploadController = createUploadUseCase(viewManagerModel, uploadViewModel, episodeDataAccess);
+    public static CreateEpisodeView create(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, SearchIndexViewModel searchIndexViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
+        CreateEpisodeController createEpisodeController = createEpisodeUseCase(viewManagerModel, createEpisodeViewModel, episodeDataAccess);
         TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess, transcriptionObject);
         SearchIndexController searchIndexController = createSearchIndexUseCase(viewManagerModel, searchIndexViewModel, vectorDatabase, embeddings);
-        return new UploadView(uploadController, uploadViewModel, transcribeViewModel, transcribeController, searchIndexController);
+        return new CreateEpisodeView(createEpisodeController, createEpisodeViewModel, transcribeViewModel, transcribeController, searchIndexController);
     }
 
-    private static UploadController createUploadUseCase(ViewManagerModel viewManagerModel, UploadViewModel uploadViewModel, EpisodeDataAccess episodeDataAccess){
-        UploadOutputBoundary uploadOutputBoundary = new UploadPresenter(uploadViewModel, viewManagerModel);
-        UploadInputBoundary uploadInteractor = new UploadInteractor(uploadOutputBoundary, episodeDataAccess);
-        return new UploadController(uploadInteractor);
+    private static CreateEpisodeController createEpisodeUseCase(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, EpisodeDataAccess episodeDataAccess){
+        CreateEpisodeOutputBoundary createEpisodeOutputBoundary = new CreateEpisodePresenter(createEpisodeViewModel, viewManagerModel);
+        CreateEpisodeInputBoundary uploadInteractor = new CreateEpisodeInteractor(createEpisodeOutputBoundary, episodeDataAccess);
+        return new CreateEpisodeController(uploadInteractor);
     }
         
     private static TranscribeController createTranscribeUseCase(ViewManagerModel viewManagerModel, TranscribeViewModel transcribeViewModel, EpisodeDataAccess episodeDAO, TranscriptDataAccess transcriptDAO, TranscriptionInterface transcriptionObject) {
