@@ -6,8 +6,8 @@ import java.util.UUID;
 public class Podcast extends MediaCollection {
     private User assignedTo;
 
-    public Podcast(UUID id, String podcastName, User assignedTo, List<MediaItem> episodes) {
-        super(id, podcastName, episodes);
+    public Podcast(UUID id, String podcastName, String description, User assignedTo, List<MediaItem> episodes) {
+        super(id, podcastName, description, episodes);
         this.assignedTo = assignedTo;
     }
 

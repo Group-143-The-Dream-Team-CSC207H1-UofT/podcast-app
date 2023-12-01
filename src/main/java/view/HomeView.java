@@ -27,7 +27,7 @@ public class HomeView extends JFrame implements PropertyChangeListener {
             viewManagerModel.firePropertyChanged();
         });
         createButton.addActionListener(e -> {
-            viewManagerModel.setActiveView("upload_podcast");
+            viewManagerModel.setActiveView("create podcast");
             viewManagerModel.firePropertyChanged();
         });
         HomeState state = viewModel.getState();
@@ -46,15 +46,15 @@ public class HomeView extends JFrame implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        HomeState state = (HomeState) evt.getNewValue();
-        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
-        // are new podcasts uploaded only
-        secondaryPanel.removeAll();
-        List<Podcast> allPodcasts = state.getAllPodcasts();
-        for (Podcast podcast: allPodcasts) {
-            JButton podcastButton = new JButton(podcast.getName());
-            podcastButton.addActionListener(e -> System.out.println("Go to podcast view..."));
-            secondaryPanel.add(podcastButton);
-        }
+//        HomeState state = (HomeState) evt.getNewValue();
+//        // I'm not really sure what needs to happen here, this view will be mostly static, it should change when there
+//        // are new podcasts uploaded only
+//        secondaryPanel.removeAll();
+//        List<Podcast> allPodcasts = state.getAllPodcasts();
+//        for (Podcast podcast: allPodcasts) {
+//            JButton podcastButton = new JButton(podcast.getName());
+//            podcastButton.addActionListener(e -> System.out.println("Go to podcast view..."));
+//            secondaryPanel.add(podcastButton);
+//        }
     }
 }

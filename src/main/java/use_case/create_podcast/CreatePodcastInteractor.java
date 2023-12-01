@@ -18,7 +18,7 @@ public class CreatePodcastInteractor implements CreatePodcastInputBoundary {
     @Override
     public void execute(CreatePodcastInputData createPodcastInputData) {
         UUID uniqueID = UUID.randomUUID();
-        Podcast podcast = new Podcast(uniqueID, createPodcastInputData.getTitle(), createPodcastInputData.getAssignedTo(), createPodcastInputData.getEpisodes());
+        Podcast podcast = new Podcast(uniqueID, createPodcastInputData.getTitle(), createPodcastInputData.getDescription(), null, null);
         if (podcastDAO.savePodcast(podcast)){
             outputBoundary.prepareSuccessView(new CreatePodcastOutputData(podcast));
         } else {

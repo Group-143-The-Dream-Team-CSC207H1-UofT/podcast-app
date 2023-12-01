@@ -6,6 +6,7 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_podcast.CreatePodcastViewModel;
 import interface_adapter.episode.EpisodeViewModel;
 import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.home.HomeViewModel;
@@ -54,6 +55,7 @@ public class Main {
         EpisodeViewModel episodeViewModel = new EpisodeViewModel();
         HomeViewModel homeViewModel = new HomeViewModel();
         PodcastViewModel podcastViewModel = new PodcastViewModel();
+        CreatePodcastViewModel createPodcastViewModel = new CreatePodcastViewModel();
 
         CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
         views.add(createEpisodeView, createEpisodeView.viewName);
@@ -69,7 +71,10 @@ public class Main {
         views.add(homeView.panel, homeView.viewName);
 
         PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
-        views.add(podcastView, podcastView.viewName);
+        views.add(podcastView.panel, podcastView.viewName);
+
+        CreatePodcastView createPodcastView = CreatePodcastViewFactory.create(viewManagerModel, createPodcastViewModel, podcastViewModel, podcastDataAccessObject);
+        views.add(createPodcastView, createPodcastView.viewName);
 
         // set home page
         viewManagerModel.setActiveView(homeView.viewName);

@@ -20,7 +20,7 @@ public class PodcastViewFactory {
             EpisodeDataAccess episodeDataAccessObject
     ){
             EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
-            return new PodcastView(podcastViewModel, episodeController);
+            return new PodcastView(viewManagerModel, podcastViewModel, episodeController);
     }
 
     private static EpisodeController createDisplayEpisodeUseCase(
