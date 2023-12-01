@@ -2,6 +2,7 @@ package app;
 
 import data_access.PodcastDataAccess;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.create_episode.CreateEpisodeViewModel;
 import interface_adapter.podcast.PodcastController;
 import interface_adapter.podcast.PodcastPresenter;
 import interface_adapter.podcast.PodcastViewModel;
@@ -17,9 +18,9 @@ import use_case.home.HomeOutputBoundary;
 import view.HomeView;
 
 public class HomeViewFactory {
-    public static HomeView create(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, PodcastViewModel podcastViewModel, PodcastDataAccess podcastDAO) {
+    public static HomeView create(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, PodcastViewModel podcastViewModel, CreateEpisodeViewModel createEpisodeViewModel, PodcastDataAccess podcastDAO) {
         HomeController homeController = HomeViewFactory.createHomeUseCase(viewManagerModel, homeViewModel, podcastDAO);
-        PodcastController podcastController = HomeViewFactory.createPodcastUseCase(viewManagerModel, podcastViewModel, homeViewModel, podcastDAO);
+        PodcastController podcastController = HomeViewFactory.createPodcastUseCase(viewManagerModel, podcastViewModel, homeViewModel, createEpisodeViewModel, podcastDAO);
         return new HomeView(homeController, podcastController, homeViewModel, viewManagerModel);
     }
     private static HomeController createHomeUseCase(ViewManagerModel viewManagerModel, HomeViewModel viewModel, PodcastDataAccess podcastDAO) {
@@ -28,8 +29,8 @@ public class HomeViewFactory {
         return new HomeController(displayPodcastsInteractor);
     }
 
-    private static PodcastController createPodcastUseCase(ViewManagerModel viewManagerModel, PodcastViewModel viewModel, HomeViewModel homeViewModel, PodcastDataAccess podcastDAO){
-        PodcastOutputBoundary podcastOutputBoundary = new PodcastPresenter(viewModel, homeViewModel, viewManagerModel);
+    private static PodcastController createPodcastUseCase(ViewManagerModel viewManagerModel, PodcastViewModel viewModel, HomeViewModel homeViewModel, CreateEpisodeViewModel createEpisodeViewModel, PodcastDataAccess podcastDAO){
+        PodcastOutputBoundary podcastOutputBoundary = new PodcastPresenter(viewModel, createEpisodeViewModel, homeViewModel, viewManagerModel);
         PodcastInputBoundary displayPodcastInteractor = new PodcastInteractor(podcastOutputBoundary, podcastDAO);
         return new PodcastController(displayPodcastInteractor);
     }

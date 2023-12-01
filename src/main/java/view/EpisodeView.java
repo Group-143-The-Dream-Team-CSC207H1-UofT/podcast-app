@@ -2,9 +2,9 @@ package view;
 
 import entities.Episode;
 import entities.TextChunk;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeState;
 import interface_adapter.episode.EpisodeViewModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,15 +16,18 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
 
     public final String viewName = "episode";
     private final EpisodeViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
     private JLabel titleLabel;
     private JTextArea descriptionTextArea;
     private JList<TextChunk> textChunksList;
     private final JButton seeSummaryButton;
     private final JTextArea summaryTextArea;
     private final JButton playButton;
+    private final JButton backButton;
 
-    public EpisodeView(EpisodeViewModel viewModel) {
+    public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel) {
         this.viewModel = viewModel;
+        this.viewManagerModel = viewManagerModel;
         this.viewModel.addPropertyChangeListener(this);
 
         titleLabel = new JLabel();
@@ -33,6 +36,8 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
         seeSummaryButton = new JButton("See Summary");
         summaryTextArea = new JTextArea();
         playButton = new JButton("Play Episode");
+        backButton = new JButton("Back");
+
 
         setLayout(new BorderLayout());
         add(titleLabel, BorderLayout.NORTH);
@@ -51,6 +56,7 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.add(playButton);
         buttonPanel.add(seeSummaryButton);
+        buttonPanel.add(backButton);
     }
 
     public void displayEpisode(Episode episode) {
@@ -103,8 +109,8 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == playButton) {
             // Call controller for playing episode
-        } else {
-            // Handle other actions
+        } else if (evt.getSource() == backButton) {
+            viewManagerModel.setActiveView("podcast");
         }
     }
 

@@ -58,7 +58,7 @@ public class CreateEpisodeView extends JPanel implements PropertyChangeListener 
         });
         submitButton = new JButton("Submit");
         submitButton.addActionListener(e -> {
-            this.createEpisodeController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText());
+            this.createEpisodeController.execute(titleInputField.getText(), selectedFileURI, descriptionInputField.getText(), createEpisodeViewModel.getState().getCurrentPodcast().getId());
             titleInputField.setText("");
             descriptionInputField.setText("");
             selectedFileURI = null;
