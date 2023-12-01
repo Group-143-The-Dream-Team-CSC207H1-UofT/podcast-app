@@ -20,7 +20,7 @@ public class DisplayPodcastsFactory {
     public static DisplayPodcastsView create(ViewManagerModel viewManagerModel, DisplayPodcastsViewModel displayPodcastsViewModel, DisplayPodcastViewModel displayPodcastViewModel, PodcastDataAccess podcastDAO) {
         DisplayPodcastsController displayPodcastsController = DisplayPodcastsFactory.createDisplayPodcastsUseCase(viewManagerModel, displayPodcastsViewModel, podcastDAO);
         DisplayPodcastController  displayPodcastController = DisplayPodcastsFactory.createDisplayPodcastUseCase(viewManagerModel, displayPodcastViewModel, displayPodcastsViewModel, podcastDAO);
-        return new DisplayPodcastsView(displayPodcastsController, displayPodcastController, displayPodcastsViewModel);
+        return new DisplayPodcastsView(displayPodcastsController, displayPodcastController, displayPodcastsViewModel, viewManagerModel);
     }
     private static DisplayPodcastsController createDisplayPodcastsUseCase(ViewManagerModel viewManagerModel, DisplayPodcastsViewModel viewModel, PodcastDataAccess podcastDAO) {
         DisplayPodcastsOutputBoundary displayPodcastsPresenter = new DisplayPodcastsPresenter(viewModel, viewManagerModel);

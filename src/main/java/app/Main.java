@@ -72,7 +72,7 @@ public class Main {
         views.add(podcastView, podcastView.viewName);
 
         // set home page
-        viewManagerModel.setActiveView(searchView.viewName);
+        viewManagerModel.setActiveView(displayPodcastsView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);

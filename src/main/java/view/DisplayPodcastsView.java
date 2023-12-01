@@ -13,18 +13,14 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class DisplayPodcastsView extends JFrame implements PropertyChangeListener {
-    public JPanel mainPanel;
+    public JPanel panel;
     private JButton searchButton;
     private JButton createButton;
     private JPanel secondaryPanel;
-    private final DisplayPodcastsController controller;
-    private final DisplayPodcastsViewModel viewModel;
     public final String viewName = "home";
 
-    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastsViewModel viewModel, ViewManagerModel viewManagerModel) {
-        this.controller = controller;
-        this.viewModel = viewModel;
-        this.viewModel.addPropertyChangeListener(this);
+    public DisplayPodcastsView(DisplayPodcastsController controller, DisplayPodcastController displayPodcastController, DisplayPodcastsViewModel viewModel, ViewManagerModel viewManagerModel) {
+        viewModel.addPropertyChangeListener(this);
         controller.execute();
         searchButton.addActionListener(e -> {
             viewManagerModel.setActiveView("search");
@@ -34,7 +30,7 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
             viewManagerModel.setActiveView("upload_podcast");
             viewManagerModel.firePropertyChanged();
         });
-        DisplayPodcastsState state = this.viewModel.getState();
+        DisplayPodcastsState state = viewModel.getState();
         secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
         List<Podcast> allPodcasts = state.getAllPodcasts();
         for (Podcast podcast: allPodcasts) {
