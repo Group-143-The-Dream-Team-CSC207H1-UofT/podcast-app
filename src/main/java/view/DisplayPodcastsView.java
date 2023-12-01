@@ -32,12 +32,9 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
 //        setDefaultCloseOperation(EXIT_ON_CLOSE);
 //        setSize(600, 600);
 //        setLocationRelativeTo(null);
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                viewManagerModel.setActiveView("search");
-                viewManagerModel.firePropertyChanged();
-            }
+        searchButton.addActionListener(e -> {
+            viewManagerModel.setActiveView("search");
+            viewManagerModel.firePropertyChanged();
         });
         createButton.addActionListener(e -> {
             viewManagerModel.setActiveView("upload_podcast");
