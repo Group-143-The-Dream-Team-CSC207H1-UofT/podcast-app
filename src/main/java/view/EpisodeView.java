@@ -65,7 +65,11 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
         }
 
         setListCellRendererWithHighlighting(textChunksList, displayEpisodeViewModel.getState().getCurrentTextChunkIndex());
-        summaryTextArea.setText(episode.getSummary());
+        String summary = episode.getSummary();
+        if (summary != null) {
+            summaryTextArea.setText(summary);
+            toggleSummaryVisibility();
+        }
     }
 
     private void toggleSummaryVisibility() {

@@ -16,6 +16,11 @@ public class SummaryInteractor implements SummaryInputBoundary {
         episodeDataAccessObject = episodeDAO;
     }
 
+    /**
+     * Generates a summary of the given podcast using the provided API
+     * @param inputData contains a podcast with a transcript
+     * @param APIWrapper used to generate a summary of the podcast
+     */
     @Override
     public void execute(SummaryInputData inputData, SummaryAPIInterface APIWrapper) {
         Episode episode = inputData.getEpisode();
