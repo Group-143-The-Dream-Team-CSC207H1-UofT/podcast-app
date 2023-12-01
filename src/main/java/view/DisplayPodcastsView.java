@@ -39,11 +39,9 @@ public class DisplayPodcastsView extends JFrame implements PropertyChangeListene
                 viewManagerModel.firePropertyChanged();
             }
         });
-        createButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Going to upload podcast view...");
-            }
+        createButton.addActionListener(e -> {
+            viewManagerModel.setActiveView("upload_podcast");
+            viewManagerModel.firePropertyChanged();
         });
         DisplayPodcastsState state = this.viewModel.getState();
         secondaryPanel.setLayout(new GridLayout(state.getAllPodcasts().size(), 1));
