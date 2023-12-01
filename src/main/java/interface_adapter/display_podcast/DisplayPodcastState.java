@@ -1,14 +1,14 @@
-package interface_adapter.podcast;
+package interface_adapter.display_podcast;
 
 import entities.Podcast;
 
-public class PodcastState {
+public class DisplayPodcastState {
 
     private Podcast podcast;
     private String errorMessage;
-    public PodcastState() {}
+    public DisplayPodcastState() {}
 
-    public PodcastState(Podcast podcast, String errorMessage){
+    public DisplayPodcastState(Podcast podcast, String errorMessage){
         this.podcast = podcast;
         this.errorMessage = errorMessage;
     }

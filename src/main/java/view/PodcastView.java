@@ -1,7 +1,7 @@
 package view;
 
-import interface_adapter.podcast.PodcastState;
-import interface_adapter.podcast.PodcastViewModel;
+import interface_adapter.display_podcast.DisplayPodcastState;
+import interface_adapter.display_podcast.DisplayPodcastViewModel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,17 +19,17 @@ public class PodcastView extends JFrame implements PropertyChangeListener {
     private JList episodeList;
     private JScrollPane episodeListScrollPanel;
 
-    private final PodcastViewModel podcastViewModel;
+    private final DisplayPodcastViewModel displayPodcastViewModel;
 
-    public PodcastView(PodcastViewModel podcastViewModel) {
-        this.podcastViewModel = podcastViewModel;
-        this.podcastViewModel.addPropertyChangeListener(this);
+    public PodcastView(DisplayPodcastViewModel displayPodcastViewModel) {
+        this.displayPodcastViewModel = displayPodcastViewModel;
+        this.displayPodcastViewModel.addPropertyChangeListener(this);
         setTitle("Podcast");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(600, 600);
         setLocationRelativeTo(null);
 
-        PodcastState state = this.podcastViewModel.getState();
+        DisplayPodcastState state = this.displayPodcastViewModel.getState();
         podcastTextPane.setText(state.getPodcast().getName());
 
 
@@ -42,7 +42,7 @@ public class PodcastView extends JFrame implements PropertyChangeListener {
         });
     }
 
-    private void addAllPodcastEpisodes(PodcastState state){
+    private void addAllPodcastEpisodes(DisplayPodcastState state){
 
     }
 

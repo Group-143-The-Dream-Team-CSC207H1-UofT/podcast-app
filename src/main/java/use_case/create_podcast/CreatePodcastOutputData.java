@@ -1,11 +1,11 @@
-package use_case.podcast;
+package use_case.create_podcast;
 
 import entities.Podcast;
-public class PodcastOutputData {
+public class CreatePodcastOutputData {
 
     private final Podcast podcast;
 
-    public PodcastOutputData(Podcast podcast) {
+    public CreatePodcastOutputData(Podcast podcast) {
         this.podcast = podcast;
     }
 

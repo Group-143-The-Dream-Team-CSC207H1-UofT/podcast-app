@@ -2,7 +2,6 @@ package use_case.display_podcasts;
 
 import data_access.PodcastDataAccess;
 import entities.Podcast;
-import use_case.podcast.PodcastOutputData;
 
 import java.util.ArrayList;
 import java.util.List;
