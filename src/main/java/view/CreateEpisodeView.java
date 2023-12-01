@@ -1,8 +1,10 @@
 package view;
 
 import entities.Episode;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.search_index.SearchIndexController;
 import interface_adapter.search_index.SearchIndexState;
+import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeController;
 import interface_adapter.transcribe.TranscribeState;
 import interface_adapter.transcribe.TranscribeViewModel;
@@ -18,8 +20,10 @@ import java.net.URI;
 
 public class CreateEpisodeView extends JPanel implements PropertyChangeListener {
     public final String viewName = "upload";
+    private final ViewManagerModel viewManagerModel;
     private final CreateEpisodeViewModel createEpisodeViewModel;
     private final TranscribeViewModel transcribeViewModel;
+    private final SearchIndexViewModel searchIndexViewModel;
     private final CreateEpisodeController createEpisodeController;
     private  final  TranscribeController transcribeController;
     private final SearchIndexController searchIndexController;
@@ -30,7 +34,8 @@ public class CreateEpisodeView extends JPanel implements PropertyChangeListener 
     private URI selectedFileURI;
     private final JButton submitButton;
 
-    public CreateEpisodeView(CreateEpisodeController createEpisodeController, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController, SearchIndexController searchIndexController) {
+    public CreateEpisodeView(ViewManagerModel viewManagerModel, CreateEpisodeController createEpisodeController, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, TranscribeController transcribeController, SearchIndexViewModel searchIndexViewModel, SearchIndexController searchIndexController) {
+        this.viewManagerModel = viewManagerModel;
         this.createEpisodeController = createEpisodeController;
         this.createEpisodeViewModel = createEpisodeViewModel;
         this.createEpisodeViewModel.addPropertyChangeListener(this);
@@ -38,6 +43,9 @@ public class CreateEpisodeView extends JPanel implements PropertyChangeListener 
         this.transcribeViewModel = transcribeViewModel;
         this.transcribeViewModel.addPropertyChangeListener(this);
         this.searchIndexController = searchIndexController;
+        this.searchIndexViewModel = searchIndexViewModel;
+        this.searchIndexViewModel.addPropertyChangeListener(this);
+
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -111,7 +119,9 @@ public class CreateEpisodeView extends JPanel implements PropertyChangeListener 
             Episode episode = searchIndexState.getEpisode();
             String errorMessage = searchIndexState.getErrorMessage();
             if (episode != null) {
-                status.setText(String.format("Successfully indexed transcript for %s", episode.getTitle()));
+                System.out.println("Go back to podcast view");
+                viewManagerModel.setActiveView("podcast");
+                viewManagerModel.firePropertyChanged();
             } else if (!errorMessage.isEmpty()) {
                 status.setText(errorMessage);
             }

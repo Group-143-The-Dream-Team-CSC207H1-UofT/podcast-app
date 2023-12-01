@@ -6,7 +6,6 @@ import use_case.podcast.PodcastInputData;
 import java.util.UUID;
 
 public class PodcastController {
-
     final PodcastInputBoundary displayPodcastInteractor;
 
     public PodcastController(PodcastInputBoundary displayPodcastInteractor) {
@@ -15,9 +14,7 @@ public class PodcastController {
 
     public void execute(UUID podcastUUID){
         PodcastInputData podcastInputData = new PodcastInputData(podcastUUID);
-
         displayPodcastInteractor.execute(podcastInputData);
-
     }
 
 }
