@@ -6,6 +6,8 @@ import api.OpenAIEmbeddings;
 import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.display_episode.DisplayEpisodeViewModel;
+import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.display_podcast.DisplayPodcastViewModel;
 import interface_adapter.display_episode.DisplayEpisodeViewModel;
 import interface_adapter.display_podcasts.DisplayPodcastsViewModel;
@@ -52,13 +54,10 @@ public class Main {
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
-
-//        viewManagerModel.setActiveView(searchView.viewName);
         DisplayEpisodeViewModel displayEpisodeViewModel = new DisplayEpisodeViewModel();
         // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
         EpisodeView episodeView = new EpisodeView(displayEpisodeViewModel);
         views.add(episodeView, episodeView.viewName);
-
 
         PodcastDataAccess podcastDataAccessObject = new PodcastDataAccessObject(episodeDataAccessObject);
         DisplayPodcastsViewModel displayPodcastsViewModel = new DisplayPodcastsViewModel();
@@ -70,10 +69,7 @@ public class Main {
         PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, displayPodcastViewModel, displayEpisodeViewModel, episodeDataAccessObject);
         views.add(podcastView, podcastView.viewName);
 
-
-
-        viewManagerModel.setActiveView(searchView.viewName);
-//        viewManagerModel.setActiveView(uploadView.viewName);
+        viewManagerModel.setActiveView(displayPodcastsView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.setSize(960, 540);
