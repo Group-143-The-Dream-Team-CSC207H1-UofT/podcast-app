@@ -3,31 +3,29 @@ package view;
 import entities.Episode;
 import entities.MediaItem;
 import entities.Podcast;
-import interface_adapter.display_episode.DisplayEpisodeController;
-import interface_adapter.display_podcast.DisplayPodcastState;
-import interface_adapter.display_podcast.DisplayPodcastViewModel;
+import interface_adapter.episode.EpisodeController;
+import interface_adapter.podcast.PodcastState;
+import interface_adapter.podcast.PodcastViewModel;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
 public class PodcastView extends JPanel implements PropertyChangeListener {
 
-    private final DisplayPodcastViewModel displayPodcastViewModel;
-    private final DisplayEpisodeController displayEpisodeController;
+    private final PodcastViewModel podcastViewModel;
+    private final EpisodeController episodeController;
     public final String viewName="podcast";
     private JLabel podcastTitleLabel;
     private JTextArea podcastDescriptionTextArea;
     private JPanel episodePanel;
     private JButton backButton;
 
-    public PodcastView(DisplayPodcastViewModel displayPodcastViewModel, DisplayEpisodeController displayEpisodeController) {
-        this.displayPodcastViewModel = displayPodcastViewModel;
-        this.displayPodcastViewModel.addPropertyChangeListener(this);
-        this.displayEpisodeController = displayEpisodeController;
+    public PodcastView(PodcastViewModel podcastViewModel, EpisodeController episodeController) {
+        this.podcastViewModel = podcastViewModel;
+        this.podcastViewModel.addPropertyChangeListener(this);
+        this.episodeController = episodeController;
 
         initializeComponents();
         layoutComponents();
@@ -58,7 +56,7 @@ public class PodcastView extends JPanel implements PropertyChangeListener {
 
         for (MediaItem episode : episodes) {
             JButton episodeButton = new JButton(episode.getTitle());
-            episodeButton.addActionListener(e -> displayEpisodeController.execute(episode.getId()));
+            episodeButton.addActionListener(e -> episodeController.execute(episode.getId()));
             episodePanel.add(episodeButton);
         }
 
@@ -73,7 +71,7 @@ public class PodcastView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayPodcastState state = (DisplayPodcastState) evt.getNewValue();
+        PodcastState state = (PodcastState) evt.getNewValue();
         displayPodcast(state.getCurrentPodcast());
     }
 
