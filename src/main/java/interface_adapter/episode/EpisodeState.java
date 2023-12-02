@@ -9,16 +9,16 @@ public class EpisodeState {
 
     private Episode currentEpisode;
     private List<TextChunk> textChunks;
-    private int currentTextChunkIndex;
-    public EpisodeState(Episode currentEpisode, List<TextChunk> textChunks, int currentTextChunkIndex){
+    private TextChunk currentTextChunk;
+    public EpisodeState(Episode currentEpisode, List<TextChunk> textChunks, TextChunk currentTextChunk){
         this.currentEpisode = currentEpisode;
         this.textChunks = textChunks;
-        this.currentTextChunkIndex = currentTextChunkIndex;
+        this.currentTextChunk = currentTextChunk;
     }
     public EpisodeState(EpisodeState copy){
         this.currentEpisode = copy.currentEpisode;
         this.textChunks = copy.textChunks;
-        this.currentTextChunkIndex = copy.currentTextChunkIndex;
+        this.currentTextChunk = copy.currentTextChunk;
     }
     public EpisodeState(){}
 
@@ -30,12 +30,12 @@ public class EpisodeState {
         this.currentEpisode = currentEpisode;
     }
 
-    public int getCurrentTextChunkIndex() {
-        return currentTextChunkIndex;
+    public TextChunk getCurrentTextChunk() {
+        return currentTextChunk;
     }
 
-    public void setCurrentTextChunkIndex(int currentTextChunkIndex){
-        this.currentTextChunkIndex = currentTextChunkIndex;
+    public void setCurrentTextChunk(TextChunk currentTextChunk){
+        this.currentTextChunk = currentTextChunk;
     }
     public List<TextChunk> getTextChunks() {
         return textChunks;

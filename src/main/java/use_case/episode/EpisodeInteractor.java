@@ -14,7 +14,9 @@ public class EpisodeInteractor implements EpisodeInputBoundary {
         this.displayEpisodePresenter = displayEpisodePresenter;
         this.episodeDataAccessObject = episodeDataAccessObject;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void execute(EpisodeInputData episodeInputData) {
         UUID episodeUUID = episodeInputData.getEpisodeId();
@@ -23,7 +25,7 @@ public class EpisodeInteractor implements EpisodeInputBoundary {
         if (episode == null) {
             displayEpisodePresenter.prepareFailView("Episode with ID " + episodeUUID + " does not exist");
         } else {
-        EpisodeOutputData episodeOutputData = new EpisodeOutputData(episode, episodeInputData.getCurrentTextChunkIndex(), false);
+        EpisodeOutputData episodeOutputData = new EpisodeOutputData(episode, episodeInputData.getCurrentTextChunk(), false);
         displayEpisodePresenter.prepareSuccessView(episodeOutputData);
         }
     }

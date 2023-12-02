@@ -57,20 +57,20 @@ public class Main {
         PodcastViewModel podcastViewModel = new PodcastViewModel();
         CreatePodcastViewModel createPodcastViewModel = new CreatePodcastViewModel();
 
-        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings);
+        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings, podcastDataAccessObject);
         views.add(createEpisodeView, createEpisodeView.viewName);
 
-        SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
+        SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
         // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
-        EpisodeView episodeView = new EpisodeView(episodeViewModel);
-        views.add(episodeView, episodeView.viewName);
+        EpisodeView episodeView = new EpisodeView(viewManagerModel, episodeViewModel);
+        views.add(episodeView.panel, episodeView.viewName);
 
-        HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, podcastDataAccessObject);
+        HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, createEpisodeViewModel, podcastDataAccessObject);
         views.add(homeView.panel, homeView.viewName);
 
-        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, homeViewModel, episodeDataAccessObject, podcastDataAccessObject);
+        PodcastView podcastView = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, createEpisodeViewModel, homeViewModel, episodeDataAccessObject, podcastDataAccessObject);
         views.add(podcastView.panel, podcastView.viewName);
 
         CreatePodcastView createPodcastView = CreatePodcastViewFactory.create(viewManagerModel, createPodcastViewModel, podcastViewModel, podcastDataAccessObject);

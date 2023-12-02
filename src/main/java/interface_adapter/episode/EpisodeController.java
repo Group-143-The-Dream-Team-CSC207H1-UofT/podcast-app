@@ -1,5 +1,6 @@
 package interface_adapter.episode;
 
+import entities.TextChunk;
 import use_case.episode.EpisodeInputBoundary;
 import use_case.episode.EpisodeInputData;
 
@@ -15,20 +16,12 @@ public class EpisodeController {
 
     /**
      * Requires: episode is saved and valid
-     * @param episodeUUID ID of the episode to be displayed
-     */
-    public void execute(UUID episodeUUID){
-        EpisodeInputData episodeInputData = new EpisodeInputData(episodeUUID, 0);
-        displayEpisodeInteractor.execute(episodeInputData);
-    }
-    /**
-     * * Requires: episode is saved and valid
      * Requires: text chunk index is valid for the episode corresponding to this episode ID.
      * @param episodeUUID ID of the episode to be displayed
-     * @param currentTextChunkIndex Index of the current text chunk from the episode to be highlighted in Episode View
+     * @param currentTextChunk The current text chunk from the episode to be highlighted in Episode View
      */
-    public void execute(UUID episodeUUID, int currentTextChunkIndex){
-        EpisodeInputData episodeInputData = new EpisodeInputData(episodeUUID, currentTextChunkIndex);
+    public void execute(UUID episodeUUID, TextChunk currentTextChunk){
+        EpisodeInputData episodeInputData = new EpisodeInputData(episodeUUID, currentTextChunk);
         displayEpisodeInteractor.execute(episodeInputData);
     }
 }

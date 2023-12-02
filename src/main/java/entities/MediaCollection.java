@@ -18,7 +18,7 @@ public abstract class MediaCollection {
         if (mediaItems == null) {
             this.items = new ArrayList<>();
         } else {
-            this.items = List.copyOf(mediaItems);
+            this.items = new ArrayList<>(mediaItems);
         }
     }
 

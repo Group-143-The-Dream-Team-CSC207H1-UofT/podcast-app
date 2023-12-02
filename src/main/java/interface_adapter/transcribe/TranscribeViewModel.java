@@ -21,12 +21,16 @@ public class TranscribeViewModel extends ViewModel {
     public void setState(TranscribeState state) {
         this.transcribeState = state;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void firePropertyChanged() {
         support.firePropertyChange("transcribe", null, this.transcribeState);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }

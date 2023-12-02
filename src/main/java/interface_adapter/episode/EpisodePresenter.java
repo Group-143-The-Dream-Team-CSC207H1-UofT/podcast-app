@@ -12,24 +12,35 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final PodcastViewModel podcastViewModel;
 
+    /**
+     * Constructs an EpisodePresenter with necessary models and view models.
+     *
+     * @param viewManagerModel The model managing different views.
+     * @param episodeViewModel ViewModel for episode-related functionalities.
+     * @param podcastViewModel ViewModel associated with podcast-related operations.
+     */
     public EpisodePresenter(ViewManagerModel viewManagerModel, EpisodeViewModel episodeViewModel, PodcastViewModel podcastViewModel){
         this.episodeViewModel = episodeViewModel;
         this.viewManagerModel = viewManagerModel;
         this.podcastViewModel = podcastViewModel;
     }
+    /**
+     * {@inheritDoc}
+     * */
     @Override
-    public void prepareSuccessView(EpisodeOutputData response) {
+    public void prepareSuccessView(EpisodeOutputData episodeOutputData) {
         EpisodeState episodeState = episodeViewModel.getState();
-        episodeState.setCurrentEpisode(response.getEpisode());
-        episodeState.setTextChunks(response.getEpisode().getTranscript().getTextChunks());
-        episodeState.setCurrentTextChunkIndex(response.getCurrentTextChunkIndex());
+        episodeState.setCurrentEpisode(episodeOutputData.getEpisode());
+        episodeState.setTextChunks(episodeOutputData.getEpisode().getTranscript().getTextChunks());
+        episodeState.setCurrentTextChunk(episodeOutputData.getCurrentTextChunk());
         this.episodeViewModel.setState(episodeState);
         this.episodeViewModel.firePropertyChanged();
         this.viewManagerModel.setActiveView(episodeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-
     }
-
+    /**
+     * {@inheritDoc}
+     * */
     @Override
     public void prepareFailView(String error) {
         PodcastState podcastState = podcastViewModel.getState();
