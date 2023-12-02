@@ -20,7 +20,19 @@ import use_case.home.HomeOutputBoundary;
 import view.PodcastView;
 
 public class PodcastViewFactory {
-
+    /**
+     * Factory method to create and configure a PodcastView instance.
+     * This method assembles the necessary components and controllers required for the PodcastView.
+     *
+     * @param viewManagerModel The model managing different views in the application.
+     * @param podcastViewModel ViewModel associated with podcast-related operations.
+     * @param episodeViewModel ViewModel for episode-related functionalities.
+     * @param createEpisodeViewModel ViewModel for creating new episodes.
+     * @param homeViewModel ViewModel for the home view of the application.
+     * @param episodeDataAccessObject Data access object for episode-related operations.
+     * @param podcastDAO Data access object for podcast-related operations.
+     * @return An instance of PodcastView fully configured with the necessary controllers and view models.
+     */
     public static PodcastView create(
             ViewManagerModel viewManagerModel,
             PodcastViewModel podcastViewModel,

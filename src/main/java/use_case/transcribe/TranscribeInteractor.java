@@ -25,7 +25,9 @@ public class TranscribeInteractor implements TranscribeInputBoundary {
         this.transcriptDAO = transcriptDAO;
         this.transcriptionObject = transcriptionObject;
     }
-    
+    /**
+     * {@inheritDoc}
+     */
     public void execute(TranscribeInputData inputData) {
         Episode episode = inputData.getEpisode();
         UUID epsUUID = episode.getId();

@@ -22,7 +22,7 @@ public class EpisodeController {
         displayEpisodeInteractor.execute(episodeInputData);
     }
     /**
-     * * Requires: episode is saved and valid
+     * Requires: episode is saved and valid
      * Requires: text chunk index is valid for the episode corresponding to this episode ID.
      * @param episodeUUID ID of the episode to be displayed
      * @param currentTextChunkIndex Index of the current text chunk from the episode to be highlighted in Episode View

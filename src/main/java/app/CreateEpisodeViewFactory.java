@@ -25,7 +25,23 @@ import view.CreateEpisodeView;
 
 
 public class CreateEpisodeViewFactory {
-        
+    /**
+     * Factory method to create and configure a CreateEpisodeView instance.
+     * This method initializes controllers for creating an episode, transcribing, and
+     * indexing search data. It then uses these controllers to create a CreateEpisodeView.
+     *
+     * @param viewManagerModel The model managing different views.
+     * @param createEpisodeViewModel ViewModel for creating an episode.
+     * @param transcribeViewModel ViewModel for the transcription process.
+     * @param searchIndexViewModel ViewModel for managing search indexing.
+     * @param episodeDataAccess Data access object for episode-related operations.
+     * @param transcriptDataAccess Data access object for transcript-related operations.
+     * @param transcriptionObject Object for transcription functionality.
+     * @param vectorDatabase Database for storing vector representations.
+     * @param embeddings Interface for generating embeddings.
+     * @param podcastDAO Data access object for podcast-related operations.
+     * @return An instance of CreateEpisodeView fully configured with the necessary controllers.
+     */
     public static CreateEpisodeView create(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, SearchIndexViewModel searchIndexViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings, PodcastDataAccess podcastDAO) {
         CreateEpisodeController createEpisodeController = createEpisodeUseCase(viewManagerModel, createEpisodeViewModel, episodeDataAccess, podcastDAO);
         TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess, transcriptionObject);

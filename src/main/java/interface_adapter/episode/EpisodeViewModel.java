@@ -7,10 +7,16 @@ import java.beans.PropertyChangeSupport;
 public class EpisodeViewModel extends ViewModel {
     private EpisodeState state = new EpisodeState();
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
-
+    /**
+     * {@inheritDoc}
+     * */
     public void firePropertyChanged() {
         support.firePropertyChange("state", null, this.state);
     }
+
+    /**
+     * {@inheritDoc}
+     * */
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
