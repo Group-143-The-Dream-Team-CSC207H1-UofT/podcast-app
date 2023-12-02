@@ -114,7 +114,7 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
     // TODO: test this, I honestly don't know if this works and I'm not really sure how to test it, sorry :(
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == playButton) {
-            File audioFile = new File("path/to/your/audiofile.wav");
+            File audioFile = new File("target/classes/audioFiles/" + viewModel.getState().getCurrentEpisode().getId().toString() + ".wav");
             AudioInputStream audioStream = null;
             try {
                 audioStream = AudioSystem.getAudioInputStream(audioFile);
