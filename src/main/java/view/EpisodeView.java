@@ -5,12 +5,16 @@ import entities.TextChunk;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeState;
 import interface_adapter.episode.EpisodeViewModel;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.net.URL;
 
 public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
 
@@ -91,7 +95,7 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 TextChunk chunk = (TextChunk) value;
-                setText(chunk.toString());
+                setText(chunk.getText());
 
                 if (index == highlightedIndex) {
                     setForeground(Color.RED);
@@ -106,9 +110,13 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
     }
 
 
+    // TODO: test this, I honestly don't know if this works and I'm not really sure how to test it, sorry :(
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == playButton) {
-            // Call controller for playing episode
+            URL file = EpisodeView.class.getClass().getResource(""); // TODO: add the file location here, I don't really know where it goes
+            final Media media = new Media(file.toString());
+            final MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
         } else if (evt.getSource() == backButton) {
             viewManagerModel.setActiveView("podcast");
         }
