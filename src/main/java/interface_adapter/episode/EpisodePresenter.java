@@ -32,7 +32,7 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
         EpisodeState episodeState = episodeViewModel.getState();
         episodeState.setCurrentEpisode(episodeOutputData.getEpisode());
         episodeState.setTextChunks(episodeOutputData.getEpisode().getTranscript().getTextChunks());
-        episodeState.setCurrentTextChunkIndex(episodeOutputData.getCurrentTextChunkIndex());
+        episodeState.setCurrentTextChunk(episodeOutputData.getCurrentTextChunk());
         this.episodeViewModel.setState(episodeState);
         this.episodeViewModel.firePropertyChanged();
         this.viewManagerModel.setActiveView(episodeViewModel.getViewName());

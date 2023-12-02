@@ -1,5 +1,6 @@
 package view;
 
+import entities.Episode;
 import entities.MediaItem;
 import entities.Podcast;
 import interface_adapter.ViewManagerModel;
@@ -9,6 +10,8 @@ import interface_adapter.episode.EpisodeController;
 import interface_adapter.home.HomeController;
 import interface_adapter.podcast.PodcastState;
 import interface_adapter.podcast.PodcastViewModel;
+
+import javax.print.attribute.standard.Media;
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -54,9 +57,11 @@ public class PodcastView implements PropertyChangeListener {
     private void updateEpisodeList(List<MediaItem> episodes) {
         episodeList.removeAll();  // Clear existing buttons
 
-        for (MediaItem episode : episodes) {
+        for (MediaItem item : episodes) {
+            Episode episode = (Episode) item;
             JButton episodeButton = new JButton(episode.getTitle());
-            episodeButton.addActionListener(e -> episodeController.execute(episode.getId()));
+            episodeButton.addActionListener(e ->
+                episodeController.execute(episode.getId(), episode.getTranscript().getTextChunks().get(0)));
             episodeList.add(episodeButton);
         }
 

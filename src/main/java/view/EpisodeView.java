@@ -5,7 +5,6 @@ import entities.TextChunk;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeState;
 import interface_adapter.episode.EpisodeViewModel;
-
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -15,58 +14,55 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URISyntaxException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
-
+public class EpisodeView implements PropertyChangeListener {
     public final String viewName = "episode";
     private final EpisodeViewModel viewModel;
-    private final ViewManagerModel viewManagerModel;
     private JLabel titleLabel;
-    private JTextArea descriptionTextArea;
     private JList<TextChunk> textChunksList;
-    private final JButton seeSummaryButton;
-    private final JTextArea summaryTextArea;
-    private final JButton playButton;
-    private final JButton backButton;
+    private JButton backButton;
+    public JPanel panel;
+    private JTextPane descriptionTextPane;
+    private JButton playPauseButton;
+    private JScrollPane transcriptScrollPane;
+    private JButton summaryButton;
+    private Clip episodeAudioClip;
+    private boolean audioPlaying;
+    private Runnable updateTextChunkHighlighting;
 
     public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel) {
         this.viewModel = viewModel;
-        this.viewManagerModel = viewManagerModel;
         this.viewModel.addPropertyChangeListener(this);
-
-        titleLabel = new JLabel();
-        descriptionTextArea = new JTextArea();
-        textChunksList = new JList<>();
-        seeSummaryButton = new JButton("See Summary");
-        summaryTextArea = new JTextArea();
-        playButton = new JButton("Play Episode");
-        backButton = new JButton("Back");
-
-
-        setLayout(new BorderLayout());
-        add(titleLabel, BorderLayout.NORTH);
-        add(new JScrollPane(descriptionTextArea), BorderLayout.CENTER);
 
         DefaultListModel<TextChunk> listModel = new DefaultListModel<>();
         textChunksList.setModel(listModel);
-        add(new JScrollPane(textChunksList), BorderLayout.CENTER);
 
-        seeSummaryButton.addActionListener(e -> toggleSummaryVisibility());
-        add(seeSummaryButton, BorderLayout.SOUTH);
+        backButton.addActionListener(e -> {
+            episodeAudioClip.stop();
+            viewManagerModel.setActiveView("podcast");
+            viewManagerModel.firePropertyChanged();;
+        });
 
-        summaryTextArea.setVisible(false);
-        add(summaryTextArea, BorderLayout.SOUTH);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(playButton);
-        buttonPanel.add(seeSummaryButton);
-        buttonPanel.add(backButton);
+        playPauseButton.addActionListener(event -> {
+            if (audioPlaying) {
+                episodeAudioClip.stop();
+                playPauseButton.setText("▶");
+                audioPlaying = false;
+            } else {
+                episodeAudioClip.start();
+                playPauseButton.setText("⏸");
+                audioPlaying = true;
+            }
+        });
     }
 
     public void displayEpisode(Episode episode) {
         titleLabel.setText(episode.getTitle());
-        descriptionTextArea.setText(episode.getItemDescription());
+        descriptionTextPane.setText(episode.getItemDescription());
 
         // Populate list with TextChunks
         DefaultListModel<TextChunk> listModel = (DefaultListModel<TextChunk>) textChunksList.getModel();
@@ -75,15 +71,61 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
             listModel.addElement(chunk);
         }
 
-        setListCellRendererWithHighlighting(textChunksList, viewModel.getState().getCurrentTextChunkIndex());
-        summaryTextArea.setText(episode.getSummary());
+//        summaryTextArea.setText(episode.getSummary());  // TODO add this
+
+        File episodeAudioFile;
+        try {
+            episodeAudioFile = new File(this.getClass().getResource(String.format("/audioFiles/%s.wav", viewModel.getState().getCurrentEpisode().getId())).toURI());
+        } catch (URISyntaxException e) {
+            System.out.println("Failed to find audio file for episode.");
+            return;
+        }
+        AudioInputStream audioStream = null;
+        try {
+            audioStream = AudioSystem.getAudioInputStream(episodeAudioFile);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Get Clip
+        try {
+            episodeAudioClip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            episodeAudioClip.open(audioStream);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        episodeAudioClip.setMicrosecondPosition(viewModel.getState().getCurrentTextChunk().getStart() * 1000);
+        episodeAudioClip.setFramePosition(0);
+        audioPlaying = false;
+        playPauseButton.setText("▶");
+
+        updateTextChunkHighlighting = () -> {
+            long currentTime = episodeAudioClip.getMicrosecondPosition() / 1000;
+            for (TextChunk chunk : viewModel.getState().getCurrentEpisode().getTranscript().getTextChunks()) {
+                if (chunk.getStart() <= currentTime && chunk.getEnd() >= currentTime) {
+                    setListCellRendererWithHighlighting(textChunksList, chunk);
+                    transcriptScrollPane.revalidate();
+                    transcriptScrollPane.repaint();
+                    return;
+                }
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(updateTextChunkHighlighting, 0, 250, TimeUnit.MILLISECONDS);
     }
 
-    private void toggleSummaryVisibility() {
-        summaryTextArea.setVisible(!summaryTextArea.isVisible());
-    }
 
-    private void setListCellRendererWithHighlighting(JList<TextChunk> list, int highlightedIndex) {
+
+    private void setListCellRendererWithHighlighting(JList<TextChunk> list, TextChunk highlightedChunk) {
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(
@@ -98,7 +140,7 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
                 TextChunk chunk = (TextChunk) value;
                 setText(chunk.getText());
 
-                if (index == highlightedIndex) {
+                if (chunk == highlightedChunk) {
                     setForeground(Color.RED);
                 } else {
                     setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
@@ -108,39 +150,6 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
                 return this;
             }
         });
-    }
-
-
-    // TODO: test this, I honestly don't know if this works and I'm not really sure how to test it, sorry :(
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource() == playButton) {
-            File audioFile = new File("target/classes/audioFiles/" + viewModel.getState().getCurrentEpisode().getId().toString() + ".wav");
-            AudioInputStream audioStream = null;
-            try {
-                audioStream = AudioSystem.getAudioInputStream(audioFile);
-            } catch (UnsupportedAudioFileException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Get Clip
-            Clip clip = null;
-            try {
-                clip = AudioSystem.getClip();
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                clip.open(audioStream);
-            } catch (LineUnavailableException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else if (evt.getSource() == backButton) {
-            viewManagerModel.setActiveView("podcast");
-        }
     }
 
     @Override

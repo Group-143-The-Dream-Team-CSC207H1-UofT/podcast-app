@@ -65,7 +65,7 @@ public class Main {
 
         // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
         EpisodeView episodeView = new EpisodeView(viewManagerModel, episodeViewModel);
-        views.add(episodeView, episodeView.viewName);
+        views.add(episodeView.panel, episodeView.viewName);
 
         HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, createEpisodeViewModel, podcastDataAccessObject);
         views.add(homeView.panel, homeView.viewName);

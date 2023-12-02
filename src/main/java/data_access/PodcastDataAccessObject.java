@@ -76,9 +76,8 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                     .replace("(", "")
                     .replace(")", "")
                     .split(",");
-            List<String> episodeIdList = Arrays.asList(episodeIdsArray);
             List<MediaItem> podcastEpisodes = new ArrayList<>();
-            for (String id : episodeIdList) {
+            for (String id : episodeIdsArray) {
                 Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
                 podcastEpisodes.add(episode);
             }
@@ -104,12 +103,6 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
                 List<String> episodeIdsList = new ArrayList<>();
-                if (podcast.getItems() != null) {
-                    for (MediaItem episode : podcast.getItems()) {
-                        UUID id = episode.getId();
-                        episodeIdsList.add(id.toString());
-                    }
-                }
                 String episodeIds;
                 if (!podcast.getItems().isEmpty()) {
                     for (MediaItem episode : podcast.getItems()) {
