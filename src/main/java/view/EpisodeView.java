@@ -5,15 +5,16 @@ import entities.TextChunk;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeState;
 import interface_adapter.episode.EpisodeViewModel;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
@@ -113,10 +114,30 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
     // TODO: test this, I honestly don't know if this works and I'm not really sure how to test it, sorry :(
     public void actionPerformed(ActionEvent evt) {
         if (evt.getSource() == playButton) {
-            URL file = EpisodeView.class.getClass().getResource(""); // TODO: add the file location here, I don't really know where it goes
-            final Media media = new Media(file.toString());
-            final MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.play();
+            File audioFile = new File("path/to/your/audiofile.wav");
+            AudioInputStream audioStream = null;
+            try {
+                audioStream = AudioSystem.getAudioInputStream(audioFile);
+            } catch (UnsupportedAudioFileException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Get Clip
+            Clip clip = null;
+            try {
+                clip = AudioSystem.getClip();
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                clip.open(audioStream);
+            } catch (LineUnavailableException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (evt.getSource() == backButton) {
             viewManagerModel.setActiveView("podcast");
         }
