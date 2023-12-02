@@ -60,7 +60,7 @@ public class Main {
         CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings, podcastDataAccessObject);
         views.add(createEpisodeView, createEpisodeView.viewName);
 
-        SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
+        SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
         // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.

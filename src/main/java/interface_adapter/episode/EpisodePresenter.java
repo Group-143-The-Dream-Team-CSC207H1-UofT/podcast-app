@@ -37,7 +37,6 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
         this.episodeViewModel.firePropertyChanged();
         this.viewManagerModel.setActiveView(episodeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
-
     }
     /**
      * {@inheritDoc}

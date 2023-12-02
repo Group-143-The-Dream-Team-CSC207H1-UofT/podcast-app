@@ -103,7 +103,6 @@ public class EpisodeView implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
         episodeAudioClip.setMicrosecondPosition(viewModel.getState().getCurrentTextChunk().getStart() * 1000);
-        episodeAudioClip.setFramePosition(0);
         audioPlaying = false;
         playPauseButton.setText("▶");
 
