@@ -1,21 +1,24 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class MediaCollection {
     private final UUID id;
     private final String name;
+    private final String description;
     private List<MediaItem> items;
 
     // Constructors, getters ...
-    public MediaCollection(UUID id, String mediaName, List<MediaItem> mediaItems) {
+    public MediaCollection(UUID id, String mediaName, String description, List<MediaItem> mediaItems) {
         this.id = id;
         this.name = mediaName;
-        if (mediaItems != null) {
-            this.items = List.copyOf(mediaItems);
+        this.description = description;
+        if (mediaItems == null) {
+            this.items = new ArrayList<>();
         } else {
-            items = null;
+            this.items = new ArrayList<>(mediaItems);
         }
     }
 
@@ -25,6 +28,10 @@ public abstract class MediaCollection {
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public List<MediaItem> getItems() {

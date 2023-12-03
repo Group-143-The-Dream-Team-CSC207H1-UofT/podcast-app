@@ -3,26 +3,26 @@ package use_case.podcast;
 
 import data_access.PodcastDataAccess;
 import entities.Podcast;
+
 import java.util.UUID;
 
 public class PodcastInteractor implements PodcastInputBoundary {
-
     private final PodcastOutputBoundary outputBoundary;
     private final PodcastDataAccess podcastDAO;
-
     public PodcastInteractor(PodcastOutputBoundary outputBoundary, PodcastDataAccess podcastDAO) {
         this.outputBoundary = outputBoundary;
         this.podcastDAO = podcastDAO;
     }
-
     @Override
     public void execute(PodcastInputData podcastInputData) {
-        UUID uniqueID = UUID.randomUUID();
-        Podcast podcast = new Podcast(uniqueID, podcastInputData.getTitle(), podcastInputData.getAssignedTo(), podcastInputData.getEpisodes());
-        if (podcastDAO.savePodcast(podcast)){
-            outputBoundary.prepareSuccessView(new PodcastOutputData(podcast));
+        UUID podcastUUID = podcastInputData.getPodcastID();
+        Podcast podcast = podcastDAO.getPodcastById(podcastUUID);
+        if (podcast == null) {
+            outputBoundary.prepareFailView("Podcast with ID " + podcastUUID + " does not exist");
         } else {
-            outputBoundary.prepareFailView("Failed to save podcast.");
+            PodcastOutputData displayPodcastsOutputData = new PodcastOutputData(podcast, false);
+            outputBoundary.prepareSuccessView(displayPodcastsOutputData);
         }
+
     }
 }

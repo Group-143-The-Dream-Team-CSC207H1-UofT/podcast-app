@@ -2,6 +2,8 @@ package view;
 
 import entities.Episode;
 import entities.TextChunk;
+import interface_adapter.ViewManagerModel;
+import interface_adapter.episode.EpisodeController;
 import interface_adapter.search.SearchController;
 import interface_adapter.search.SearchState;
 import interface_adapter.search.SearchViewModel;
@@ -22,8 +24,9 @@ public class SearchView implements PropertyChangeListener {
     private JButton homeButton;
     private final SearchViewModel searchViewModel;
     private final SearchController searchController;
+    private final EpisodeController episodeController;
 
-    public SearchView(SearchViewModel searchViewModel, SearchController searchController) {
+    public SearchView(SearchViewModel searchViewModel, SearchController searchController, EpisodeController episodeController, ViewManagerModel viewManagerModel) {
         this.searchViewModel = searchViewModel;
         this.searchViewModel.addPropertyChangeListener(this);
         this.searchController = searchController;
@@ -31,8 +34,10 @@ public class SearchView implements PropertyChangeListener {
             this.searchController.execute(searchQuery.getText());
         });
         homeButton.addActionListener(e -> {
-            System.out.println("Go to podcasts view");
+            viewManagerModel.setActiveView("home");
+            viewManagerModel.firePropertyChanged();
         });
+        this.episodeController = episodeController;
         this.resultsPanel.setLayout(new BoxLayout(this.resultsPanel, BoxLayout.Y_AXIS));
     }
 
@@ -60,13 +65,14 @@ public class SearchView implements PropertyChangeListener {
     }
 
     @NotNull
-    private static JButton getResultButton(SearchResult result) {
+    private JButton getResultButton(SearchResult result) {
         JButton button = new JButton();
         Episode episode = result.getEpisode();
 
         if (result instanceof EpisodeSearchResult){
             button.setText(String.format("%s: %s\n\n", episode.getTitle(), episode.getItemDescription()));
             button.addActionListener(e -> {
+                episodeController.execute(episode.getId(), episode.getTranscript().getTextChunks().get(0));
                 System.out.println(String.format("Go to episode %s", episode.getId()));
             });
         } else if (result instanceof TextChunkSearchResult) {
@@ -74,6 +80,7 @@ public class SearchView implements PropertyChangeListener {
             button.setText(String.format("%s at %d - %d: %s",
                     episode.getTitle(), textChunk.getStart(), textChunk.getEnd(), textChunk.getText()));
             button.addActionListener(e -> {
+                episodeController.execute(episode.getId(), textChunk);
                 System.out.println(String.format("Go to episode %s, text chunk %d - %d", episode.getId(), textChunk.getStart(), textChunk.getEnd()));
             });
         }
