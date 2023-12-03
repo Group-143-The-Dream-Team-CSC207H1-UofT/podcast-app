@@ -78,4 +78,30 @@ public class SummaryInteractorTest {
         SummaryInteractor interactor = new SummaryInteractor(presenter, episodeDAO);
         interactor.execute(inputData, hardCodedSummary);
     }
+    @Test
+    public void TestIOException() {
+        Transcript transcript = new Transcript(UUID.randomUUID(), "", new ArrayList<>());
+        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, null);
+        SummaryInputData inputData = new SummaryInputData(episode);
+        SummaryOutputBoundary presenter = new SummaryOutputBoundary() {
+            @Override
+            public void prepareSuccessView(SummaryOutputData outputData) {
+                fail();
+            }
+
+            @Override
+            public void prepareFailView(SummaryOutputData outputData) {
+                return;
+            }
+        };
+        SummaryAPIInterface hardCodedError = new SummaryAPIInterface() {
+            @Override
+            public String generateSummary(Transcript transcript) throws IOException {
+                throw new IOException();
+            }
+        };
+        EpisodeDataAccessObject episodeDAO = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
+        SummaryInteractor interactor = new SummaryInteractor(presenter, episodeDAO);
+        interactor.execute(inputData, hardCodedError);
+    }
 }
