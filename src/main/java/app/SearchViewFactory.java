@@ -2,6 +2,7 @@ package app;
 
 import api.EmbeddingsInterface;
 import data_access.EpisodeDataAccess;
+import data_access.PodcastDataAccess;
 import data_access.VectorDatabase;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeController;
@@ -22,9 +23,9 @@ import view.SearchView;
 
 public class SearchViewFactory {
 
-    public static SearchView create(ViewManagerModel viewManagerModel, SearchViewModel searchViewModel, EpisodeViewModel episodeViewModel, PodcastViewModel podcastViewModel, EpisodeDataAccess episodeDAO, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
+    public static SearchView create(ViewManagerModel viewManagerModel, SearchViewModel searchViewModel, EpisodeViewModel episodeViewModel, PodcastViewModel podcastViewModel, PodcastDataAccess podcastDataAccessObject, EpisodeDataAccess episodeDAO, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
         SearchController searchController = createSearchUseCase(viewManagerModel, searchViewModel, episodeDAO, vectorDatabase, embeddings);
-        EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDAO);
+        EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDAO, podcastDataAccessObject);
         return new SearchView(searchViewModel, searchController, episodeController, viewManagerModel);
     }
 
@@ -32,10 +33,11 @@ public class SearchViewFactory {
             ViewManagerModel viewManagerModel,
             PodcastViewModel podcastViewModel,
             EpisodeViewModel episodeViewModel,
-            EpisodeDataAccess episodeDataAccessObject
+            EpisodeDataAccess episodeDataAccessObject,
+            PodcastDataAccess podcastDataAccessObject
     ) {
         EpisodeOutputBoundary episodeOutputBoundary = new EpisodePresenter(viewManagerModel, episodeViewModel, podcastViewModel);
-        EpisodeInputBoundary displayEpisodeInteractor = new EpisodeInteractor(episodeDataAccessObject, episodeOutputBoundary);
+        EpisodeInputBoundary displayEpisodeInteractor = new EpisodeInteractor(episodeDataAccessObject, podcastDataAccessObject, episodeOutputBoundary);
         return new EpisodeController(displayEpisodeInteractor);
     }
 

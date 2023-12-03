@@ -23,6 +23,7 @@ public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
         if (episodeDAO.saveFile(inputData.getAudioFileURI(), uniqueID)) {
             // the saving of the file succeeded.
             Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(), null, null);
+            episode.setPodcastUUID(inputData.getPodcastUUID());
             episodeDAO.saveEpisode(episode);
             Podcast podcast = podcastDAO.getPodcastById(inputData.getPodcastUUID());
             podcast.addMediaItem(episode);
