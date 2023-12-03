@@ -1,9 +1,8 @@
 package app;
 
 import javax.swing.*;
-import api.EmbeddingsInterface;
-import api.OpenAIEmbeddings;
-import api.WhisperTranscription;
+
+import api.*;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_podcast.CreatePodcastViewModel;
@@ -12,6 +11,7 @@ import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.home.HomeViewModel;
 import interface_adapter.search.SearchViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
+import interface_adapter.summary.SummaryController;
 import interface_adapter.transcribe.TranscribeViewModel;
 import interface_adapter.create_episode.*;
 import view.*;
@@ -41,6 +41,7 @@ public class Main {
         WhisperTranscription transcriptionObject = new WhisperTranscription(OPENAI_API_KEY);
         EmbeddingsInterface embeddings = new OpenAIEmbeddings(OPENAI_API_KEY);
         VectorDatabase vectorDatabase = new PineconeVectorDatabase(PINECONE_API_KEY, PINECONE_BASE_URL);
+        SummaryAPIInterface summaryAPI = new ChatGPTSummary(OPENAI_API_KEY);
 
         // DAOs
         TranscriptDataAccess transcriptDataAccessObject = new TranscriptDataAccessObject();
@@ -63,8 +64,8 @@ public class Main {
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, episodeDataAccessObject, vectorDatabase, embeddings);
         views.add(searchView.panel, searchView.viewName);
 
-        // TODO: we have not implemented and use cases for the episode view yet so it is manually created here, but once implemented, we need a factory.
-        EpisodeView episodeView = new EpisodeView(viewManagerModel, episodeViewModel);
+        SummaryController summaryController = SummaryUseCaseFactory.create(episodeViewModel, summaryAPI, episodeDataAccessObject);
+        EpisodeView episodeView = new EpisodeView(viewManagerModel, episodeViewModel, summaryController);
         views.add(episodeView.panel, episodeView.viewName);
 
         HomeView homeView = HomeViewFactory.create(viewManagerModel, homeViewModel, podcastViewModel, createEpisodeViewModel, podcastDataAccessObject);
