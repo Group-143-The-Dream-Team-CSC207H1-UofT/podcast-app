@@ -2,81 +2,129 @@ package view;
 
 import entities.Episode;
 import entities.TextChunk;
-import interface_adapter.display_episode.DisplayEpisodeState;
-import interface_adapter.display_episode.DisplayEpisodeViewModel;
-
+import interface_adapter.ViewManagerModel;
+import interface_adapter.episode.EpisodeState;
+import interface_adapter.episode.EpisodeViewModel;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public class EpisodeView extends JPanel implements ActionListener, PropertyChangeListener {
-
+public class EpisodeView implements PropertyChangeListener {
     public final String viewName = "episode";
-    private final DisplayEpisodeViewModel displayEpisodeViewModel;
+    private final EpisodeViewModel viewModel;
     private JLabel titleLabel;
-    private JTextArea descriptionTextArea;
     private JList<TextChunk> textChunksList;
-    private final JButton seeSummaryButton;
-    private final JTextArea summaryTextArea;
-    private final JButton playButton;
+    private JButton backButton;
+    public JPanel panel;
+    private JTextPane descriptionTextPane;
+    private JButton playPauseButton;
+    private JScrollPane transcriptScrollPane;
+    private JButton summaryButton;
+    private Clip episodeAudioClip;
+    private boolean audioPlaying;
+    private Runnable updateTextChunkHighlighting;
 
-    public EpisodeView(DisplayEpisodeViewModel displayEpisodeViewModel) {
-        this.displayEpisodeViewModel = displayEpisodeViewModel;
-        this.displayEpisodeViewModel.addPropertyChangeListener(this);
-
-        titleLabel = new JLabel();
-        descriptionTextArea = new JTextArea();
-        textChunksList = new JList<>();
-        seeSummaryButton = new JButton("See Summary");
-        summaryTextArea = new JTextArea();
-        playButton = new JButton("Play Episode");
-
-        setLayout(new BorderLayout());
-        add(titleLabel, BorderLayout.NORTH);
-        add(new JScrollPane(descriptionTextArea), BorderLayout.CENTER);
+    public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.addPropertyChangeListener(this);
 
         DefaultListModel<TextChunk> listModel = new DefaultListModel<>();
         textChunksList.setModel(listModel);
-        add(new JScrollPane(textChunksList), BorderLayout.CENTER);
 
-        seeSummaryButton.addActionListener(e -> toggleSummaryVisibility());
-        add(seeSummaryButton, BorderLayout.SOUTH);
+        backButton.addActionListener(e -> {
+            episodeAudioClip.stop();
+            viewManagerModel.setActiveView("podcast");
+            viewManagerModel.firePropertyChanged();;
+        });
 
-        summaryTextArea.setVisible(false);
-        add(summaryTextArea, BorderLayout.SOUTH);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(playButton);
-        buttonPanel.add(seeSummaryButton);
+        playPauseButton.addActionListener(event -> {
+            if (audioPlaying) {
+                episodeAudioClip.stop();
+                playPauseButton.setText("▶");
+                audioPlaying = false;
+            } else {
+                episodeAudioClip.start();
+                playPauseButton.setText("⏸");
+                audioPlaying = true;
+            }
+        });
     }
 
     public void displayEpisode(Episode episode) {
         titleLabel.setText(episode.getTitle());
-        descriptionTextArea.setText(episode.getItemDescription());
+        descriptionTextPane.setText(episode.getItemDescription());
 
         // Populate list with TextChunks
         DefaultListModel<TextChunk> listModel = (DefaultListModel<TextChunk>) textChunksList.getModel();
         listModel.clear();
-        for (TextChunk chunk : displayEpisodeViewModel.getState().getTextChunks()) {
+        for (TextChunk chunk : viewModel.getState().getTextChunks()) {
             listModel.addElement(chunk);
         }
 
-        setListCellRendererWithHighlighting(textChunksList, displayEpisodeViewModel.getState().getCurrentTextChunkIndex());
-        String summary = episode.getSummary();
-        if (summary != null) {
-            summaryTextArea.setText(summary);
-            toggleSummaryVisibility();
+//        summaryTextArea.setText(episode.getSummary());  // TODO add this
+
+        File episodeAudioFile;
+        try {
+            episodeAudioFile = new File(this.getClass().getResource(String.format("/audioFiles/%s.wav", viewModel.getState().getCurrentEpisode().getId())).toURI());
+        } catch (URISyntaxException e) {
+            System.out.println("Failed to find audio file for episode.");
+            return;
         }
+        AudioInputStream audioStream = null;
+        try {
+            audioStream = AudioSystem.getAudioInputStream(episodeAudioFile);
+        } catch (UnsupportedAudioFileException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Get Clip
+        try {
+            episodeAudioClip = AudioSystem.getClip();
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            episodeAudioClip.open(audioStream);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        episodeAudioClip.setMicrosecondPosition(viewModel.getState().getCurrentTextChunk().getStart() * 1000);
+        audioPlaying = false;
+        playPauseButton.setText("▶");
+
+        updateTextChunkHighlighting = () -> {
+            long currentTime = episodeAudioClip.getMicrosecondPosition() / 1000;
+            for (TextChunk chunk : viewModel.getState().getCurrentEpisode().getTranscript().getTextChunks()) {
+                if (chunk.getStart() <= currentTime && chunk.getEnd() >= currentTime) {
+                    setListCellRendererWithHighlighting(textChunksList, chunk);
+                    transcriptScrollPane.revalidate();
+                    transcriptScrollPane.repaint();
+                    return;
+                }
+            }
+        };
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        executor.scheduleAtFixedRate(updateTextChunkHighlighting, 0, 250, TimeUnit.MILLISECONDS);
     }
 
-    private void toggleSummaryVisibility() {
-        summaryTextArea.setVisible(!summaryTextArea.isVisible());
-    }
 
-    private void setListCellRendererWithHighlighting(JList<TextChunk> list, int highlightedIndex) {
+
+    private void setListCellRendererWithHighlighting(JList<TextChunk> list, TextChunk highlightedChunk) {
         list.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(
@@ -89,9 +137,9 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
                 TextChunk chunk = (TextChunk) value;
-                setText(chunk.toString());
+                setText(chunk.getText());
 
-                if (index == highlightedIndex) {
+                if (chunk == highlightedChunk) {
                     setForeground(Color.RED);
                 } else {
                     setBackground(isSelected ? list.getSelectionBackground() : list.getBackground());
@@ -103,18 +151,9 @@ public class EpisodeView extends JPanel implements ActionListener, PropertyChang
         });
     }
 
-
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource() == playButton) {
-            // Call controller for playing episode
-        } else {
-            // Handle other actions
-        }
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        DisplayEpisodeState state = (DisplayEpisodeState) evt.getNewValue();
+        EpisodeState state = (EpisodeState) evt.getNewValue();
         displayEpisode(state.getCurrentEpisode());
     }
 }

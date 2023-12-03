@@ -1,5 +1,7 @@
 package data_access;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import entities.*;
 import java.io.*;
 import java.net.URISyntaxException;
@@ -49,23 +51,21 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             return;
         }
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(podcastsCSV));
-            reader.readLine();  // read the header row
-            String row;
-            while ((row = reader.readLine()) != null) {
-                String[] col = row.split(",");
-                UUID id = UUID.fromString(col[0]);
-                String title = col[1];
-//                User createdBy = new User(col[2]);
-
-                // Todo: User
-                List<MediaItem> podcastEpisodes = parseEpisodeIds(col[3]);
-
-                Podcast podcast = new Podcast(id, title, null, podcastEpisodes);
+            CSVReader reader = new CSVReader(new FileReader(podcastsCSV));
+            List<String[]> lines = reader.readAll();
+            lines.remove(0);  // remove the header row
+            for (String[] row : lines) {
+                UUID id = UUID.fromString(row[0]);
+                String title = row[1];
+                String description = row[2];
+                List<MediaItem> podcastEpisodes = parseEpisodeIds(row[4]);
+                Podcast podcast = new Podcast(id, title, description, null, podcastEpisodes);
                 podcastMap.put(id, podcast);
             }
         } catch (IOException e) {
-            System.out.println("Could not load podcasts from podcasts.csv.");
+            System.out.println("Could not load episodes from podcasts.csv.");
+        } catch (CsvException e) {
+            System.out.println("Error in parsing podcasts.csv");
         }
     }
 
@@ -76,9 +76,8 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                     .replace("(", "")
                     .replace(")", "")
                     .split(",");
-            List<String> episodeIdList = Arrays.asList(episodeIdsArray);
-            List<MediaItem> podcastEpisodes = null;
-            for (String id : episodeIdList) {
+            List<MediaItem> podcastEpisodes = new ArrayList<>();
+            for (String id : episodeIdsArray) {
                 Episode episode = episodeDAO.getEpisodeById(UUID.fromString(id));
                 podcastEpisodes.add(episode);
             }
@@ -100,18 +99,12 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(podcastCSV));
-            writer.write("id,title,author,(episodeId)\n");
+            writer.write("id,title,description,author,(episodeId)\n");
             for (Podcast podcast : podcastMap.values()) {
                 // Get a list of episode IDs as strings.
-                List<String> episodeIdsList = null;
-                if (podcast.getItems() != null) {
-                    for (MediaItem episode : podcast.getItems()) {
-                        UUID id = episode.getId();
-                        episodeIdsList.add(id.toString());
-                    }
-                }
+                List<String> episodeIdsList = new ArrayList<>();
                 String episodeIds;
-                if (podcast.getItems() != null) {
+                if (!podcast.getItems().isEmpty()) {
                     for (MediaItem episode : podcast.getItems()) {
                         UUID id = episode.getId();
                         episodeIdsList.add(id.toString());
@@ -121,8 +114,8 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
                 } else {
                     episodeIds = "()";
                 }
-                String podcastString = String.format("%s,%s,%s,%s",
-                        podcast.getId().toString(), podcast.getName(), podcast.getAssignedTo(), episodeIds);
+                String podcastString = String.format("%s,%s,%s,%s,%s",
+                        podcast.getId().toString(), formatStringForCSV(podcast.getName()), formatStringForCSV(podcast.getDescription()), podcast.getAssignedTo(), formatStringForCSV(episodeIds));
                 writer.write(podcastString);
                 writer.newLine();
             }
@@ -132,6 +125,12 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
             System.out.println("Could not save podcast to podcasts.csv.");
             return false;
         }
+    }
+    private String formatStringForCSV(String content) {
+        if (content == null) {
+            return null;
+        }
+        return String.format("\"%s\"", content.replace("\"", "\"\""));
     }
 
 }

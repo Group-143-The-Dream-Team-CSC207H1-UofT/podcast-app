@@ -14,7 +14,9 @@ public class TranscribePresenter implements TranscribeOutputBoundary {
         this.transcribeViewModel = transcribeViewModel;
         this.viewManagerModel = viewManagerModel;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void prepareSuccessView(TranscribeOutputData outputData) {
         TranscribeState transcribeState = transcribeViewModel.getState();
@@ -23,7 +25,9 @@ public class TranscribePresenter implements TranscribeOutputBoundary {
         this.transcribeViewModel.setState(transcribeState);
         transcribeViewModel.firePropertyChanged();
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void prepareFailView(String error) {
         TranscribeState transcribeState = transcribeViewModel.getState();
