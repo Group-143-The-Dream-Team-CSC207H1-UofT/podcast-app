@@ -12,6 +12,11 @@ public class SummaryController {
         this.apiWrapper = apiWrapper;
     }
 
+
+    /**
+     * Generates a summary for the given Episode.
+     * @param inputData contains the episode to generate a summary for
+     */
     public void execute(SummaryInputData inputData) {
         summaryInteractor.execute(inputData, apiWrapper);
     }
