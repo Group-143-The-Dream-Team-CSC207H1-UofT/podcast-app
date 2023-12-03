@@ -15,6 +15,12 @@ public class ChatGPTSummary implements SummaryAPIInterface {
         OPENAI_API_KEY = apiKey;
     }
 
+    /**
+     * Uses the OpenAI ChatGPT API to generate a summary of a podcast based on its transcript
+     * @param transcript the transcript of the podcast to generate a summary of
+     * @return a String of the summary of the episode that was generated
+     * @throws IOException
+     */
     @Override
     public String generateSummary(Transcript transcript) throws IOException {
         // create the prompt using the podcast transcript
