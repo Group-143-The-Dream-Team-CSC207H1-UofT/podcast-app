@@ -5,6 +5,9 @@ import entities.TextChunk;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.episode.EpisodeState;
 import interface_adapter.episode.EpisodeViewModel;
+import interface_adapter.summary.SummaryController;
+import use_case.summary.SummaryInputData;
+
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
@@ -33,10 +36,12 @@ public class EpisodeView implements PropertyChangeListener {
     private Clip episodeAudioClip;
     private boolean audioPlaying;
     private Runnable updateTextChunkHighlighting;
+    private SummaryController summaryController;
 
-    public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel) {
+    public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel, SummaryController summaryController) {
         this.viewModel = viewModel;
         this.viewModel.addPropertyChangeListener(this);
+        this.summaryController = summaryController;
 
         DefaultListModel<TextChunk> listModel = new DefaultListModel<>();
         textChunksList.setModel(listModel);
@@ -70,7 +75,13 @@ public class EpisodeView implements PropertyChangeListener {
         for (TextChunk chunk : viewModel.getState().getTextChunks()) {
             listModel.addElement(chunk);
         }
-
+        summaryButton.addActionListener(e -> {
+            if (episode.getSummary() == null) {
+                SummaryInputData inputData = new SummaryInputData(episode);
+                summaryController.execute(inputData);
+            }
+            JOptionPane.showMessageDialog(panel, episode.getSummary());
+        });
 //        summaryTextArea.setText(episode.getSummary());  // TODO add this
 
         File episodeAudioFile;
