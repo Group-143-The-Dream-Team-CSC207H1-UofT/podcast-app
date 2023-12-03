@@ -57,7 +57,7 @@ public class Main {
         PodcastViewModel podcastViewModel = new PodcastViewModel();
         CreatePodcastViewModel createPodcastViewModel = new CreatePodcastViewModel();
 
-        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings, podcastDataAccessObject);
+        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, podcastViewModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccessObject, transcriptDataAccessObject, transcriptionObject, vectorDatabase, embeddings, podcastDataAccessObject);
         views.add(createEpisodeView, createEpisodeView.viewName);
 
         SearchView searchView = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, episodeDataAccessObject, vectorDatabase, embeddings);

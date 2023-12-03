@@ -27,7 +27,7 @@ public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
             Podcast podcast = podcastDAO.getPodcastById(inputData.getPodcastUUID());
             podcast.addMediaItem(episode);
             podcastDAO.savePodcast(podcast);
-            outputBoundary.prepareSuccessView(new CreateEpisodeOutputData(episode));
+            outputBoundary.prepareSuccessView(new CreateEpisodeOutputData(episode, podcast));
         } else {
             outputBoundary.prepareFailView("Failed to create episode.");
         }
