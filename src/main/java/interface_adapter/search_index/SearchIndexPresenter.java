@@ -14,6 +14,10 @@ public class SearchIndexPresenter implements SearchIndexOutputBoundary {
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * Updates search index view model with the episode information from the output data.
+     * @param outputData the output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(SearchIndexOutputData outputData) {
         Episode episode = outputData.getEpisode();
@@ -24,6 +28,11 @@ public class SearchIndexPresenter implements SearchIndexOutputBoundary {
         viewModel.firePropertyChanged();
     }
 
+    /**
+     * Updates search index view model with no episode information under the presumption
+     * that there is an error in this presenter.
+     * @param error the error message.
+     */
     @Override
     public void prepareFailView(String error) {
         SearchIndexState state = viewModel.getState();
