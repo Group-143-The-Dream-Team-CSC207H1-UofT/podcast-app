@@ -13,7 +13,4 @@ public class SummaryInputData {
         return episode;
     }
 
-    public void setEpisode(Episode episode) {
-        this.episode = episode;
-    }
 }

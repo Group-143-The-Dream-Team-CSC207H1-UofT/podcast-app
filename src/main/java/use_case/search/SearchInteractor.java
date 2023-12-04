@@ -15,6 +15,13 @@ public class SearchInteractor implements SearchInputBoundary {
     private final EpisodeDataAccess episodeDAO;
     private final SearchOutputBoundary outputBoundary;
 
+    /**
+     * Construct a SearchInteractor.
+     * @param outputBoundary
+     * @param vectorDatabase
+     * @param embeddings
+     * @param episodeDAO
+     */
     public SearchInteractor(SearchOutputBoundary outputBoundary, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings, EpisodeDataAccess episodeDAO) {
         this.outputBoundary = outputBoundary;
         this.vectorDatabase = vectorDatabase;
@@ -22,6 +29,10 @@ public class SearchInteractor implements SearchInputBoundary {
         this.episodeDAO = episodeDAO;
     }
 
+    /**
+     * Query the vector database for values similar to the query and display them to the outputBoundary.
+     * @param query
+     */
     public void execute(String query) {
         float[] vector = embeddingsGenerator.getEmbedding(query);
         List<String> resultIds = vectorDatabase.query(vector);
@@ -37,6 +48,6 @@ public class SearchInteractor implements SearchInputBoundary {
                 searchResults.add(new TextChunkSearchResult(episode, textChunk));
             }
         }
-        outputBoundary.prepareSuccessView(new SearchOutputData(searchResults, false));
+        outputBoundary.prepareSuccessView(new SearchOutputData(searchResults));
     }
 }

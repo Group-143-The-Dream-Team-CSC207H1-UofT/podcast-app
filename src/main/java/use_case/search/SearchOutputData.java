@@ -4,18 +4,15 @@ import java.util.List;
 
 public class SearchOutputData {
     private final List<SearchResult> searchResults;
-    private final boolean useCaseFailed;
 
-    public SearchOutputData(List<SearchResult> results, boolean failed) {
+    public SearchOutputData(List<SearchResult> results) {
         this.searchResults = results;
-        this.useCaseFailed = failed;
     }
 
+    /**
+     * @return the SearchResults contained in this object.
+     */
     public List<SearchResult> getSearchResults() {
         return searchResults;
-    }
-
-    public boolean isUseCaseFailed() {
-        return useCaseFailed;
     }
 }
