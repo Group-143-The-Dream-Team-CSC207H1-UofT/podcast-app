@@ -12,6 +12,10 @@ public class SearchPresenter implements SearchOutputBoundary {
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * Updates search view model to display search results.
+     * @param outputData the output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(SearchOutputData outputData) {
         SearchState currState = viewModel.getState();
