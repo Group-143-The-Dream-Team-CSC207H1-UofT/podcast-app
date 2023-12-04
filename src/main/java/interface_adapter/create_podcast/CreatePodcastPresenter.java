@@ -17,6 +17,10 @@ public class CreatePodcastPresenter implements CreatePodcastOutputBoundary {
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * Updates the PodcastViewModel to display the newly created podcast.
+     * @param outputData The output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(CreatePodcastOutputData outputData) {
         PodcastState state = podcastViewModel.getState();

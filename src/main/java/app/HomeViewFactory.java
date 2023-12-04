@@ -18,6 +18,16 @@ import use_case.home.HomeOutputBoundary;
 import view.HomeView;
 
 public class HomeViewFactory {
+    /**
+     * Factory method to create and configure an instance of HomeView.
+     * This method initializes controllers viewing the home screen and displaying a podcast.
+     * @param viewManagerModel The model managing different views.
+     * @param homeViewModel The model managing displaying all created podcasts.
+     * @param podcastViewModel The model managing displaying a podcast.
+     * @param createEpisodeViewModel The model managing displaying an episode.
+     * @param podcastDAO The Data Access Object for reading and storing podcasts.
+     * @return An instance of the HomeView.
+     */
     public static HomeView create(ViewManagerModel viewManagerModel, HomeViewModel homeViewModel, PodcastViewModel podcastViewModel, CreateEpisodeViewModel createEpisodeViewModel, PodcastDataAccess podcastDAO) {
         HomeController homeController = HomeViewFactory.createHomeUseCase(viewManagerModel, homeViewModel, podcastDAO);
         PodcastController podcastController = HomeViewFactory.createPodcastUseCase(viewManagerModel, podcastViewModel, homeViewModel, createEpisodeViewModel, podcastDAO);

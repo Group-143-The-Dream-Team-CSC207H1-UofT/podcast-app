@@ -12,6 +12,10 @@ public class PodcastController {
         this.displayPodcastInteractor = displayPodcastInteractor;
     }
 
+    /**
+     * Passes the podcast ID to the input boundary to display the podcast.
+     * @param podcastUUID the ID of the podcast to display.
+     */
     public void execute(UUID podcastUUID){
         PodcastInputData podcastInputData = new PodcastInputData(podcastUUID);
         displayPodcastInteractor.execute(podcastInputData);

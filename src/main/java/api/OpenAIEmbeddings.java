@@ -13,6 +13,12 @@ public class OpenAIEmbeddings implements EmbeddingsInterface {
     public OpenAIEmbeddings(String apiKey) {
         OPENAI_API_KEY = apiKey;
     }
+
+    /**
+     * Returns a vector embedding of the given String using the OpenAI Embeddings API.
+     * @param value The string to generate an embedding for.
+     * @return The value of the generated embedding.
+     */
     @Override
     public float[] getEmbedding(String value) {
         List<String> values = new ArrayList<>();
@@ -20,6 +26,11 @@ public class OpenAIEmbeddings implements EmbeddingsInterface {
         return getEmbeddings(values).get(0);
     }
 
+    /**
+     * Returns vector embeddings of the given Strings using the OpenAI Embeddings API.
+     * @param values The strings to generate embeddings for.
+     * @return The values of the generated embeddings.
+     */
     @Override
     public List<float[]> getEmbeddings(List<String> values) {
         OkHttpClient client = new OkHttpClient();

@@ -23,6 +23,11 @@ public class PodcastPresenter implements PodcastOutputBoundary {
         this.homeViewModel = homeViewModel;
     }
 
+    /**
+     * Updates the podcast view model to display the given podcast and updates the create episode view model to create
+     * episodes associated with given podcast.
+     * @param podcastData The output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(PodcastOutputData podcastData) {
         PodcastState currentState = this.podcastViewModel.getState();
@@ -35,6 +40,11 @@ public class PodcastPresenter implements PodcastOutputBoundary {
         this.viewManagerModel.setActiveView(podcastViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
+
+    /**
+     * Updates podcast view model to display error in fetching podcast.
+     * @param error The error message.
+     */
     @Override
     public void prepareFailView(String error) {
         HomeState currentState = this.homeViewModel.getState();

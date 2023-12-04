@@ -23,6 +23,20 @@ import view.SearchView;
 
 public class SearchViewFactory {
 
+    /**
+     * Factory method to create and configure an instance of SearchView.
+     * This method initializes instances of SearchController and EpisodeController for searching episode content
+     * and displaying episodes.
+     * @param viewManagerModel The model managing different views.
+     * @param searchViewModel ViewModel for searching episodes.
+     * @param episodeViewModel ViewModel for displaying episodes.
+     * @param podcastViewModel ViewModel for displaying podcasts.
+     * @param podcastDataAccessObject Data Access Object for reading and storing podcasts.
+     * @param episodeDAO Data Access Object for reading and storing episodes.
+     * @param vectorDatabase Vector database used for searching.
+     * @param embeddings API used for vector embedding.
+     * @return an instance of SearchView.
+     */
     public static SearchView create(ViewManagerModel viewManagerModel, SearchViewModel searchViewModel, EpisodeViewModel episodeViewModel, PodcastViewModel podcastViewModel, PodcastDataAccess podcastDataAccessObject, EpisodeDataAccess episodeDAO, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings) {
         SearchController searchController = createSearchUseCase(viewManagerModel, searchViewModel, episodeDAO, vectorDatabase, embeddings);
         EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDAO, podcastDataAccessObject);

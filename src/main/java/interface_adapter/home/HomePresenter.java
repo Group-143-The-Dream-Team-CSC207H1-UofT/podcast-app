@@ -11,6 +11,11 @@ public class HomePresenter implements HomeOutputBoundary {
         this.homeViewModel = homeViewModel;
         this.viewManagerModel = viewManagerModel;
     }
+
+    /**
+     * Updates the HomeViewModel to display all saved podcasts.
+     * @param outputData The output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(HomeOutputData outputData) {
         HomeState currentState = homeViewModel.getState();
@@ -19,6 +24,10 @@ public class HomePresenter implements HomeOutputBoundary {
         homeViewModel.firePropertyChanged();
     }
 
+    /**
+     * Displays error retrieving podcasts.
+     * @param outputData The output data from the input boundary.
+     */
     @Override
     public void prepareFailView(HomeOutputData outputData) {
         HomeState currentState = new HomeState();

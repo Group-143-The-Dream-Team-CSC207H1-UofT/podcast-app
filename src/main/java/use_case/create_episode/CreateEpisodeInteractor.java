@@ -18,6 +18,10 @@ public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
         this.podcastDAO = podcastDAO;
     }
 
+    /**
+     * Creates a new episode with the given input data.
+     * @param inputData Contains title, description, and file location for new episode.
+     */
     public void execute(CreateEpisodeInputData inputData) {
         UUID uniqueID = UUID.randomUUID();
         if (episodeDAO.saveFile(inputData.getAudioFileURI(), uniqueID)) {
