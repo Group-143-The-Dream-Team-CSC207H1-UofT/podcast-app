@@ -16,7 +16,12 @@ public class SearchIndexInteractor implements SearchIndexInputBoundary {
     private final EmbeddingsInterface embeddingsGenerator;
     
     private final SearchIndexOutputBoundary outputBoundary;
-
+    /**
+     * Construct a SearchIndexInteractor.
+     * @param outputBoundary
+     * @param vectorDatabase
+     * @param embeddings
+     */
     public SearchIndexInteractor(VectorDatabase vectorDatabase, EmbeddingsInterface embeddings, SearchIndexOutputBoundary outputBoundary) {
         this.vectorDatabase = vectorDatabase;
         this.embeddingsGenerator = embeddings;
@@ -24,6 +29,11 @@ public class SearchIndexInteractor implements SearchIndexInputBoundary {
     }
 
 
+    /**
+     * This method retrieves information from the episode and its transcript, processes the
+     * text chunks, generates embeddings, and inserts the vectors into the vector database.
+     * @param inputData
+     */
     @Override
     public void execute(SearchIndexInputData inputData) {
         Episode episode = inputData.getEpisode();
