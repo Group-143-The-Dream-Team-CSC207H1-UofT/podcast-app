@@ -21,6 +21,12 @@ public class WhisperTranscription implements TranscriptionInterface {
         OPENAI_API_KEY = apiKey;
     }
 
+    /**
+     * Transcribes a given .wav file in SRT format.
+     * @param file a .wav file that is to be transcribed
+     * @return the transcription of file in SRT format
+     * @throws IOException
+     */
     @Override
     public String transcribeFile(File file) throws IOException {
         ArrayList<String> transcripts = new ArrayList<>();
