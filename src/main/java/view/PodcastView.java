@@ -23,7 +23,7 @@ public class PodcastView implements PropertyChangeListener {
     public final String viewName = "podcast";
     private JTextPane descriptionTextPane;
     private JButton backButton;
-    private JLabel titleLabel;
+    JLabel titleLabel;
     private JPanel episodeList;
     public JPanel panel;
     private JButton createEpisodeButton;
