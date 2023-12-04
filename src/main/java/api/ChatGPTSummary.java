@@ -32,7 +32,7 @@ public class ChatGPTSummary implements SummaryAPIInterface {
         OkHttpClient client = new OkHttpClient();
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         // This json is the body of the request
-        String json = "{\"messages\":[{\"role\":\"system\",\"content\":\"You are generating summaries of podcast transcriptions.\"},{\"role\":\"user\",\"content\":\"" + prompt + "\"}]}";
+        String json = "{\"model\":\"gpt-4\",\"messages\":[{\"role\":\"system\",\"content\":\"You are generating summaries of podcast transcriptions.\"},{\"role\":\"user\",\"content\":\"" + prompt + "\"}]}";
         RequestBody requestBody = RequestBody.create(json, mediaType);
 
         Request request = new Request.Builder()

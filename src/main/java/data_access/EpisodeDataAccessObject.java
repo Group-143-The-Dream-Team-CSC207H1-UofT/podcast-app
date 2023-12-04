@@ -176,7 +176,7 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
 
     private String formatStringForCSV(String content) {
         if (content == null) {
-            return null;
+            return "";
         }
         return String.format("\"%s\"", content.replace("\"", "\"\""));
     }

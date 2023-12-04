@@ -37,6 +37,7 @@ public class EpisodeView implements PropertyChangeListener {
     private boolean audioPlaying;
     private Runnable updateTextChunkHighlighting;
     private SummaryController summaryController;
+    private Episode currentEpisode;
 
     public EpisodeView(ViewManagerModel viewManagerModel, EpisodeViewModel viewModel, SummaryController summaryController) {
         this.viewModel = viewModel;
@@ -63,6 +64,7 @@ public class EpisodeView implements PropertyChangeListener {
                 audioPlaying = true;
             }
         });
+        summaryButton.addActionListener(e -> displaySummary());
     }
 
     public void displayEpisode(Episode episode) {
@@ -75,13 +77,7 @@ public class EpisodeView implements PropertyChangeListener {
         for (TextChunk chunk : viewModel.getState().getTextChunks()) {
             listModel.addElement(chunk);
         }
-        summaryButton.addActionListener(e -> {
-            if (episode.getSummary() == null) {
-                SummaryInputData inputData = new SummaryInputData(episode);
-                summaryController.execute(inputData);
-            }
-            JOptionPane.showMessageDialog(panel, episode.getSummary());
-        });
+
 //        summaryTextArea.setText(episode.getSummary());  // TODO add this
 
         File episodeAudioFile;
@@ -162,9 +158,18 @@ public class EpisodeView implements PropertyChangeListener {
         });
     }
 
+    private void displaySummary() {
+        if (currentEpisode.getSummary() == null || currentEpisode.getSummary().isEmpty()) {
+            SummaryInputData inputData = new SummaryInputData(currentEpisode);
+            summaryController.execute(inputData);
+        }
+        JOptionPane.showMessageDialog(panel, "<html><body><p style='width: 250px;'>"+currentEpisode.getSummary()+"</p></body></html>");
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         EpisodeState state = (EpisodeState) evt.getNewValue();
+        currentEpisode = state.getCurrentEpisode();
         displayEpisode(state.getCurrentEpisode());
     }
 }
