@@ -139,6 +139,13 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
             return false;
         }
     }
+    /**
+     * clear all the data from the database
+     */
+    public void clearData() {
+        this.episodeMap.clear();
+        save();
+    }
 
     private void loadEpisodes() {
         File episodesCSV;

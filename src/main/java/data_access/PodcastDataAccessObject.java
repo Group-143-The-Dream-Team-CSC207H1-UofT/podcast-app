@@ -87,6 +87,14 @@ public class PodcastDataAccessObject implements PodcastDataAccess {
         }
     }
 
+    /**
+     * clear all the data from the database
+     */
+    public void clearData() {
+        this.podcastMap.clear();
+        save();
+    }
+
     private boolean save() {
         File podcastCSV;
         try {

@@ -14,8 +14,8 @@ import java.beans.PropertyChangeListener;
 
 public class CreatePodcastView extends JPanel implements PropertyChangeListener {
     public final String viewName = "create podcast";
-    private final JTextField titleInputField = new JTextField(15);
-    private final JTextField descriptionInputField = new JTextField(15);
+    final JTextField titleInputField = new JTextField(15);
+    final JTextField descriptionInputField = new JTextField(15);
     private final JLabel status;
     private final JButton submitButton;
     public CreatePodcastView(CreatePodcastController controller, CreatePodcastViewModel viewModel) {
