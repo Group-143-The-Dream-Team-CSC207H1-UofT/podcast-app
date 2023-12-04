@@ -123,6 +123,7 @@ public class CreateEpisodeView extends JPanel implements PropertyChangeListener 
             Episode episode = searchIndexState.getEpisode();
             String errorMessage = searchIndexState.getErrorMessage();
             if (episode != null) {
+                status.setText("Waiting for file selection.");
                 System.out.println("Go back to podcast view");
                 viewManagerModel.setActiveView("podcast");
                 viewManagerModel.firePropertyChanged();

@@ -24,7 +24,7 @@ public class SummaryInteractor implements SummaryInputBoundary {
     @Override
     public void execute(SummaryInputData inputData, SummaryAPIInterface APIWrapper) {
         Episode episode = inputData.getEpisode();
-        if (episode.getSummary() == null) {
+        if (episode.getSummary() == null || episode.getSummary().isEmpty()) {
             try {
                 String summary = APIWrapper.generateSummary(episode.getTranscript());
                 episode.setSummary(summary);
