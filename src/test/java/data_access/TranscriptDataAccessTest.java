@@ -1,11 +1,8 @@
 package data_access;
 import static org.junit.Assert.*;
 import entities.Transcript;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.io.File;
 import java.util.UUID;
 
 public class TranscriptDataAccessTest {
