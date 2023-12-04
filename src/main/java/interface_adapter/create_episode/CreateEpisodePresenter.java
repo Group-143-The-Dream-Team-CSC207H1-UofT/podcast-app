@@ -1,6 +1,8 @@
 package interface_adapter.create_episode;
 
 import interface_adapter.ViewManagerModel;
+import interface_adapter.podcast.PodcastState;
+import interface_adapter.podcast.PodcastViewModel;
 import use_case.create_episode.CreateEpisodeOutputBoundary;
 import use_case.create_episode.CreateEpisodeOutputData;
 
@@ -8,19 +10,25 @@ public class CreateEpisodePresenter implements CreateEpisodeOutputBoundary {
   
     private final CreateEpisodeViewModel viewModel;
     private final ViewManagerModel viewManagerModel;  // TODO: remove if not needed
+    private final PodcastViewModel podcastViewModel;
 
-    public CreateEpisodePresenter(CreateEpisodeViewModel viewModel, ViewManagerModel viewManagerModel) {
+    public CreateEpisodePresenter(CreateEpisodeViewModel viewModel, PodcastViewModel podcastViewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
+        this.podcastViewModel = podcastViewModel;
     }
 
     @Override
     public void prepareSuccessView(CreateEpisodeOutputData outputData) {
         CreateEpisodeState currentState = viewModel.getState();
+        PodcastState podcastState = podcastViewModel.getState();
         currentState.setEpisode(outputData.getEpisode());
+        podcastState.setCurrentPodcast(outputData.getPodcast());
         currentState.setErrorMessage("");
         viewModel.setState(currentState);
+        podcastViewModel.setState(podcastState);
         viewModel.firePropertyChanged();
+        podcastViewModel.firePropertyChanged();
     }
 
     @Override
