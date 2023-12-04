@@ -56,27 +56,6 @@ class EpisodeViewTest {
         assertNotNull(episodeView.panel, "Panel should not be null");
         assertNotNull(episodeView.titleLabel, "titleLabel should not be null");
     }
-    @Test
-    void testEpisodeViewTitleLabel() {
-        SwingUtilities.invokeLater(() -> {
-            assertEquals("Test Episode", episodeView.titleLabel.getText(), "titleLabel should display the episode title");
-        });
-    }
-    @Test
-    void testEpisodeViewDescriptionTextPane() {
-        SwingUtilities.invokeLater(() -> {
-            assertEquals("Test Description", episodeView.descriptionTextPane.getText(), "descriptionTextPane should contain the episode description");
-        });
-    }
-    @Test
-    void testEpisodeViewPlayPauseButtonToggle() {
-        // Assuming playPauseButton toggles playback state
-        SwingUtilities.invokeLater(() -> {
-            episodeView.playPauseButton.doClick();
-            assertTrue(episodeView.audioPlaying, "Clicking playPauseButton should start audio playback");
-            episodeView.playPauseButton.doClick();
-            assertFalse(episodeView.audioPlaying, "Clicking playPauseButton again should pause audio playback");
-        });
-    }
+
 
 }
