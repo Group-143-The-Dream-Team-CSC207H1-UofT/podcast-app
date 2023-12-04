@@ -14,7 +14,7 @@ public class SummaryUseCaseFactory {
      * @param episodeViewModel the ViewModel for the EpisodeView
      * @param summaryAPI the specific SummaryAPIInterface desired
      * @param episodeDAO the implementation of the data access object for episodes desired
-     * @return
+     * @return A controller for the summary use case.
      */
     public static SummaryController create(EpisodeViewModel episodeViewModel, SummaryAPIInterface summaryAPI, EpisodeDataAccess episodeDAO) {
         SummaryPresenter presenter = new SummaryPresenter(episodeViewModel);
