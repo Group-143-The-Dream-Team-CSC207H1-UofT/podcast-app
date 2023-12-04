@@ -115,18 +115,19 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
         BufferedWriter writer;
         try {
             writer = new BufferedWriter(new FileWriter(episodesCSV));
-            writer.write("id,title,description,transcriptId,summary\n");
+            writer.write("id,title,description,transcriptId,podcastUUID,summary\n");
             String transcriptId = "";
             Transcript transcript;
             for (Episode episode : episodeMap.values()) {
                 if ((transcript = episode.getTranscript()) != null) {
                     transcriptId = transcript.getId().toString();
                 }
-                String episodeString = String.format("%s,%s,%s,%s,%s",
+                String episodeString = String.format("%s,%s,%s,%s,%s,%s",
                         episode.getId().toString(),
                         formatStringForCSV(episode.getTitle()),
                         formatStringForCSV(episode.getItemDescription()),
                         transcriptId,
+                        episode.getPodcastUUID().toString(),
                         formatStringForCSV(episode.getSummary()));
                 writer.write(episodeString);
                 writer.newLine();
@@ -161,8 +162,9 @@ public class EpisodeDataAccessObject implements EpisodeDataAccess {
                 if (!transcriptId.isEmpty()) {
                     transcript = transcriptDAO.getTranscriptById(UUID.fromString(transcriptId));
                 }
-                String summary = row[4];
-                Episode episode = new Episode(id, title, description, transcript, summary);
+                String podcastUUID = row[4];
+                String summary = row[5];
+                Episode episode = new Episode(id, UUID.fromString(podcastUUID), title, description, transcript, summary);
                 episodeMap.put(id, episode);
             }
         } catch (IOException e) {

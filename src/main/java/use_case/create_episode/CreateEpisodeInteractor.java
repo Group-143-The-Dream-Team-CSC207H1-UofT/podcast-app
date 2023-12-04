@@ -22,12 +22,12 @@ public class CreateEpisodeInteractor implements CreateEpisodeInputBoundary {
         UUID uniqueID = UUID.randomUUID();
         if (episodeDAO.saveFile(inputData.getAudioFileURI(), uniqueID)) {
             // the saving of the file succeeded.
-            Episode episode = new Episode(uniqueID, inputData.getTitle(), inputData.getDescription(), null, null);
+            Episode episode = new Episode(uniqueID, inputData.getPodcastUUID(), inputData.getTitle(), inputData.getDescription(), null, null);
             episodeDAO.saveEpisode(episode);
             Podcast podcast = podcastDAO.getPodcastById(inputData.getPodcastUUID());
             podcast.addMediaItem(episode);
             podcastDAO.savePodcast(podcast);
-            outputBoundary.prepareSuccessView(new CreateEpisodeOutputData(episode));
+            outputBoundary.prepareSuccessView(new CreateEpisodeOutputData(episode, podcast));
         } else {
             outputBoundary.prepareFailView("Failed to create episode.");
         }

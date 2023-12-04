@@ -15,7 +15,7 @@ public class PodcastDataAccessTest {
     public void TestSavePodcast() {
         UUID id = UUID.randomUUID();
         ArrayList<MediaItem> episodes = new ArrayList<>();
-        episodes.add(new Episode(UUID.randomUUID(), "test episode", "description", null, null));
+        episodes.add(new Episode(UUID.randomUUID(), id,"test episode", "description", null, null));
         Podcast podcast = new Podcast(id, "test podcast", "description",null, episodes);
         EpisodeDataAccessObject episodeDAO = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
         episodeDAO.saveEpisode((Episode) episodes.get(0));

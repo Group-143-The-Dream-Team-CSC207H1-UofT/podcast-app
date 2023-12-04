@@ -22,8 +22,8 @@ public class SearchViewFactoryTest {
         EpisodeDataAccess episodeDataAccess = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
         VectorDatabase vectorDatabase = new PineconeVectorDatabase(System.getenv("PINECONE_API_KEY"), System.getenv("PINECONE_BASE_URL"));
         EmbeddingsInterface embeddingsInterface = new OpenAIEmbeddings(System.getenv("OPENAI_API_KEY"));
-
-        SearchView view = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, episodeDataAccess, vectorDatabase, embeddingsInterface);
+        PodcastDataAccess podcastDataAccess = new PodcastDataAccessObject(episodeDataAccess);
+        SearchView view = SearchViewFactory.create(viewManagerModel, searchViewModel, episodeViewModel, podcastViewModel, podcastDataAccess, episodeDataAccess, vectorDatabase, embeddingsInterface);
         assertNotNull(view);
     }
 }

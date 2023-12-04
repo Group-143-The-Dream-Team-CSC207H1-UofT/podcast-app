@@ -50,7 +50,7 @@ public class PodcastViewFactoryTest {
                 return null;
             }
         };
-        PodcastView view = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, createEpisodeViewModel, homeViewModel, episodeDataAccess, podcastDataAccess);
+        PodcastView view = PodcastViewFactory.create(viewManagerModel, podcastViewModel, episodeViewModel, createEpisodeViewModel, homeViewModel, podcastDataAccess, episodeDataAccess);
         assertNotNull(view);
     }
 }

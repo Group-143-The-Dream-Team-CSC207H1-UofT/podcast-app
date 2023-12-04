@@ -80,7 +80,7 @@ class TranscribeInteractorTest {
         };
 
         UUID episodeId = UUID.randomUUID();
-        episode = new Episode(episodeId, "Test Episode", "Test Description", null, null);
+        episode = new Episode(episodeId, UUID.randomUUID(),"Test Episode", "Test Description", null, null);
 
         interactor = new TranscribeInteractor(outputBoundary, episodeDAO, transcriptDAO, transcriptionObject);
     }

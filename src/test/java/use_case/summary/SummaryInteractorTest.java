@@ -18,8 +18,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class SummaryInteractorTest {
     @Test
     public void TestSummaryAlreadyExists() {
-        Transcript transcript = new Transcript(UUID.randomUUID(), "", new ArrayList<>());
-        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, "The summary exists");
+        UUID id = UUID.randomUUID();
+        Transcript transcript = new Transcript(id, "", new ArrayList<>());
+        Episode episode = new Episode(id, UUID.randomUUID(), "test", "test", transcript, "The summary exists");
         SummaryInputData inputData = new SummaryInputData(episode);
         SummaryOutputBoundary presenter = new SummaryOutputBoundary() {
             @Override
@@ -44,14 +45,15 @@ public class SummaryInteractorTest {
 
     @Test
     public void generateSummary() {
-        Transcript transcript = new Transcript(UUID.randomUUID(), "1\n" +
+        UUID id = UUID.randomUUID();
+        Transcript transcript = new Transcript(id, "1\n" +
                 "00:05:00,400 --> 00:05:15,300\n" +
                 "This is an example of a subtitle.\n" +
                 "\n" +
                 "2\n" +
                 "00:05:16,400 --> 00:05:25,300\n" +
                 "This is an example of a subtitle - 2nd subtitle.", new ArrayList<>());
-        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, null);
+        Episode episode = new Episode(id, UUID.randomUUID(), "test", "test", transcript, null);
         SummaryInputData inputData = new SummaryInputData(episode);
         SummaryOutputBoundary presenter = new SummaryOutputBoundary() {
             @Override
@@ -80,8 +82,9 @@ public class SummaryInteractorTest {
     }
     @Test
     public void TestIOException() {
-        Transcript transcript = new Transcript(UUID.randomUUID(), "", new ArrayList<>());
-        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, null);
+        UUID id = UUID.randomUUID();
+        Transcript transcript = new Transcript(id, "", new ArrayList<>());
+        Episode episode = new Episode(id, UUID.randomUUID(), "test", "test", transcript, null);
         SummaryInputData inputData = new SummaryInputData(episode);
         SummaryOutputBoundary presenter = new SummaryOutputBoundary() {
             @Override

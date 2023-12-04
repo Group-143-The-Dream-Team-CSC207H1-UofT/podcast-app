@@ -30,11 +30,15 @@ public class EpisodePresenter implements EpisodeOutputBoundary {
     @Override
     public void prepareSuccessView(EpisodeOutputData episodeOutputData) {
         EpisodeState episodeState = episodeViewModel.getState();
+        PodcastState podcastState = podcastViewModel.getState();
         episodeState.setCurrentEpisode(episodeOutputData.getEpisode());
         episodeState.setTextChunks(episodeOutputData.getEpisode().getTranscript().getTextChunks());
         episodeState.setCurrentTextChunk(episodeOutputData.getCurrentTextChunk());
+        podcastState.setCurrentPodcast(episodeOutputData.getPodcast());
         this.episodeViewModel.setState(episodeState);
+        this.podcastViewModel.setState(podcastState);
         this.episodeViewModel.firePropertyChanged();
+        this.podcastViewModel.firePropertyChanged();
         this.viewManagerModel.setActiveView(episodeViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }

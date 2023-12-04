@@ -7,6 +7,7 @@ import data_access.PodcastDataAccess;
 import data_access.TranscriptDataAccess;
 import data_access.VectorDatabase;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.search_index.SearchIndexController;
 import interface_adapter.search_index.SearchIndexPresenter;
 import interface_adapter.search_index.SearchIndexViewModel;
@@ -42,15 +43,15 @@ public class CreateEpisodeViewFactory {
      * @param podcastDAO Data access object for podcast-related operations.
      * @return An instance of CreateEpisodeView fully configured with the necessary controllers.
      */
-    public static CreateEpisodeView create(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, SearchIndexViewModel searchIndexViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings, PodcastDataAccess podcastDAO) {
-        CreateEpisodeController createEpisodeController = createEpisodeUseCase(viewManagerModel, createEpisodeViewModel, episodeDataAccess, podcastDAO);
+    public static CreateEpisodeView create(ViewManagerModel viewManagerModel, PodcastViewModel podcastViewModel, CreateEpisodeViewModel createEpisodeViewModel, TranscribeViewModel transcribeViewModel, SearchIndexViewModel searchIndexViewModel, EpisodeDataAccess episodeDataAccess, TranscriptDataAccess transcriptDataAccess, TranscriptionInterface transcriptionObject, VectorDatabase vectorDatabase, EmbeddingsInterface embeddings, PodcastDataAccess podcastDAO) {
+        CreateEpisodeController createEpisodeController = createEpisodeUseCase(viewManagerModel, podcastViewModel, createEpisodeViewModel, episodeDataAccess, podcastDAO);
         TranscribeController transcribeController = createTranscribeUseCase(viewManagerModel, transcribeViewModel, episodeDataAccess, transcriptDataAccess, transcriptionObject);
         SearchIndexController searchIndexController = createSearchIndexUseCase(viewManagerModel, searchIndexViewModel, vectorDatabase, embeddings);
         return new CreateEpisodeView(viewManagerModel, createEpisodeController, createEpisodeViewModel, transcribeViewModel, transcribeController, searchIndexViewModel, searchIndexController);
     }
 
-    private static CreateEpisodeController createEpisodeUseCase(ViewManagerModel viewManagerModel, CreateEpisodeViewModel createEpisodeViewModel, EpisodeDataAccess episodeDataAccess, PodcastDataAccess podcastDAO){
-        CreateEpisodeOutputBoundary createEpisodeOutputBoundary = new CreateEpisodePresenter(createEpisodeViewModel, viewManagerModel);
+    private static CreateEpisodeController createEpisodeUseCase(ViewManagerModel viewManagerModel, PodcastViewModel podcastViewModel, CreateEpisodeViewModel createEpisodeViewModel, EpisodeDataAccess episodeDataAccess, PodcastDataAccess podcastDAO){
+        CreateEpisodeOutputBoundary createEpisodeOutputBoundary = new CreateEpisodePresenter(createEpisodeViewModel, podcastViewModel, viewManagerModel);
         CreateEpisodeInputBoundary uploadInteractor = new CreateEpisodeInteractor(createEpisodeOutputBoundary, episodeDataAccess, podcastDAO);
         return new CreateEpisodeController(uploadInteractor);
     }

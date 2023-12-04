@@ -23,11 +23,10 @@ class SearchIndexInteractorTest {
         TranscriptDataAccess transcriptDAO = new TranscriptDataAccessObject();
         EpisodeDataAccess episodeDAO = new EpisodeDataAccessObject(transcriptDAO);
         UUID episodeId = UUID.randomUUID();
-        UUID transcriptId = UUID.randomUUID();
         List<TextChunk> textChunks = new ArrayList<>();
         textChunks.add(new TextChunk(0, 1000, "test"));
-        Transcript transcript = new Transcript(transcriptId, "test", textChunks);
-        Episode episode = new Episode(episodeId, "title", "description", transcript, null);
+        Transcript transcript = new Transcript(episodeId, "test", textChunks);
+        Episode episode = new Episode(episodeId, UUID.randomUUID(),"title", "description", transcript, null);
         transcriptDAO.saveTranscript(transcript);
         episodeDAO.saveEpisode(episode);
 

@@ -23,7 +23,7 @@ class SearchInteractorTest {
     public void TestSearchUseCaseForEpisode() {
         EpisodeDataAccess episodeDAO = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
         UUID id = UUID.randomUUID();
-        Episode episode = new Episode(id, "title", "description", null, null);
+        Episode episode = new Episode(id, UUID.randomUUID(),"title", "description", null, null);
         episodeDAO.saveEpisode(episode);
         VectorDatabase vectorDatabase = new VectorDatabase() {
             @Override

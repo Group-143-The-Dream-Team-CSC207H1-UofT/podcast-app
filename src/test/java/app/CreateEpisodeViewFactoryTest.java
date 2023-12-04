@@ -7,6 +7,7 @@ import api.WhisperTranscription;
 import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_episode.CreateEpisodeViewModel;
+import interface_adapter.podcast.PodcastViewModel;
 import interface_adapter.search_index.SearchIndexViewModel;
 import interface_adapter.transcribe.TranscribeViewModel;
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,8 @@ public class CreateEpisodeViewFactoryTest {
         EmbeddingsInterface embeddingsInterface = new OpenAIEmbeddings(System.getenv("OPENAI_API_KEY"));
         PodcastDataAccess podcastDataAccess = new PodcastDataAccessObject(episodeDataAccess);
 
-        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccess, transcriptDataAccess, transcriptionInterface, vectorDatabase, embeddingsInterface, podcastDataAccess);
+
+        CreateEpisodeView createEpisodeView = CreateEpisodeViewFactory.create(viewManagerModel, new PodcastViewModel(), createEpisodeViewModel, transcribeViewModel, searchIndexViewModel, episodeDataAccess, transcriptDataAccess, transcriptionInterface, vectorDatabase, embeddingsInterface, podcastDataAccess);
         assertNotNull(createEpisodeView);
     }
 }

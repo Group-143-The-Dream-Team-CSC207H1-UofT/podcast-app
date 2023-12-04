@@ -30,7 +30,7 @@ public class PodcastViewFactory {
      * @param createEpisodeViewModel ViewModel for creating new episodes.
      * @param homeViewModel ViewModel for the home view of the application.
      * @param episodeDataAccessObject Data access object for episode-related operations.
-     * @param podcastDAO Data access object for podcast-related operations.
+     * @param podcastDataAccessObject Data access object for podcast-related operations.
      * @return An instance of PodcastView fully configured with the necessary controllers and view models.
      */
     public static PodcastView create(
@@ -39,11 +39,11 @@ public class PodcastViewFactory {
             EpisodeViewModel episodeViewModel,
             CreateEpisodeViewModel createEpisodeViewModel,
             HomeViewModel homeViewModel,
-            EpisodeDataAccess episodeDataAccessObject,
-            PodcastDataAccess podcastDAO
+            PodcastDataAccess podcastDataAccessObject,
+            EpisodeDataAccess episodeDataAccessObject
     ){
-            EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, episodeDataAccessObject);
-            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, podcastDAO);
+            EpisodeController episodeController = createDisplayEpisodeUseCase(viewManagerModel, podcastViewModel, episodeViewModel, podcastDataAccessObject, episodeDataAccessObject);
+            HomeController homeController = createHomeUseCase(viewManagerModel, homeViewModel, podcastDataAccessObject);
             return new PodcastView(viewManagerModel, podcastViewModel, createEpisodeViewModel, episodeController, homeController);
     }
 
@@ -51,10 +51,11 @@ public class PodcastViewFactory {
             ViewManagerModel viewManagerModel,
             PodcastViewModel podcastViewModel,
             EpisodeViewModel episodeViewModel,
+            PodcastDataAccess podcastDataAccessObject,
             EpisodeDataAccess episodeDataAccessObject
     ) {
         EpisodeOutputBoundary episodeOutputBoundary = new EpisodePresenter(viewManagerModel, episodeViewModel, podcastViewModel);
-        EpisodeInputBoundary displayEpisodeInteractor = new EpisodeInteractor(episodeDataAccessObject, episodeOutputBoundary);
+        EpisodeInputBoundary displayEpisodeInteractor = new EpisodeInteractor(episodeDataAccessObject, podcastDataAccessObject, episodeOutputBoundary);
         return new EpisodeController(displayEpisodeInteractor);
     }
 

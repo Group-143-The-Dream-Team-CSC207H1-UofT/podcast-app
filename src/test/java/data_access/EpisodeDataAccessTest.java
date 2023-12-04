@@ -17,8 +17,9 @@ public class EpisodeDataAccessTest {
     @Test
     public void TestSaveEpisode() {
         EpisodeDataAccessObject episodeDAO = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
-        Transcript transcript = new Transcript(UUID.randomUUID(), "hello", new ArrayList<TextChunk>());
-        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, null);
+        UUID id = UUID.randomUUID();
+        Transcript transcript = new Transcript(id, "hello", new ArrayList<TextChunk>());
+        Episode episode = new Episode(id, UUID.randomUUID(), "test", "test", transcript, null);
         episodeDAO.saveEpisode(episode);
         Episode newEpisode = episodeDAO.getEpisodeById(episode.getId());
         assert newEpisode == episode;
@@ -26,8 +27,9 @@ public class EpisodeDataAccessTest {
     @Test
     public void TestFileDoesntExist() {
         EpisodeDataAccessObject episodeDAO = new EpisodeDataAccessObject(new TranscriptDataAccessObject());
-        Transcript transcript = new Transcript(UUID.randomUUID(), "hello", new ArrayList<TextChunk>());
-        Episode episode = new Episode(UUID.randomUUID(), "test", "test", transcript, null);
+        UUID id = UUID.randomUUID();
+        Transcript transcript = new Transcript(id, "hello", new ArrayList<TextChunk>());
+        Episode episode = new Episode(id, UUID.randomUUID(), "test", "test", transcript, null);
         episodeDAO.saveEpisode(episode);
         File file = episodeDAO.getFileById(episode.getId());
         assert file == null;
