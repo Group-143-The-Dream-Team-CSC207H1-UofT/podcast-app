@@ -18,6 +18,10 @@ public class CreateEpisodePresenter implements CreateEpisodeOutputBoundary {
         this.podcastViewModel = podcastViewModel;
     }
 
+    /**
+     * Updates the EpisodeViewModel to display current episode and updates PodcastViewModel to display new episode.
+     * @param outputData the output data from the input boundary.
+     */
     @Override
     public void prepareSuccessView(CreateEpisodeOutputData outputData) {
         CreateEpisodeState currentState = viewModel.getState();

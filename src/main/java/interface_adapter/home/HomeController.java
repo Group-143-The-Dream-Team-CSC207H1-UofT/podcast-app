@@ -9,6 +9,9 @@ public class HomeController {
         this.displayPodcastsInteractor = displayPodcastsInteractor;
     }
 
+    /**
+     * Calls the input boundary to retrieve all podcasts.
+     */
     public void execute() {
         HomeInputData inputData = new HomeInputData();
         // The input data here contains nothing
