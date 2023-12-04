@@ -8,8 +8,6 @@ import use_case.create_podcast.CreatePodcastInteractor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 
-import static org.junit.Assert.assertEquals;
-
 public class CreatePodcastEndToEndTest {
 
     private ViewManagerModel viewManagerModel;
