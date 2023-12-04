@@ -15,6 +15,10 @@ public class CreatePodcastInteractor implements CreatePodcastInputBoundary {
         this.podcastDAO = podcastDAO;
     }
 
+    /**
+     * Creates a new podcast with the given input data.
+     * @param createPodcastInputData Contains podcast title and description.
+     */
     @Override
     public void execute(CreatePodcastInputData createPodcastInputData) {
         UUID uniqueID = UUID.randomUUID();

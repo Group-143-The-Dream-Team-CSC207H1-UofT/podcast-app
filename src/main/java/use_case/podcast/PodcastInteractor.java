@@ -13,6 +13,11 @@ public class PodcastInteractor implements PodcastInputBoundary {
         this.outputBoundary = outputBoundary;
         this.podcastDAO = podcastDAO;
     }
+
+    /**
+     * Fetches the desired podcast and tells the output boundary to display it.
+     * @param podcastInputData contains the ID of the podcast to display.
+     */
     @Override
     public void execute(PodcastInputData podcastInputData) {
         UUID podcastUUID = podcastInputData.getPodcastID();

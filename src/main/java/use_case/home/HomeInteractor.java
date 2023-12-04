@@ -14,6 +14,10 @@ public class HomeInteractor implements HomeInputBoundary {
         this.podcastDAO = podcastDAO;
     }
 
+    /**
+     * Fetches all saved podcasts and tells output boundary to display them.
+     * @param inputData Contains nothing.
+     */
     @Override
     public void execute(HomeInputData inputData) {
         List<Podcast> allPodcasts = new ArrayList<>(podcastDAO.getAllPodcasts());
