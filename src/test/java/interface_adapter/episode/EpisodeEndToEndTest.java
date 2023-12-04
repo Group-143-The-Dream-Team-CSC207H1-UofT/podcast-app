@@ -1,8 +1,6 @@
 package interface_adapter.episode;
 
-import data_access.EpisodeDataAccess;
-import data_access.EpisodeDataAccessObject;
-import data_access.TranscriptDataAccessObject;
+import data_access.*;
 import entities.Episode;
 import entities.TextChunk;
 import entities.Transcript;
@@ -25,8 +23,8 @@ public class EpisodeEndToEndTest {
         UUID id = UUID.randomUUID();
         List<TextChunk> textChunkList = new ArrayList<>();
         textChunkList.add(new TextChunk(0, 1, "hello"));
-        Transcript transcript = new Transcript(UUID.randomUUID(), "text", textChunkList);
-        Episode episode = new Episode(id, "cool episode", "test", transcript, null);
+        Transcript transcript = new Transcript(id, "text", textChunkList);
+        Episode episode = new Episode(id, UUID.randomUUID(),"cool episode", "test", transcript, null);
         EpisodeViewModel episodeViewModel = new EpisodeViewModel();
         ViewManagerModel viewManagerModel = new ViewManagerModel();
         PodcastViewModel podcastViewModel = new PodcastViewModel();
@@ -52,7 +50,8 @@ public class EpisodeEndToEndTest {
             }
         };
         EpisodeOutputBoundary presenter = new EpisodePresenter(viewManagerModel, episodeViewModel, podcastViewModel);
-        EpisodeInputBoundary interactor = new EpisodeInteractor(episodeDataAccess, presenter);
+        PodcastDataAccess podcastDataAccess = new PodcastDataAccessObject(episodeDataAccess);
+        EpisodeInputBoundary interactor = new EpisodeInteractor(episodeDataAccess, podcastDataAccess, presenter);
         EpisodeController controller = new EpisodeController(interactor);
         controller.execute(id, null);
         assert episodeViewModel.getState().getCurrentEpisode().equals(episode);

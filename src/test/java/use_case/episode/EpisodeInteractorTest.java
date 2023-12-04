@@ -1,6 +1,8 @@
 package use_case.episode;
 
 import data_access.EpisodeDataAccess;
+import data_access.PodcastDataAccess;
+import data_access.PodcastDataAccessObject;
 import entities.Episode;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +17,7 @@ public class EpisodeInteractorTest {
     @Test
     public void TestEpisodeInteractor() {
         UUID id = UUID.randomUUID();
-        Episode episode = new Episode(id, "test", "description", null, null);
+        Episode episode = new Episode(id, UUID.randomUUID(),"test", "description", null, null);
         EpisodeInputData inputData = new EpisodeInputData(id, null);
         EpisodeOutputBoundary outputBoundary = new EpisodeOutputBoundary() {
             @Override
@@ -51,13 +53,14 @@ public class EpisodeInteractorTest {
                 return episode;
             }
         };
-        EpisodeInteractor interactor = new EpisodeInteractor(episodeDAO, outputBoundary);
+        PodcastDataAccess podcastDataAccess = new PodcastDataAccessObject(episodeDAO);
+        EpisodeInteractor interactor = new EpisodeInteractor(episodeDAO, podcastDataAccess, outputBoundary);
         interactor.execute(inputData);
     }
     @Test
     public void TestEpisodeNotFound() {
         UUID id = UUID.randomUUID();
-        Episode episode = new Episode(id, "test", "description", null, null);
+        Episode episode = new Episode(id, UUID.randomUUID(),"test", "description", null, null);
         EpisodeInputData inputData = new EpisodeInputData(id, null);
         EpisodeOutputBoundary outputBoundary = new EpisodeOutputBoundary() {
             @Override
@@ -91,7 +94,8 @@ public class EpisodeInteractorTest {
                 return null;
             }
         };
-        EpisodeInteractor interactor = new EpisodeInteractor(episodeDAO, outputBoundary);
+        PodcastDataAccess podcastDataAccess = new PodcastDataAccessObject(episodeDAO);
+        EpisodeInteractor interactor = new EpisodeInteractor(episodeDAO, podcastDataAccess, outputBoundary);
         interactor.execute(inputData);
     }
 }
