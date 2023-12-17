@@ -1,44 +1,21 @@
-# CSC207 Course Project: Podcast Application
+# CSC207 Course Project: Show Notes
 
-An application made in Java using Clean Architecture for CSC207 at University of Toronto.
-
-## Tentative Problem Domain
-Tentatively, we are considering media management as a scope for our project. Specifically, 
-this includes accessing media available on the web and managing various audio content.
+An podcast transcription application made in Java following the Clean Architecture.
 
 ## Project Overview
-We are hoping to develop an application that allows a users to re-experience podcasts that
-are available on sources such as Spotify, Apple Podcasts, Google Podcasts, etc. We are hoping
-to do this by:
-1. Trying to incorporate voice-to-text/transcription into the application so that you can also read what is being said.
-2. Implementing a feature that allows users to select sections of the podcast to listen to.
-    - This essentially offers a summary of the different topics that are discussed within the podcast.
-    - Timestamps and topic names will be generated through the use of AI.
-3. Potentially adding a search menu that can look for certain phrases/sentences within the podcast as well.
+When using a music platform like Spotify or Apple Music, several useful features are included: lyrics that are synced in real time to the song, the ability to search songs by lyric, and more. However, it is rare to see podcasts get the same type of love. With Show Notes, we wanted to change that.
 
-## Potential Technical Problems
-1. Transcripts will need to be either stored in a database or generated very quickly.
-   - Since transcripts can get quite long, we will need to determine what will be more efficient.
-2. Audio files, especially files like podcasts, can be very large and will need to be either stored somewhere or retrieved quickly. 
+Show Notes aims to supercharge podcasts using AI. Users upload podcast audio files, and are then able to access a full transcript of the podcast, listen to podcast, generate a summary, and use the natural language search feature to search through their podcasts based on the contents of their transcripts. 
 
+## Functionality Demonstration
+Here is a short demo of showing a user creating a podcast, uploading an episode, and playing it.
 
-Note: The following list of features is tenative and subject to change.
+https://github.com/Group-143-The-Dream-Team-CSC207H1-UofT/podcast-app/assets/74999083/f4a97e05-456d-4626-a583-2b40d100b5a3
 
-## API Overview 
+Here is a demo of the search feature!
 
-### Documentation
+https://github.com/Group-143-The-Dream-Team-CSC207H1-UofT/podcast-app/assets/74999083/2c6b7d05-2a12-4276-a333-68657e38cb3c
 
-OpenAI Whisper Model Transcription API: https://platform.openai.com/docs/api-reference/audio/createTranscription
-
-### API Tools & Example
-
-Example API call using Hoppscotch:
-![api_example_request.png](src/main/resources/api_example_request.png)
-
-Example output from java code:
-```
-I keep seeing shorts in this channel like come on guys come on we're real men here
-```
 
 ## Note To Readers
 Information on this file is subject to change, especially when the project will be updated. 
