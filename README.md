@@ -1,4 +1,4 @@
-# CSC207 Course Project: Show Notes
+# Show Notes
 
 An podcast transcription application made in Java following the Clean Architecture.
 
